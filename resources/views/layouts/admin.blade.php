@@ -255,6 +255,15 @@
         /* Footer e wrapper: previne scroll horizontal em mobile */
         footer { overflow: hidden; max-width: 100%; box-sizing: border-box; }
         .flex.h-screen.overflow-hidden { max-width: 100vw; }
+        /* Remove scrollbar horizontal do main admin e de toda a página */
+        #admin-main-content { overflow-x: hidden !important; }
+        #admin-main-content::-webkit-scrollbar:horizontal { display: none !important; height: 0 !important; }
+        body::-webkit-scrollbar:horizontal { display: none !important; height: 0 !important; }
+        * { scrollbar-width: auto; }
+        @media (max-width: 1023px) {
+            #admin-main-content::-webkit-scrollbar { width: 4px; }
+            #admin-main-content { scrollbar-width: thin; }
+        }
 
         /* ═══ RESPONSIVE TABLES ═══ */
         #admin-main-content .table-responsive,
@@ -518,7 +527,7 @@
         </div>
 
         <!-- Page content -->
-        <main class="flex-1 overflow-y-auto p-6" id="admin-main-content">
+        <main class="flex-1 overflow-y-auto overflow-x-hidden p-6" id="admin-main-content" style="max-width:100%;box-sizing:border-box;">
             @yield('content')
         </main>
 

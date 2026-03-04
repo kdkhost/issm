@@ -1,66 +1,152 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌿 ISSM - Instituto Socioambiental Serra do Mendanha
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Site institucional e painel administrativo do Instituto Socioambiental Serra do Mendanha (ISSM), dedicado à preservação ambiental, educação ecológica e desenvolvimento sustentável alinhado com os ODS 2030.
 
-## About Laravel
+🔗 **Produção:** [https://issm.org.br](https://issm.org.br)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O ISSM é uma plataforma web completa composta por um **site público** voltado para divulgação institucional e um **painel administrativo** para gestão de todo o conteúdo. O sistema permite gerenciar notícias, projetos, equipe, parceiros, galeria de fotos, banners, páginas estáticas, ODS 2030, mensagens de contato e diversas configurações do site — tudo de forma intuitiva.
 
-## Learning Laravel
+## ✨ Funcionalidades
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Site Público
+- **Home** com hero, banners rotativos, seções sobre, ODS, projetos, notícias, equipe, parceiros, galeria e contato
+- **Notícias** com listagem e página de detalhe
+- **Projetos** com listagem e página de detalhe
+- **Galeria** de fotos com visualização em lightbox
+- **Formulário de contato** com reCAPTCHA
+- **ODS 2030** — exibição dos objetivos de desenvolvimento sustentável
+- **Páginas institucionais** dinâmicas
+- **SEO completo** — Open Graph, Twitter Cards, JSON-LD, meta tags, sitemap
+- **Preloader** de transição entre páginas
+- **Botão voltar ao topo** e **widget de suporte**
+- **Modo manutenção** com página personalizada
+- **Design responsivo** (mobile-first)
+- **Páginas de erro** personalizadas (401, 403, 404, 405, 408, 419, 429, 500, 503)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Painel Administrativo (`/admin`)
+- **Dashboard** com estatísticas e atalhos rápidos
+- **CRUD completo** para: Banners, Notícias, Projetos, Equipe, Parceiros, Galeria, Páginas, ODS 2030
+- **Mensagens de contato** com status (nova, lida, respondida)
+- **Configurações gerais** — nome, logo, favicon, missão, visão, valores
+- **Configurações de SEO** — meta tags, Open Graph, Twitter Cards, Analytics, Search Console
+- **Configurações de e-mail SMTP** — host, porta, criptografia direto pelo painel
+- **Configurações da página inicial** — seções visíveis, hero background, overlay
+- **Configurações de manutenção** — ativar/desativar, mensagem, countdown, progresso
+- **Configurações de parceiros** — carrossel (velocidade, efeito, logos por tela)
+- **Configurações de segurança** — reCAPTCHA
+- **Gerenciamento de IPs** para bypass de manutenção
+- **Analytics** — visualizações de páginas, visitantes, dispositivos
+- **Tema dark/light** com persistência
+- **Upload drag & drop** com preview de imagens
+- **Editor WYSIWYG** (Summernote) para conteúdo rico
+- **Tooltips**, **toasts** e **confirmações SweetAlert2**
+- **Perfil do usuário** com alteração de senha
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Stack Tecnológica
 
-## Laravel Sponsors
+| Camada | Tecnologia |
+|--------|-----------|
+| **Backend** | PHP 8.4, Laravel 10 |
+| **Frontend** | Blade, Tailwind CSS v4, Vite |
+| **Banco de Dados** | MySQL |
+| **Editor** | Summernote 0.9 |
+| **UI Components** | SweetAlert2, Toastify, Swiper 11 |
+| **Fontes** | Google Fonts (Inter) |
+| **Servidor** | cPanel, EasyApache (ea-php84) |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 📁 Estrutura do Projeto
 
-### Premium Partners
+```
+app/
+├── Http/Controllers/       # Controllers (Admin + Público)
+├── Models/                 # Eloquent Models
+├── Providers/              # Service Providers
+resources/
+├── views/
+│   ├── layouts/            # Layouts (app.blade.php, admin.blade.php)
+│   ├── admin/              # Views do painel administrativo
+│   ├── errors/             # Páginas de erro personalizadas
+│   ├── home.blade.php      # Página inicial
+│   └── ...                 # Views públicas (news, projects, etc.)
+routes/
+├── web.php                 # Rotas web (públicas + admin)
+├── api.php                 # Rotas API
+database/
+├── migrations/             # Migrações do banco
+├── seeders/                # Seeders (AdminUser, Settings)
+public/
+├── media/                  # Uploads de mídia
+├── build/                  # Assets compilados (Vite)
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## ⚙️ Configuração
 
-## Contributing
+### Requisitos
+- PHP >= 8.1
+- Composer
+- Node.js >= 18
+- MySQL 5.7+
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Instalação
 
-## Code of Conduct
+```bash
+# Clonar repositório
+git clone <repo-url> issm
+cd issm
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Instalar dependências
+composer install
+npm install
 
-## Security Vulnerabilities
+# Configurar ambiente
+cp .env.example .env
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Configurar banco de dados no .env
+# DB_DATABASE, DB_USERNAME, DB_PASSWORD
 
-## License
+# Executar migrações e seeders
+php artisan migrate --seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Compilar assets
+npm run build
+
+# Iniciar servidor de desenvolvimento
+php artisan serve
+```
+
+### Variáveis de Ambiente Principais
+
+```env
+APP_NAME=ISSM
+APP_URL=https://issm.org.br
+APP_TIMEZONE=America/Sao_Paulo
+APP_LOCALE=pt_BR
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=issm
+```
+
+> As configurações de e-mail SMTP, SEO, redes sociais e manutenção são gerenciadas pelo painel administrativo (tabela `settings`).
+
+## 🌐 Rotas Principais
+
+| Rota | Descrição |
+|------|-----------|
+| `/` | Página inicial |
+| `/noticias` | Listagem de notícias |
+| `/projetos` | Listagem de projetos |
+| `/galeria` | Galeria de fotos |
+| `/equipe` | Equipe |
+| `/paginas/{slug}` | Páginas dinâmicas |
+| `/admin` | Painel administrativo |
+| `/admin/configuracoes` | Configurações do site |
+
+## 📄 Licença
+
+Projeto privado — ISSM © 2026. Todos os direitos reservados.

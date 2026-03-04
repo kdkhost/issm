@@ -3,7 +3,7 @@
 @section('page-title', 'Dashboard')
 @section('page-subtitle', 'Visao geral do sistema')
 @section('content')
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" style="max-width:100%;overflow:hidden;">
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
         <div class="flex items-center justify-between">
             <div><p class="text-gray-500 text-sm">Noticias</p><p class="text-3xl font-black text-gray-900">{{ $stats["news"] }}</p></div>
