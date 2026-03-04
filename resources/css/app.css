@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* Força inclusão das utilities usadas nos blades no próximo build */
+@source inline("{space-y-2,space-y-3,space-y-4,space-y-6,space-y-8,p-4,p-6,p-7,gap-2,gap-3,gap-4,gap-6,gap-8,gap-x-8,gap-x-10,gap-y-6,gap-y-8,gap-y-10,flex-col,grid-cols-1,grid-cols-2,grid-cols-3,col-span-2,md:grid-cols-2,sm:grid-cols-2,lg:grid-cols-3,md:col-span-2}");
+
+@theme {
+    --color-issm-green: #2d6a4f;
+    --color-issm-green-light: #52b788;
+    --color-issm-green-dark: #1b4332;
+    --color-issm-blue: #0077b6;
+    --color-issm-blue-light: #90e0ef;
+    --color-issm-yellow: #f4a261;
+    --color-issm-brown: #6b4226;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #2d6a4f; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #1b4332; }
+
+.hero-gradient {
+    background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #52b788 100%);
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.admin-sidebar {
+    background: linear-gradient(180deg, #1b4332 0%, #2d6a4f 100%);
+}
+
+.ods-1 { background-color: #e5243b; }
+.ods-2 { background-color: #dda63a; }
+.ods-3 { background-color: #4c9f38; }
+.ods-4 { background-color: #c5192d; }
+.ods-5 { background-color: #ff3a21; }
+.ods-6 { background-color: #26bde2; }
+.ods-7 { background-color: #fcc30b; }
+.ods-8 { background-color: #a21942; }
+.ods-9 { background-color: #fd6925; }
+.ods-10 { background-color: #dd1367; }
+.ods-11 { background-color: #fd9d24; }
+.ods-12 { background-color: #bf8b2e; }
+.ods-13 { background-color: #3f7e44; }
+.ods-14 { background-color: #0a97d9; }
+.ods-15 { background-color: #56c02b; }
+.ods-16 { background-color: #00689d; }
+.ods-17 { background-color: #19486a; }

@@ -20,3 +20,11 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+/vendor
+/node_modules
+.env
+/storage/*.key
+/public/storage
+/.idea
+/.vscode

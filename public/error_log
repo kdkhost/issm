@@ -1,0 +1,83 @@
+[02-Mar-2026 17:11:30 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 17:11:32 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 17:12:37 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 17:22:26 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 17:34:24 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 18:24:08 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[02-Mar-2026 20:23:11 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.4.0". You are running 8.1.33. in /home/issmorg/public_html/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/issmorg/public_html/vendor/composer/autoload_real.php(25): require()
+#1 /home/issmorg/public_html/vendor/autoload.php(22): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/issmorg/public_html/public/index.php(34): require('/home/issmorg/p...')
+#3 {main}
+  thrown in /home/issmorg/public_html/vendor/composer/platform_check.php on line 22
+[03-Mar-2026 01:37:36 UTC] PHP Fatal error:  Uncaught Error: Call to a member function connection() on null in /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1820
+Stack trace:
+#0 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1786): Illuminate\Database\Eloquent\Model::resolveConnection(NULL)
+#1 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1577): Illuminate\Database\Eloquent\Model->getConnection()
+#2 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1496): Illuminate\Database\Eloquent\Model->newBaseQueryBuilder()
+#3 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1532): Illuminate\Database\Eloquent\Model->newModelQuery()
+#4 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1485): Illuminate\Database\Eloquent\Model->newQueryWithoutScopes()
+#5 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2335): Illuminate\Database\Eloquent\Model->newQuery()
+#6 /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2347): Illuminate\Database\Eloquent\Model->__call('where', Array)
+#7 /home/issmorg/public_html/public/debug-storage.php(11): Illuminate\Database\Eloquent\Model::__callStatic('where', Array)
+#8 {main}
+  thrown in /home/issmorg/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 1820
+[03-Mar-2026 01:38:51 UTC] PHP Fatal error:  Uncaught Error: Class "App\Models\Setting" not found in /home/issmorg/public_html/public/debug-storage.php:91
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/public/debug-storage.php on line 91
+[04-Mar-2026 00:14:53 UTC] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[04-Mar-2026 00:15:03 UTC] PHP Fatal error:  Declaration of Monolog\Logger::emergency(Stringable|string $message, array $context = []): void must be compatible with PsrExt\Log\LoggerInterface::emergency($message, array $context = []) in /home/issmorg/public_html/vendor/monolog/monolog/src/Monolog/Logger.php on line 683
+[04-Mar-2026 00:17:54 UTC] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:20:56 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:25:04 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:29:44 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:37:01 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:42:53 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:44:46 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:49:19 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:53:58 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:56:27 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 21:59:46 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 22:00:49 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 22:03:23 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 22:08:20 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 22:10:16 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46
+[03-Mar-2026 22:16:33 America/Sao_Paulo] PHP Deprecated:  Laravel\Sanctum\HasApiTokens::createToken(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead in /home/issmorg/public_html/vendor/laravel/sanctum/src/HasApiTokens.php on line 46

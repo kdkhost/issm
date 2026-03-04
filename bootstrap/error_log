@@ -1,0 +1,16 @@
+[02-Mar-2026 17:22:31 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/issmorg/public_html/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/bootstrap/app.php on line 14
+[02-Mar-2026 18:59:50 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/issmorg/public_html/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/bootstrap/app.php on line 14
+[02-Mar-2026 20:08:01 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/issmorg/public_html/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/bootstrap/app.php on line 14
+[02-Mar-2026 21:51:10 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/issmorg/public_html/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/bootstrap/app.php on line 14

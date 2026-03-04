@@ -1,0 +1,32 @@
+[02-Mar-2026 17:22:31 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/issmorg/public_html/routes/api.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/api.php on line 17
+[02-Mar-2026 17:22:31 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Artisan" not found in /home/issmorg/public_html/routes/console.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/console.php on line 17
+[02-Mar-2026 17:22:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/issmorg/public_html/routes/web.php:24
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/web.php on line 24
+[02-Mar-2026 17:22:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Broadcast" not found in /home/issmorg/public_html/routes/channels.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/channels.php on line 16
+[02-Mar-2026 22:00:51 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/issmorg/public_html/routes/api.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/api.php on line 17
+[02-Mar-2026 22:01:26 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Artisan" not found in /home/issmorg/public_html/routes/console.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/console.php on line 17
+[02-Mar-2026 22:02:12 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/issmorg/public_html/routes/web.php:24
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/web.php on line 24
+[02-Mar-2026 22:02:35 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Broadcast" not found in /home/issmorg/public_html/routes/channels.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/routes/channels.php on line 16
