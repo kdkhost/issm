@@ -21,8 +21,7 @@ return new class extends Migration
     {
         if (!Schema::hasTable('cms_audit_logs')) {
             Schema::create('cms_audit_logs', function (Blueprint $table) {
-                $table->engine = 'InnoDB';
-                $table->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
+                $table->engine('InnoDB');
 
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('user_id')->nullable();
