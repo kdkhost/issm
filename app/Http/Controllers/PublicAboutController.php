@@ -9,6 +9,15 @@ class PublicAboutController extends Controller
 {
     public function index()
     {
+        $cmsData = $this->loadCmsPage('sobre');
+
+        if ($cmsData['cmsPage'] && $cmsData['cmsSections']->isNotEmpty()) {
+            return view('public.cms.page', [
+                'page' => $cmsData['cmsPage'],
+                'sections' => $cmsData['cmsSections'],
+            ]);
+        }
+
         $settings = [
             'about_text' => Setting::get('about_text', ''),
             'mission' => Setting::get('mission', ''),
@@ -18,8 +27,6 @@ class PublicAboutController extends Controller
         
         $teamMembers = TeamMember::active()->orderBy('order')->get();
 
-        $cmsData = $this->loadCmsPage('sobre');
-        
         return view('about.index', array_merge(
             compact('settings', 'teamMembers'), $cmsData
         ));

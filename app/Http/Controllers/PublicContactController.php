@@ -9,6 +9,15 @@ class PublicContactController extends Controller
 {
     public function index()
     {
+        $cmsData = $this->loadCmsPage('contato');
+
+        if ($cmsData['cmsPage'] && $cmsData['cmsSections']->isNotEmpty()) {
+            return view('public.cms.page', [
+                'page' => $cmsData['cmsPage'],
+                'sections' => $cmsData['cmsSections'],
+            ]);
+        }
+
         $settings = [
             'contact_email' => Setting::get('contact_email', ''),
             'contact_phone' => Setting::get('contact_phone', ''),
@@ -22,7 +31,6 @@ class PublicContactController extends Controller
             'social_twitter' => Setting::get('social_twitter', ''),
         ];
 
-        $cmsData = $this->loadCmsPage('contato');
         return view('contact.index', array_merge(compact('settings'), $cmsData));
     }
 }

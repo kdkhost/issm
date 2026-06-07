@@ -99,5 +99,5 @@ Route::get('/robots.txt', [CmsPublicController::class, 'robotsTxt'])->name('cms.
 // CMS Redirect Handler (must be near the end to not interfere)
 Route::get('/r/{from}', [CmsPublicController::class, 'redirect'])->name('cms.redirect')->where('from', '.*');
 
-// CMS Páginas Dinâmicas (catch-all for CMS-managed pages)
-Route::get('/cms/{slug}', [CmsPublicController::class, 'show'])->name('cms.page')->where('slug', '[a-z0-9-]+');
+// CMS Páginas Dinâmicas (root-level, must be LAST - catches unmatched slugs)
+Route::get('/{slug}', [CmsPublicController::class, 'show'])->name('cms.page')->where('slug', '[a-z0-9-]+');
