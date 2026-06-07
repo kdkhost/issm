@@ -21,9 +21,14 @@ class CmsVersionService
 {
     public function createVersion(Model $model, string $summary = ''): CmsVersion
     {
+        $lastVersionNumber = CmsVersion::where('versionable_type', get_class($model))
+            ->where('versionable_id', $model->id)
+            ->max('version_number');
+
         return CmsVersion::create([
             'versionable_type' => get_class($model),
             'versionable_id' => $model->id,
+            'version_number' => $lastVersionNumber !== null ? $lastVersionNumber + 1 : 1,
             'data' => $model->toArray(),
             'summary' => $summary,
             'user_id' => Auth::id(),
