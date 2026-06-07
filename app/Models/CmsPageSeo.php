@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CmsPageSeo extends Model
 {
+    protected $table = 'cms_page_seo';
+
     protected $fillable = [
         'cms_page_id', 'meta_title', 'meta_description', 'meta_keywords', 'slug',
         'canonical_url', 'og_title', 'og_description', 'og_image', 'og_type',
