@@ -1,17 +1,18 @@
 {{-- @autor marcelo-brad rj --}}
 {{-- @contato Tel: 21 981325441 | Email: contato@kdkhost.com.br | Telegram: @MARCELO_BRAD | Instagram: @marcelobradrj | WhatsApp: 21981325441 --}}
 @extends("layouts.admin")
-@section("title", "Versões - {{ $page->title }}")
-@section("page-title", "Histórico de Versões: {{ $page->title }}")
+@section("title", "Versões")
+@section("page-title", "Histórico de Versões")
 @push("scripts")
 <script>
 $(function() {
     $(".show-diff").on("click", function() {
         var versionId = $(this).data("id");
+        var v1 = $(this).data("v1");
         var modal = $("#diff-modal");
         modal.find("#diff-content").html('<div class="text-center text-gray-400 py-4">Carregando...</div>');
         modal.removeClass("hidden");
-        $.get("{{ route("admin.cms.versions.diff", [$page, "VERSION_ID"]) }}".replace("VERSION_ID", versionId), function(data) {
+        $.get("{{ route("admin.cms.versions.diff") }}?version_id_1=" + v1 + "&version_id_2=" + versionId, function(data) {
             modal.find("#diff-content").html(data);
         });
     });
@@ -25,7 +26,7 @@ $(function() {
 @endpush
 @section("content")
 <div class="flex items-center justify-between mb-6">
-    <a href="{{ route("admin.cms.pages.edit", $page) }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+    <a href="{{ $page ? route("admin.cms.pages.edit", $page) : route("admin.cms.pages.index") }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         Voltar para página
     </a>
@@ -57,8 +58,8 @@ $(function() {
                     <td class="px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center gap-1">
                             <button type="button" class="show-diff text-blue-600 hover:text-blue-800 text-sm font-medium px-1" data-id="{{ $version->id }}">Diff</button>
-                            <form method="POST" action="{{ route("admin.cms.versions.restore", [$page, $version]) }}" class="inline">
-                                @csrf @method("PATCH")
+                            <form method="POST" action="{{ route("admin.cms.versions.restore", $version) }}" class="inline">
+                                @csrf
                                 <button type="submit" class="text-green-600 hover:text-green-800 text-sm font-medium px-1" data-tooltip="Restaurar esta versão">Restaurar</button>
                             </form>
                         </div>

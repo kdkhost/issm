@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
  */
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\Cms\CmsAuditService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -31,10 +32,12 @@ class CmsAuditController extends Controller
     {
         $filters = $request->only(['action', 'module', 'user_id', 'date_from', 'date_to', 'search']);
 
-        $logs = $this->auditService->getAuditLogs(50, $filters);
+        $audits = $this->auditService->getAuditLogs(50, $filters);
 
         $actions = $this->auditService->getModuleActions();
 
-        return view('admin.cms.audit.index', compact('logs', 'actions', 'filters'));
+        $users = User::orderBy('name')->get(['id', 'name']);
+
+        return view('admin.cms.audit.index', compact('audits', 'actions', 'filters', 'users'));
     }
 }

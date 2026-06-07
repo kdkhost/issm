@@ -72,7 +72,7 @@ $(function() {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <form method="POST" action="{{ route("admin.cms.media.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("admin.cms.media.upload") }}" enctype="multipart/form-data">
             @csrf
             <div class="space-y-4">
                 <div>

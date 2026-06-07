@@ -1,8 +1,8 @@
 {{-- @autor marcelo-brad rj --}}
 {{-- @contato Tel: 21 981325441 | Email: contato@kdkhost.com.br | Telegram: @MARCELO_BRAD | Instagram: @marcelobradrj | WhatsApp: 21981325441 --}}
 @extends("layouts.admin")
-@section("title", "Blocos - {{ $section->name }}")
-@section("page-title", "Blocos: {{ $section->name }}")
+@section("title", "Blocos")
+@section("page-title", "Gerenciar Blocos")
 @push("styles")
 <style>
 .sortable-ghost { opacity: 0.4; background: #f0fdf4; }
@@ -26,7 +26,7 @@ $(function() {
                 el.querySelectorAll("li[data-id]").forEach(function(li) {
                     ids.push(li.dataset.id);
                 });
-                fetch("{{ route("admin.cms.blocks.reorder", [$page, $section]) }}", {
+                fetch("{{ route("admin.cms.blocks.reorder") }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ $(function() {
 @section("content")
 <div class="flex justify-between items-center mb-6">
     <div>
-        <a href="{{ route("admin.cms.sections.index", $page) }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+        <a href="{{ route("admin.cms.sections.index") }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Voltar para seções
         </a>
@@ -58,7 +58,7 @@ $(function() {
     </button>
 </div>
 <div id="block-create-form" class="hidden mb-6 bg-white rounded-xl shadow-sm p-6">
-    <form method="POST" action="{{ route("admin.cms.blocks.store", [$page, $section]) }}">
+    <form method="POST" action="{{ route("admin.cms.blocks.store") }}">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
@@ -114,21 +114,21 @@ $(function() {
                 @endif
             </div>
             <div class="flex items-center gap-2">
-                <form method="POST" action="{{ route("admin.cms.blocks.toggle", [$page, $section, $block]) }}">
-                    @csrf @method("PATCH")
+                <form method="POST" action="{{ route("admin.cms.blocks.toggle-status", $block) }}">
+                    @csrf
                     <button type="submit" class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors {{ $block->is_active ? "bg-green-600" : "bg-gray-300" }}">
                         <span class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform {{ $block->is_active ? "translate-x-[18px]" : "translate-x-1" }}"></span>
                     </button>
                 </form>
                 <button type="button" onclick="editBlock({{ $block->id }})" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1" data-tooltip="Editar">Editar</button>
-                <form method="POST" action="{{ route("admin.cms.blocks.destroy", [$page, $section, $block]) }}" class="inline">
+                <form method="POST" action="{{ route("admin.cms.blocks.destroy", $block) }}" class="inline">
                     @csrf @method("DELETE")
                     <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium px-1" data-confirm="Excluir este bloco?" data-tooltip="Excluir">Excluir</button>
                 </form>
             </div>
         </li>
         @empty
-        <li class="px-6 py-10 text-center text-gray-400">Nenhum bloco cadastrado nesta seção.</li>
+        <li class="px-6 py-10 text-center text-gray-400">Nenhum bloco cadastrado.</li>
         @endforelse
     </ul>
 </div>
@@ -144,7 +144,7 @@ $(function() {
 @push("scripts")
 <script>
 function editBlock(id) {
-    fetch("{{ route("admin.cms.blocks.edit", [$page, $section, "ID_PLACEHOLDER"]) }}".replace("ID_PLACEHOLDER", id))
+    fetch("{{ route("admin.cms.blocks.edit", "ID_PLACEHOLDER") }}".replace("ID_PLACEHOLDER", id))
         .then(function(r) { return r.text(); })
         .then(function(html) {
             var modal = document.getElementById("block-edit-modal");

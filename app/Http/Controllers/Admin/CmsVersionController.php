@@ -43,10 +43,20 @@ class CmsVersionController extends Controller
 
     public function index(Request $request): View
     {
+        $modelTypeMap = [
+            'page' => 'App\Models\CmsPage',
+            'section' => 'App\Models\CmsSection',
+            'block' => 'App\Models\CmsBlock',
+            'menu' => 'App\Models\CmsMenu',
+            'menu_item' => 'App\Models\CmsMenuItem',
+            'media' => 'App\Models\CmsMedia',
+        ];
+
         $query = CmsVersion::with('user')->latest();
 
         if ($modelType = $request->get('model_type')) {
-            $query->where('versionable_type', $modelType);
+            $versionableType = $modelTypeMap[$modelType] ?? $modelType;
+            $query->where('versionable_type', $versionableType);
         }
 
         if ($modelId = $request->get('model_id')) {
@@ -55,7 +65,12 @@ class CmsVersionController extends Controller
 
         $versions = $query->paginate(30);
 
-        return view('admin.cms.versions.index', compact('versions'));
+        $page = null;
+        if ($modelType === 'page' && $modelId = $request->get('model_id')) {
+            $page = CmsPage::find($modelId);
+        }
+
+        return view('admin.cms.versions.index', compact('versions', 'page'));
     }
 
     public function show(CmsVersion $cmsVersion): View

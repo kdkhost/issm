@@ -43,7 +43,7 @@ $(function() {
 
     function updateMenuOrder() {
         var data = buildMenuTree(document.getElementById("menu-root"));
-        fetch("{{ route("admin.cms.menus.reorder") }}", {
+        fetch("{{ route("admin.cms.menus.items.reorder") }}", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

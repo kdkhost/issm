@@ -72,6 +72,7 @@ Route::name('cms.')->group(function () {
     Route::get('/versions/{modelType}/{modelId}', [CmsVersionController::class, 'index'])->name('versions.index');
     Route::get('/versions/{cmsVersion}', [CmsVersionController::class, 'show'])->name('versions.show');
     Route::post('/versions/{cmsVersion}/restore', [CmsVersionController::class, 'restore'])->name('versions.restore');
+    Route::get('/versions/diff', [CmsVersionController::class, 'diff'])->name('versions.diff');
 
     // Menus
     Route::get('/menus', [CmsMenuController::class, 'index'])->name('menus.index');
