@@ -20,59 +20,63 @@ use App\Http\Controllers\Admin\CmsVersionController;
 use App\Http\Controllers\Admin\CmsMenuController;
 use Illuminate\Support\Facades\Route;
 
-// Pages
-Route::get('/pages', [CmsPageController::class, 'index'])->name('pages.index');
-Route::get('/pages/create', [CmsPageController::class, 'create'])->name('pages.create');
-Route::post('/pages', [CmsPageController::class, 'store'])->name('pages.store');
-Route::get('/pages/{page}/edit', [CmsPageController::class, 'edit'])->name('pages.edit');
-Route::put('/pages/{page}', [CmsPageController::class, 'update'])->name('pages.update');
-Route::delete('/pages/{page}', [CmsPageController::class, 'destroy'])->name('pages.destroy');
-Route::post('/pages/{page}/publish', [CmsPageController::class, 'publish'])->name('pages.publish');
-Route::post('/pages/{page}/archive', [CmsPageController::class, 'archive'])->name('pages.archive');
-Route::post('/pages/{page}/duplicate', [CmsPageController::class, 'duplicate'])->name('pages.duplicate');
-Route::post('/pages/{page}/toggle-status', [CmsPageController::class, 'toggleStatus'])->name('pages.toggle-status');
+Route::name('cms.')->group(function () {
 
-// Sections
-Route::get('/sections', [CmsSectionController::class, 'index'])->name('sections.index');
-Route::post('/sections', [CmsSectionController::class, 'store'])->name('sections.store');
-Route::put('/sections/{section}', [CmsSectionController::class, 'update'])->name('sections.update');
-Route::delete('/sections/{section}', [CmsSectionController::class, 'destroy'])->name('sections.destroy');
-Route::post('/sections/reorder', [CmsSectionController::class, 'reorder'])->name('sections.reorder');
+    // Pages
+    Route::get('/pages', [CmsPageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/create', [CmsPageController::class, 'create'])->name('pages.create');
+    Route::post('/pages', [CmsPageController::class, 'store'])->name('pages.store');
+    Route::get('/pages/{page}/edit', [CmsPageController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages/{page}', [CmsPageController::class, 'update'])->name('pages.update');
+    Route::delete('/pages/{page}', [CmsPageController::class, 'destroy'])->name('pages.destroy');
+    Route::post('/pages/{page}/publish', [CmsPageController::class, 'publish'])->name('pages.publish');
+    Route::post('/pages/{page}/archive', [CmsPageController::class, 'archive'])->name('pages.archive');
+    Route::post('/pages/{page}/duplicate', [CmsPageController::class, 'duplicate'])->name('pages.duplicate');
+    Route::post('/pages/{page}/toggle-status', [CmsPageController::class, 'toggleStatus'])->name('pages.toggle-status');
 
-// Blocks
-Route::get('/blocks', [CmsBlockController::class, 'index'])->name('blocks.index');
-Route::post('/blocks', [CmsBlockController::class, 'store'])->name('blocks.store');
-Route::put('/blocks/{block}', [CmsBlockController::class, 'update'])->name('blocks.update');
-Route::delete('/blocks/{block}', [CmsBlockController::class, 'destroy'])->name('blocks.destroy');
-Route::post('/blocks/reorder', [CmsBlockController::class, 'reorder'])->name('blocks.reorder');
-Route::post('/blocks/{block}/toggle-status', [CmsBlockController::class, 'toggleStatus'])->name('blocks.toggle-status');
+    // Sections
+    Route::get('/sections', [CmsSectionController::class, 'index'])->name('sections.index');
+    Route::post('/sections', [CmsSectionController::class, 'store'])->name('sections.store');
+    Route::put('/sections/{section}', [CmsSectionController::class, 'update'])->name('sections.update');
+    Route::delete('/sections/{section}', [CmsSectionController::class, 'destroy'])->name('sections.destroy');
+    Route::post('/sections/reorder', [CmsSectionController::class, 'reorder'])->name('sections.reorder');
 
-// Media
-Route::get('/media', [CmsMediaController::class, 'index'])->name('media.index');
-Route::post('/media/upload', [CmsMediaController::class, 'upload'])->name('media.upload');
-Route::put('/media/{medium}', [CmsMediaController::class, 'update'])->name('media.update');
-Route::delete('/media/{medium}', [CmsMediaController::class, 'destroy'])->name('media.destroy');
-Route::get('/media/json', [CmsMediaController::class, 'getMediaJson'])->name('media.json');
+    // Blocks
+    Route::get('/blocks', [CmsBlockController::class, 'index'])->name('blocks.index');
+    Route::post('/blocks', [CmsBlockController::class, 'store'])->name('blocks.store');
+    Route::put('/blocks/{block}', [CmsBlockController::class, 'update'])->name('blocks.update');
+    Route::delete('/blocks/{block}', [CmsBlockController::class, 'destroy'])->name('blocks.destroy');
+    Route::post('/blocks/reorder', [CmsBlockController::class, 'reorder'])->name('blocks.reorder');
+    Route::post('/blocks/{block}/toggle-status', [CmsBlockController::class, 'toggleStatus'])->name('blocks.toggle-status');
 
-// SEO
-Route::get('/seo/{page}/edit', [CmsSeoController::class, 'edit'])->name('seo.edit');
-Route::put('/seo/{page}', [CmsSeoController::class, 'update'])->name('seo.update');
+    // Media
+    Route::get('/media', [CmsMediaController::class, 'index'])->name('media.index');
+    Route::post('/media/upload', [CmsMediaController::class, 'upload'])->name('media.upload');
+    Route::put('/media/{medium}', [CmsMediaController::class, 'update'])->name('media.update');
+    Route::delete('/media/{medium}', [CmsMediaController::class, 'destroy'])->name('media.destroy');
+    Route::get('/media/json', [CmsMediaController::class, 'getMediaJson'])->name('media.json');
 
-// Audit
-Route::get('/audit', [CmsAuditController::class, 'index'])->name('audit.index');
+    // SEO
+    Route::get('/seo/{page}/edit', [CmsSeoController::class, 'edit'])->name('seo.edit');
+    Route::put('/seo/{page}', [CmsSeoController::class, 'update'])->name('seo.update');
 
-// Cache
-Route::get('/cache', [CmsCacheController::class, 'index'])->name('cache.index');
-Route::post('/cache/clear', [CmsCacheController::class, 'clearCache'])->name('cache.clear');
-Route::post('/cache/clear-page', [CmsCacheController::class, 'clearPageCache'])->name('cache.clear-page');
+    // Audit
+    Route::get('/audit', [CmsAuditController::class, 'index'])->name('audit.index');
 
-// Versions
-Route::get('/versions/{modelType}/{modelId}', [CmsVersionController::class, 'index'])->name('versions.index');
-Route::get('/versions/{version}', [CmsVersionController::class, 'show'])->name('versions.show');
-Route::post('/versions/{version}/restore', [CmsVersionController::class, 'restore'])->name('versions.restore');
+    // Cache
+    Route::get('/cache', [CmsCacheController::class, 'index'])->name('cache.index');
+    Route::post('/cache/clear', [CmsCacheController::class, 'clearCache'])->name('cache.clear');
+    Route::post('/cache/clear-page', [CmsCacheController::class, 'clearPageCache'])->name('cache.clear-page');
 
-// Menus
-Route::get('/menus', [CmsMenuController::class, 'index'])->name('menus.index');
-Route::post('/menus', [CmsMenuController::class, 'store'])->name('menus.store');
-Route::put('/menus/{menu}', [CmsMenuController::class, 'update'])->name('menus.update');
-Route::delete('/menus/{menu}', [CmsMenuController::class, 'destroy'])->name('menus.destroy');
+    // Versions
+    Route::get('/versions/{modelType}/{modelId}', [CmsVersionController::class, 'index'])->name('versions.index');
+    Route::get('/versions/{version}', [CmsVersionController::class, 'show'])->name('versions.show');
+    Route::post('/versions/{version}/restore', [CmsVersionController::class, 'restore'])->name('versions.restore');
+
+    // Menus
+    Route::get('/menus', [CmsMenuController::class, 'index'])->name('menus.index');
+    Route::post('/menus', [CmsMenuController::class, 'store'])->name('menus.store');
+    Route::put('/menus/{menu}', [CmsMenuController::class, 'update'])->name('menus.update');
+    Route::delete('/menus/{menu}', [CmsMenuController::class, 'destroy'])->name('menus.destroy');
+
+});
