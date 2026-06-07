@@ -13,7 +13,7 @@ class CmsReportGenerator
 
         $lines[] = '## Otimizações Implementadas';
         $lines[] = '- Cache por campo CMS (600s) via `CmsContentService::get()`';
-        $lines[] = '- Cache por página (`cms_page_fields_{page_key}`)';
+        $lines[] = '- Cache por página (`cms_original_page_fields_{page_key}`)';
         $lines[] = '- Cache de settings existente (300s) preservado';
         $lines[] = '- Limpeza de cache por página no painel admin';
         $lines[] = '- Consultas CMS só executadas quando tabelas existem (Schema::hasTable)';
@@ -50,8 +50,8 @@ class CmsReportGenerator
         $lines[] = '- CSRF em todos os formulários admin';
         $lines[] = '- Sanitização Summernote via `CmsSanitizer` (strip_tags + remoção on*)';
         $lines[] = '- Proteção XSS: `cms()` escapa, `cms_html()` sanitiza HTML';
-        $lines[] = '- Auditoria administrativa (`cms_public_page_audit_logs`)';
-        $lines[] = '- Versionamento de alterações (`cms_public_page_versions`)';
+        $lines[] = '- Auditoria administrativa (`cms_original_page_audit_logs`)';
+        $lines[] = '- Versionamento de alterações (`cms_original_page_versions`)';
         $lines[] = '- Rate limit existente em `RouteServiceProvider` preservado';
         $lines[] = '- Middleware `auth` + `admin` nas rotas CMS';
         $lines[] = '- Soft delete em páginas CMS (nunca apaga rotas reais)';

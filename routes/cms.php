@@ -84,6 +84,7 @@ Route::name('cms.')->group(function () {
     // Menus
     Route::get('/menus', [CmsMenuController::class, 'index'])->name('menus.index');
     Route::post('/menus', [CmsMenuController::class, 'store'])->name('menus.store');
+    Route::post('/menus/build-public-pages', [CmsMenuController::class, 'buildPublicPages'])->name('menus.build-public-pages');
     Route::put('/menus/{cmsMenu}', [CmsMenuController::class, 'update'])->name('menus.update');
     Route::delete('/menus/{cmsMenu}', [CmsMenuController::class, 'destroy'])->name('menus.destroy');
     Route::get('/menus/{menuId}/items', [CmsMenuController::class, 'getMenuItems'])->name('menus.items');

@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CmsPublicPage extends Model
+class CmsOriginalPage extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'cms_original_pages';
 
     protected $fillable = [
         'route_name', 'route_uri', 'controller', 'method', 'view_path',
@@ -28,32 +30,32 @@ class CmsPublicPage extends Model
 
     public function sections(): HasMany
     {
-        return $this->hasMany(CmsPublicPageSection::class, 'page_id')->orderBy('sort_order');
+        return $this->hasMany(CmsOriginalPageSection::class, 'page_id')->orderBy('sort_order');
     }
 
     public function fields(): HasMany
     {
-        return $this->hasMany(CmsPublicPageField::class, 'page_id')->orderBy('sort_order');
+        return $this->hasMany(CmsOriginalPageField::class, 'page_id')->orderBy('sort_order');
     }
 
     public function media(): HasMany
     {
-        return $this->hasMany(CmsPublicPageMedia::class, 'page_id')->orderBy('sort_order');
+        return $this->hasMany(CmsOriginalPageMedia::class, 'page_id')->orderBy('sort_order');
     }
 
     public function seo(): HasOne
     {
-        return $this->hasOne(CmsPublicPageSeo::class, 'page_id');
+        return $this->hasOne(CmsOriginalPageSeo::class, 'page_id');
     }
 
     public function versions(): HasMany
     {
-        return $this->hasMany(CmsPublicPageVersion::class, 'page_id')->latest();
+        return $this->hasMany(CmsOriginalPageVersion::class, 'page_id')->latest();
     }
 
     public function auditLogs(): HasMany
     {
-        return $this->hasMany(CmsPublicPageAuditLog::class, 'page_id')->latest();
+        return $this->hasMany(CmsOriginalPageAuditLog::class, 'page_id')->latest();
     }
 
     public function mappedFieldsCount(): int
@@ -74,7 +76,7 @@ class CmsPublicPage extends Model
             try {
                 return route($this->route_name);
             } catch (\Throwable) {
-                // Fallback para rotas dinâmicas como /pagina/{slug}
+                // Fall back for routes like /pagina/{slug}
             }
         }
 

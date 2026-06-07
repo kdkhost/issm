@@ -10,7 +10,9 @@ class CmsAuditPublicPageFields extends Command
 {
     protected $signature = 'cms:audit-public-page-fields';
 
-    protected $description = 'Audita Blades públicos e sugere campos administrativos';
+    protected $aliases = ['cms:audit-original-pages'];
+
+    protected $description = 'Audita as páginas públicas originais e sugere campos administrativos para o CMS';
 
     public function handle(CmsFieldAuditorService $auditor): int
     {

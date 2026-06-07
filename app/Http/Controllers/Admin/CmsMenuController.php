@@ -14,7 +14,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CmsMenu;
 use App\Models\CmsMenuItem;
-use App\Models\CmsPublicPage;
+use App\Models\CmsOriginalPage;
 use App\Services\Cms\CmsAuditService;
 use App\Services\Cms\CmsCacheService;
 use App\Services\Cms\CmsMenuService;
@@ -54,7 +54,7 @@ class CmsMenuController extends Controller
 
         $menuItems = $selectedMenu ? $selectedMenu->items : collect();
         $allItems = $menuItems;
-        $publicPages = CmsPublicPage::where('is_active', true)
+        $publicPages = CmsOriginalPage::where('is_active', true)
             ->where('is_editable', true)
             ->orderBy('admin_label')
             ->get();
@@ -146,7 +146,7 @@ class CmsMenuController extends Controller
 
         $existingUrls = $menu->items()->pluck('url')->filter()->toArray();
         $currentMaxOrder = $menu->items()->max('sort_order');
-        $pages = CmsPublicPage::where('is_active', true)
+        $pages = CmsOriginalPage::where('is_active', true)
             ->where('is_editable', true)
             ->orderBy('admin_label')
             ->get();

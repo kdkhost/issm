@@ -147,6 +147,14 @@ $(function() {
         <button type="button" onclick="document.getElementById('add-menu-modal').classList.remove('hidden')" class="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-lg text-sm font-medium border border-gray-300">
             + Novo Menu
         </button>
+        <form method="POST" action="{{ route('admin.cms.menus.build-public-pages') }}" class="inline">
+            @csrf
+            <input type="hidden" name="cms_menu_id" value="{{ $selectedMenu ? $selectedMenu->id : '' }}">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l5-5m0 0l-5-5m5 5H9"/></svg>
+                Montar Menu de Páginas Públicas
+            </button>
+        </form>
         <button type="button" onclick="document.getElementById('add-item-modal').classList.remove('hidden')" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 flex items-center gap-2 text-sm font-medium">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             Novo Item
@@ -165,12 +173,48 @@ $(function() {
             <button type="button" onclick="document.getElementById('edit-menu-modal').classList.remove('hidden')" class="text-blue-600 hover:text-blue-800 font-medium">
                 Editar Menu
             </button>
-            <form method="POST" action="{{ route("admin.cms.menus.destroy", $selectedMenu) }}" class="inline">
-                @csrf @method("DELETE")
+            <form method="POST" action="{{ route('admin.cms.menus.build-public-pages') }}" class="inline">
+                @csrf
+                <input type="hidden" name="cms_menu_id" value="{{ $selectedMenu->id }}">
+                <button type="submit" class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white rounded-lg px-3 py-2 text-sm font-medium">Adicionar Páginas Públicas</button>
+            </form>
+            <form method="POST" action="{{ route('admin.cms.menus.destroy', $selectedMenu) }}" class="inline">
+                @csrf @method('DELETE')
                 <button type="submit" data-confirm="Excluir este menu e todos os seus itens?" class="text-red-600 hover:text-red-800 font-medium">Excluir Menu</button>
             </form>
         </div>
     </div>
+    @if($publicPages->isNotEmpty())
+    <div class="mb-6 p-4 bg-green-50 border border-green-100 rounded-xl">
+        <div class="flex items-center justify-between gap-4">
+            <div>
+                <p class="text-sm font-semibold text-green-800">Páginas Públicas Disponíveis</p>
+                <p class="text-sm text-green-700">Use o botão acima para adicionar automaticamente todas as páginas públicas ativas ao menu selecionado.</p>
+            </div>
+            <span class="text-xs text-green-600">{{ $publicPages->count() }} páginas</span>
+        </div>
+    </div>
+
+    <div class="mb-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <h3 class="text-sm font-semibold text-gray-700">Pré-visualização de Páginas Públicas</h3>
+        </div>
+        <div class="divide-y divide-gray-100">
+            @foreach($publicPages as $page)
+            <div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <p class="font-medium text-gray-800">{{ $page->admin_label ?? $page->title }}</p>
+                    <p class="text-xs text-gray-500">{{ $page->route_name ?: $page->route_uri }}</p>
+                </div>
+                <a href="{{ $page->publicUrl() }}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full border border-green-600 bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 hover:bg-green-100">
+                    Ver URL
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     @if($menuItems->count() > 0)
     <ul id="menu-root" class="menu-tree space-y-1 mt-4">
         @foreach($menuItems->whereNull("parent_id") as $item)

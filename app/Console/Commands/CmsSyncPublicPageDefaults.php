@@ -9,7 +9,9 @@ class CmsSyncPublicPageDefaults extends Command
 {
     protected $signature = 'cms:sync-public-page-defaults';
 
-    protected $description = 'Sincroniza default_value dos campos CMS sem sobrescrever edições do admin';
+    protected $aliases = ['cms:sync-original-page-fields'];
+
+    protected $description = 'Sincroniza valores padrão dos campos das páginas públicas originais sem sobrescrever edições existentes';
 
     public function handle(CmsSyncDefaultsService $syncer): int
     {

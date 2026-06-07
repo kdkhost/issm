@@ -4,10 +4,10 @@
 
 @section("content")
 <div class="mb-6">
-    <a href="{{ route('admin.cms-public-pages.index') }}" class="text-sm text-green-700 hover:text-green-900">&larr; Voltar</a>
+    <a href="{{ route('admin.cms-original-pages.index') }}" class="text-sm text-green-700 hover:text-green-900">&larr; Voltar</a>
 </div>
 
-<form method="POST" action="{{ route('admin.cms-public-pages.update-seo', $page) }}" class="max-w-3xl">
+<form method="POST" action="{{ route('admin.cms-original-pages.update-seo', $page) }}" class="max-w-3xl">
     @csrf
     @method('PUT')
 
@@ -49,7 +49,7 @@
     </div>
 
     <div class="flex justify-end gap-3 mt-6">
-        <a href="{{ route('admin.cms-public-pages.edit', $page) }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Editar Conteúdo</a>
+        <a href="{{ route('admin.cms-original-pages.edit', $page) }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Editar Conteúdo</a>
         <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Salvar SEO</button>
     </div>
 </form>
