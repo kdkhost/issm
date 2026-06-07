@@ -53,7 +53,7 @@
             </div>
             <div>
                 <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Exibir Menu</dt>
-                <dd class="text-gray-800 mt-0.5">{{ $page->show_in_menu ? "Sim" : "Não" }}</dd>
+                <dd class="text-gray-800 mt-0.5">{{ isset($page->show_in_menu) && $page->show_in_menu ? "Sim" : "Não" }}</dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Criado em</dt>

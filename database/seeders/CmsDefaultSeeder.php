@@ -125,7 +125,7 @@ class CmsDefaultSeeder extends Seeder
 
                     $this->command->info("CMS menu '{$def['name']}' ({$location}) created with " . count($def['items']) . ' items.');
                 } else {
-                    $this->command->info("CMS menu '{$def['name']}' ({$location}) already exists, skipping.');
+                    $this->command->info("CMS menu '{$def['name']}' ({$location}) already exists, skipping.");
                 }
             }
 
