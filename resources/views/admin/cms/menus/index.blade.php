@@ -20,18 +20,23 @@
 </style>
 @endpush
 @push("scripts")
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-$(function() {
-    initSortable(document.getElementById("menu-root"));
+function initMenuSortable() {
+    var root = document.getElementById("menu-root");
+    if (!root || typeof Sortable === "undefined") return;
 
     function initSortable(el) {
-        if (!el) return;
-        new Sortable(el, {
+        if (!el || el.sortableInstance) return;
+        el.sortableInstance = new Sortable(el, {
+            group: "menu-items",
             handle: ".menu-drag-handle",
             animation: 200,
+            easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             ghostClass: "sortable-ghost",
             chosenClass: "sortable-chosen",
+            dragClass: "sortable-drag",
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
             onEnd: function() {
                 updateMenuOrder();
             }
@@ -41,49 +46,68 @@ $(function() {
         });
     }
 
-    function showToast(msg, type) {
-        if (typeof Toastify !== "undefined") {
-            var bg = type === "success" ? "#28a745" : "#dc3545";
-            Toastify({ text: msg, duration: 3000, gravity: "top", position: "right", style: { background: bg }, close: true }).showToast();
-        } else if (type === "error") {
-            alert("Erro: " + msg);
+    initSortable(root);
+}
+
+function showToast(msg, type) {
+    if (typeof Toastify !== "undefined") {
+        var bg = type === "success" ? "#28a745" : type === "error" ? "#dc3545" : "#2563eb";
+        Toastify({ text: msg, duration: 3000, gravity: "top", position: "right", style: { background: bg }, close: true }).showToast();
+    } else if (type === "error") {
+        alert("Erro: " + msg);
+    }
+}
+
+function updateMenuOrder() {
+    var root = document.getElementById("menu-root");
+    var menuIdEl = document.getElementById("menu_id");
+    if (!root || !menuIdEl) return;
+    var menuId = menuIdEl.value;
+    if (!menuId) return;
+    var data = buildMenuTree(root);
+    if (!data.length) return;
+    fetch("{{ route("admin.cms.menus.items.reorder") }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.content || "",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ items: data })
+    }).then(function(r) {
+        if (r.ok) showToast("Ordem atualizada!", "success");
+        else showToast("Erro ao reordenar.", "error");
+    }).catch(function() {
+        showToast("Erro de conexão.", "error");
+    });
+}
+
+function buildMenuTree(el) {
+    var items = [];
+    var lis = el.querySelectorAll(":scope > li");
+    for (var i = 0; i < lis.length; i++) {
+        var li = lis[i];
+        var id = li.getAttribute("data-id");
+        if (!id) continue;
+        var childrenEl = li.querySelector(":scope > .menu-children");
+        var item = { id: parseInt(id, 10) };
+        if (childrenEl && childrenEl.children.length > 0) {
+            item.children = buildMenuTree(childrenEl);
         }
+        items.push(item);
     }
+    return items;
+}
 
-    function updateMenuOrder() {
-        var data = buildMenuTree(document.getElementById("menu-root"));
-        var menuId = document.getElementById("menu_id").value;
-        if (!menuId) return;
-        fetch("{{ route("admin.cms.menus.items.reorder") }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({ menu_id: menuId, items: data })
-        }).then(function(r) {
-            if (r.ok) showToast("Ordem atualizada!", "success");
-            else showToast("Erro ao reordenar.", "error");
-        }).catch(function() {
-            showToast("Erro de conexão.", "error");
-        });
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js";
+    s.onload = function() { initMenuSortable(); };
+    s.onerror = function() { console.error("SortableJS não carregou"); };
+    document.head.appendChild(s);
+});
 
-    function buildMenuTree(el) {
-        var items = [];
-        el.querySelectorAll(":scope > li").forEach(function(li) {
-            var id = li.dataset.id;
-            var children = li.querySelector(":scope > .menu-children");
-            var item = { id: id };
-            if (children && children.children.length > 0) {
-                item.children = buildMenuTree(children);
-            }
-            items.push(item);
-        });
-        return items;
-    }
-
+$(function() {
     $(".edit-menu-item").on("click", function() {
         var id = $(this).data("id");
         var title = $(this).data("title");
