@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Sobre o ISSM - Instituto Socioambiental Serra do Mendanha")
+@section("title", $cmsPage?->meta_title ?? $cmsPage?->title ?? "Sobre o ISSM - Instituto Socioambiental Serra do Mendanha")
 
 @push("styles")
 <style>
@@ -20,13 +20,13 @@
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;margin-bottom:16px;">
             <a href="{{ route('home') }}" style="color:#86efac;text-decoration:none;transition:color .2s;">Início</a>
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span style="color:#fff;">Sobre o ISSM</span>
+            <span style="color:#fff;">{{ $cms['hero_sobre_title'] ?? 'Sobre o ISSM' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
             Instituto <span style="color:#86efac;">Socioambiental</span>
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            Conheça nossa história, missão e o compromisso com a preservação da Serra do Mendanha.
+            {{ $cms['hero_sobre_content'] ?? 'Conheça nossa história, missão e o compromisso com a preservação da Serra do Mendanha.' }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <div class="page-stat">
@@ -41,7 +41,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch">
             <div class="lg:col-span-2">
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Nossa Identidade</span>
+                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ $cms['nossa_identidade_title'] ?? 'Nossa Identidade' }}</span>
                 <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">Preservação e <span class="text-green-700">Sustentabilidade</span></h2>
                 <div class="prose prose-green max-w-none text-gray-600 leading-relaxed mb-10">
                     {!! nl2br(e($settings['about_text'])) !!}
@@ -98,9 +98,9 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Capital Humano</span>
+                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ $cms['cta_equipe_title'] ?? 'Capital Humano' }}</span>
             <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Nossa <span class="text-green-700">Equipe</span></h2>
-            <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Conheça as pessoas dedicadas que fazem o ISSM acontecer todos os dias.</p>
+            <p class="text-gray-500 mt-4 max-w-2xl mx-auto">{{ $cms['cta_equipe_content'] ?? 'Conheça as pessoas dedicadas que fazem o ISSM acontecer todos os dias.' }}</p>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             @foreach($teamMembers as $member)

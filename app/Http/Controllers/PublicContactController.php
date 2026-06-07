@@ -22,6 +22,8 @@ class PublicContactController extends Controller
             'social_twitter' => Setting::get('social_twitter', ''),
         ];
 
-        return view('contact.index', compact('settings'));
+        $cmsData = $this->loadCmsPage('contato');
+        $cms = $this->extractCmsContent($cmsData['cmsSections']);
+        return view('contact.index', array_merge(compact('settings'), $cmsData, compact('cms')));
     }
 }

@@ -7,6 +7,7 @@ use App\Models\CmsPage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 
 class Controller extends BaseController
 {
@@ -23,12 +24,23 @@ class Controller extends BaseController
                 ->active()->ordered()
                 ->with(['blocks' => fn($q) => $q->active()->published()->ordered()])
                 ->get();
-
-            $cmsBlocks = CmsBlock::where('cms_page_id', $cmsPage->id)
-                ->active()->published()->ordered()
-                ->get();
         }
 
         return compact('cmsPage', 'cmsSections', 'cmsBlocks');
+    }
+
+    protected function extractCmsContent($sections): array
+    {
+        $cms = [];
+        if ($sections && $sections->isNotEmpty()) {
+            foreach ($sections as $section) {
+                $block = $section->blocks->first();
+                $key = Str::slug($section->name, '_');
+                $cms[$key . '_title'] = $block->title ?? $section->name;
+                $cms[$key . '_subtitle'] = $block->subtitle ?? '';
+                $cms[$key . '_content'] = $block->content ?? '';
+            }
+        }
+        return $cms;
     }
 }

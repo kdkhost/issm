@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Portal da Transparência - ISSM")
+@section("title", $cmsPage?->meta_title ?? $cmsPage?->title ?? "Portal da Transparência - ISSM")
 
 @push("styles")
 <style>
@@ -20,13 +20,13 @@
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;margin-bottom:16px;">
             <a href="{{ route('home') }}" style="color:#86efac;text-decoration:none;transition:color .2s;">Início</a>
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span style="color:#fff;">Transparência</span>
+            <span style="color:#fff;">{{ $cms['hero_transparencia_title'] ?? 'Transparência' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
             Portal da <span style="color:#86efac;">Transparência</span>
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            Compromisso com a integridade, ética e a prestação de contas clara das nossas atividades e recursos.
+            {{ $cms['hero_transparencia_subtitle'] ?? 'Compromisso com a integridade, ética e a prestação de contas clara das nossas atividades e recursos.' }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <div class="page-stat">

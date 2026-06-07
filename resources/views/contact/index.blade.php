@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Fale Conosco - ISSM")
+@section("title", $cmsPage?->meta_title ?? $cmsPage?->title ?? "Fale Conosco - ISSM")
 
 @push("styles")
 <style>
@@ -47,13 +47,13 @@
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;margin-bottom:16px;">
             <a href="{{ route('home') }}" style="color:#86efac;text-decoration:none;transition:color .2s;">Início</a>
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span style="color:#fff;">Contato</span>
+            <span style="color:#fff;">{{ $cms['hero_contato_title'] ?? 'Contato' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
             Fale <span style="color:#86efac;">Conosco</span>
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            Estamos prontos para ouvir você. Entre em contato para parcerias, dúvidas ou informações sobre o ISSM.
+            {{ $cms['hero_contato_subtitle'] ?? 'Estamos prontos para ouvir você. Entre em contato para parcerias, dúvidas ou informações sobre o ISSM.' }}
         </p>
     </div>
 </div>
@@ -66,7 +66,7 @@
                 <div class="contact-icon bg-green-100 text-green-700">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Visite-nos</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $cms['informacoes_contato_title'] ?? 'Visite-nos' }}</h3>
                 <p class="text-gray-500 leading-relaxed">{{ $settings['contact_address'] ?: 'Serra do Mendanha, Rio de Janeiro - RJ' }}</p>
             </div>
 
