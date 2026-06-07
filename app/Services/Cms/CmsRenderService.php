@@ -42,6 +42,7 @@ class CmsRenderService
             $sections = $page->sections()
                 ->where('is_active', true)
                 ->orderBy('sort_order')
+                ->with(['blocks' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
                 ->get();
 
             return view(static::PAGE_VIEW_PATH, compact('page', 'sections'));

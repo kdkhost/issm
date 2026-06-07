@@ -22,7 +22,7 @@ class CmsBlock extends Model
 {
     protected $fillable = [
         'cms_section_id', 'cms_page_id', 'type', 'title', 'subtitle', 'content',
-        'image', 'video_url', 'link_url', 'link_text', 'target', 'status',
+        'image', 'video_url', 'link_url', 'link_text', 'link_target', 'status',
         'is_active', 'sort_order', 'settings', 'published_at', 'expires_at',
         'created_by', 'updated_by',
     ];

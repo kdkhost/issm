@@ -18,21 +18,15 @@
 @section("content")
 @if($page && $sections && $sections->count() > 0)
     @foreach($sections as $section)
-        @if($section->is_active)
-            @php
-                $blockView = "public.cms.blocks." . $section->type;
-            @endphp
-            @if(view()->exists($blockView))
-                @include($blockView, ["section" => $section, "blocks" => $section->blocks()->where("is_active", true)->orderBy("order")->get(), "page" => $page])
-            @else
-                <section class="py-12 bg-white">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="text-center text-gray-400">
-                            <p>Bloco do tipo <strong>{{ $section->type }}</strong> não encontrado.</p>
-                        </div>
-                    </div>
-                </section>
-            @endif
+        @if($section->is_active && $section->blocks->isNotEmpty())
+            @foreach($section->blocks as $block)
+                @if($block->is_active)
+                    @php $t = $block->type ?? 'text'; @endphp
+                    @if(view()->exists("public.cms.blocks.{$t}"))
+                        @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => $section])
+                    @endif
+                @endif
+            @endforeach
         @endif
     @endforeach
 @else

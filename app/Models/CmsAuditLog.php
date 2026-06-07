@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CmsAuditLog extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id', 'user_name', 'user_email', 'action', 'module', 'model_type',
         'model_id', 'description', 'old_values', 'new_values', 'ip_address',
