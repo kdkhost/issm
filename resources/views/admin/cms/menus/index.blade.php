@@ -73,13 +73,13 @@ $(function() {
 
     $(".edit-menu-item").on("click", function() {
         var id = $(this).data("id");
-        var label = $(this).data("label");
+        var title = $(this).data("title");
         var url = $(this).data("url");
         var icon = $(this).data("icon");
         var target = $(this).data("target");
         var parent = $(this).data("parent");
         $("#edit_item_id").val(id);
-        $("#edit_label").val(label);
+        $("#edit_title").val(title);
         $("#edit_url").val(url);
         $("#edit_icon").val(icon);
         $("#edit_target").val(target);
@@ -125,12 +125,13 @@ $(function() {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <form method="POST" action="{{ route("admin.cms.menus.store") }}">
+        <form method="POST" action="{{ route("admin.cms.menus.items.add") }}">
             @csrf
+            <input type="hidden" name="cms_menu_id" value="{{ $menuItems->isNotEmpty() ? $menuItems->first()->cms_menu_id : '' }}">
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Label *</label>
-                    <input type="text" name="label" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Sobre Nós">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+                    <input type="text" name="title" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Sobre Nós">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL *</label>
@@ -154,7 +155,7 @@ $(function() {
                     <select name="parent_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="">Nenhum (item raiz)</option>
                         @foreach($allItems as $parent)
-                        <option value="{{ $parent->id }}">{{ $parent->label }}</option>
+                        <option value="{{ $parent->id }}">{{ $parent->title }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -179,13 +180,13 @@ $(function() {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <form method="POST" action="{{ route("admin.cms.menus.update", "ITEM_ID") }}" id="edit-menu-form">
+        <form method="POST" action="{{ route("admin.cms.menus.items.update", "ITEM_ID") }}" id="edit-menu-form">
             @csrf @method("PUT")
             <input type="hidden" name="id" id="edit_item_id">
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Label *</label>
-                    <input type="text" name="label" id="edit_label" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+                    <input type="text" name="title" id="edit_title" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL *</label>
@@ -209,7 +210,7 @@ $(function() {
                     <select name="parent_id" id="edit_parent_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="">Nenhum (item raiz)</option>
                         @foreach($allItems as $parent)
-                        <option value="{{ $parent->id }}">{{ $parent->label }}</option>
+                        <option value="{{ $parent->id }}">{{ $parent->title }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -226,7 +227,7 @@ $(function() {
 document.getElementById("edit-menu-form")?.addEventListener("submit", function(e) {
     e.preventDefault();
     var id = document.getElementById("edit_item_id").value;
-    this.action = "{{ route("admin.cms.menus.update", "ID") }}".replace("ID", id);
+    this.action = "{{ route("admin.cms.menus.items.update", "ID") }}".replace("ID", id);
     this.submit();
 });
 </script>

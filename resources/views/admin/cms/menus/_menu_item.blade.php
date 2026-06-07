@@ -8,19 +8,19 @@
         @if($item->icon)
         <span class="text-gray-500 text-sm">{{ $item->icon }}</span>
         @endif
-        <span class="font-medium text-gray-900 text-sm flex-1">{{ $item->label }}</span>
+        <span class="font-medium text-gray-900 text-sm flex-1">{{ $item->title }}</span>
         <span class="text-xs text-gray-400 font-mono truncate max-w-[200px]">{{ $item->url }}</span>
         @if($item->target == "_blank")<span class="badge-gray text-xs">blank</span>@endif
         @if(!$item->is_active)<span class="text-xs text-gray-400 italic">inativo</span>@endif
         <div class="flex items-center gap-1">
             <button type="button" class="edit-menu-item text-blue-600 hover:text-blue-800 text-xs font-medium px-1"
                 data-id="{{ $item->id }}"
-                data-label="{{ $item->label }}"
+                data-title="{{ $item->title }}"
                 data-url="{{ $item->url }}"
                 data-icon="{{ $item->icon }}"
                 data-target="{{ $item->target }}"
                 data-parent="{{ $item->parent_id }}">Editar</button>
-            <form method="POST" action="{{ route("admin.cms.menus.destroy", $item) }}" class="inline">
+            <form method="POST" action="{{ route("admin.cms.menus.items.delete", $item) }}" class="inline">
                 @csrf @method("DELETE")
                 <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-medium px-1" data-confirm="Excluir este item e seus subitens?" data-tooltip="Excluir">Excluir</button>
             </form>

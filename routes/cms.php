@@ -32,6 +32,7 @@ Route::name('cms.')->group(function () {
     Route::post('/pages/{cmsPage}/publish', [CmsPageController::class, 'publish'])->name('pages.publish');
     Route::post('/pages/{cmsPage}/archive', [CmsPageController::class, 'archive'])->name('pages.archive');
     Route::post('/pages/{cmsPage}/duplicate', [CmsPageController::class, 'duplicate'])->name('pages.duplicate');
+    Route::get('/pages/{cmsPage}', [CmsPageController::class, 'show'])->name('pages.show');
     Route::post('/pages/{cmsPage}/toggle-status', [CmsPageController::class, 'toggleStatus'])->name('pages.toggle-status');
 
     // Sections
@@ -46,6 +47,7 @@ Route::name('cms.')->group(function () {
     Route::post('/blocks', [CmsBlockController::class, 'store'])->name('blocks.store');
     Route::put('/blocks/{cmsBlock}', [CmsBlockController::class, 'update'])->name('blocks.update');
     Route::delete('/blocks/{cmsBlock}', [CmsBlockController::class, 'destroy'])->name('blocks.destroy');
+    Route::get('/blocks/{cmsBlock}/edit', [CmsBlockController::class, 'edit'])->name('blocks.edit');
     Route::post('/blocks/reorder', [CmsBlockController::class, 'reorder'])->name('blocks.reorder');
     Route::post('/blocks/{cmsBlock}/toggle-status', [CmsBlockController::class, 'toggleStatus'])->name('blocks.toggle-status');
 

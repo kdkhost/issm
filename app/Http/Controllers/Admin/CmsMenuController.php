@@ -45,9 +45,11 @@ class CmsMenuController extends Controller
 
     public function index(): View
     {
-        $menus = CmsMenu::with('items')->orderBy('sort_order')->get();
+        $menus = CmsMenu::with('items.children')->orderBy('sort_order')->get();
+        $menuItems = $menus->isNotEmpty() ? $menus->first()->items : collect();
+        $allItems = $menuItems;
 
-        return view('admin.cms.menus.index', compact('menus'));
+        return view('admin.cms.menus.index', compact('menuItems', 'allItems'));
     }
 
     public function store(Request $request): RedirectResponse|JsonResponse

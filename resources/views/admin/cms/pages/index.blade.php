@@ -53,8 +53,8 @@
                     </td>
                     <td class="px-4 py-3 text-gray-600 text-sm hidden lg:table-cell">{{ $page->published_at ? $page->published_at->format("d/m/Y H:i") : "-" }}</td>
                     <td class="px-4 py-3">
-                        <form method="POST" action="{{ route("admin.cms.pages.toggle", $page) }}">
-                            @csrf @method("PATCH")
+                        <form method="POST" action="{{ route("admin.cms.pages.toggle-status", $page) }}">
+                            @csrf
                             <button type="submit" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {{ $page->is_active ? "bg-green-600" : "bg-gray-300" }}" data-tooltip="{{ $page->is_active ? "Desativar" : "Ativar" }}">
                                 <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {{ $page->is_active ? "translate-x-6" : "translate-x-1" }}"></span>
                             </button>
