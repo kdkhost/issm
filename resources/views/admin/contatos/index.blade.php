@@ -32,9 +32,9 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <a href="{{ route("admin.contatos.show", $contact) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Ver</a>
-                        <form method="POST" action="{{ route("admin.contatos.destroy", $contact) }}" onsubmit="return confirm('Excluir esta mensagem?')">
+                        <form method="POST" action="{{ route("admin.contatos.destroy", $contact) }}">
                             @csrf @method("DELETE")
-                            <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button>
+                            <button type="submit" data-confirm="Excluir esta mensagem?" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button>
                         </form>
                     </div>
                 </td>

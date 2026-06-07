@@ -30,7 +30,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <a href="{{ route("admin.noticias.edit", $item) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
-                        <form method="POST" action="{{ route("admin.noticias.destroy", $item) }}" onsubmit="return confirm('Excluir esta notícia?')">@csrf @method("DELETE")<button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
+                        <form method="POST" action="{{ route("admin.noticias.destroy", $item) }}">@csrf @method("DELETE")<button type="submit" data-confirm="Excluir esta notícia?" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
                     </div>
                 </td>
             </tr>

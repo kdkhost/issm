@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [1.1.1] - 2026-06-07
+
+### Atualizado - CMS de Páginas Públicas Reais
+
+- Implementado mapeamento de páginas públicas reais com Graphifyy para preservar URLs, rotas, views e layout existentes
+- Integração administrativa de páginas públicas existentes sem criar páginas aleatórias
+- Painel CMS atualizado para editar páginas públicas reais com campos e seções baseados nas views atuais
+- Confirmações de ação migradas para SweetAlert2 e notificações unificadas com Toastify/Toastr
+- Editor de rich text padronizado com Summernote nas telas de conteúdo CMS
+- Manutenção do fallback original: conteúdo público exibe valores atuais quando o CMS não estiver preenchido
+- Atualização de validação e segurança do painel sem alterar visual público
+
 ## [1.1.0] - 2026-06-07
 
 ### Adicionado - Super CMS Institucional

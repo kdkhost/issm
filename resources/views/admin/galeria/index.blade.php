@@ -15,7 +15,7 @@
             @if($item->album)<p class="text-xs text-gray-500">{{ $item->album }}</p>@endif
             <div class="flex items-center gap-2 mt-2">
                 <a href="{{ route("admin.galeria.edit", $item) }}" class="text-blue-600 hover:text-blue-800 text-xs">Editar</a>
-                <form method="POST" action="{{ route("admin.galeria.destroy", $item) }}" onsubmit="return confirm('Excluir?')">@csrf @method("DELETE")<button type="submit" class="text-red-600 hover:text-red-800 text-xs">Excluir</button></form>
+                <form method="POST" action="{{ route("admin.galeria.destroy", $item) }}">@csrf @method("DELETE")<button type="submit" data-confirm="Excluir?" class="text-red-600 hover:text-red-800 text-xs">Excluir</button></form>
             </div>
         </div>
     </div>

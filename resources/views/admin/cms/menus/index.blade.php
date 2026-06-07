@@ -54,7 +54,7 @@ function showToast(msg, type) {
         var bg = type === "success" ? "#28a745" : type === "error" ? "#dc3545" : "#2563eb";
         Toastify({ text: msg, duration: 3000, gravity: "top", position: "right", style: { background: bg }, close: true }).showToast();
     } else if (type === "error") {
-        alert("Erro: " + msg);
+        console.warn("Erro: " + msg);
     }
 }
 
@@ -165,9 +165,9 @@ $(function() {
             <button type="button" onclick="document.getElementById('edit-menu-modal').classList.remove('hidden')" class="text-blue-600 hover:text-blue-800 font-medium">
                 Editar Menu
             </button>
-            <form method="POST" action="{{ route("admin.cms.menus.destroy", $selectedMenu) }}" class="inline" onsubmit="return confirm('Excluir este menu e todos os seus itens?')">
+            <form method="POST" action="{{ route("admin.cms.menus.destroy", $selectedMenu) }}" class="inline">
                 @csrf @method("DELETE")
-                <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Excluir Menu</button>
+                <button type="submit" data-confirm="Excluir este menu e todos os seus itens?" class="text-red-600 hover:text-red-800 font-medium">Excluir Menu</button>
             </form>
         </div>
     </div>

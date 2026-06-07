@@ -31,7 +31,7 @@
                 <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">{{ $ip->created_at->format("d/m/Y") }}</td>
                 <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3">
                     <a href="{{ route("admin.ips-manutencao.edit", $ip) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Editar</a>
-                    <form method="POST" action="{{ route("admin.ips-manutencao.destroy", $ip) }}" onsubmit="return confirm('Remover este IP?')">@csrf @method("DELETE")<button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">Remover</button></form>
+                    <form method="POST" action="{{ route("admin.ips-manutencao.destroy", $ip) }}">@csrf @method("DELETE")<button type="submit" data-confirm="Remover este IP?" class="text-red-600 hover:text-red-800 text-sm font-medium">Remover</button></form>
                 </div></td>
             </tr>
             @empty<tr><td colspan="5" class="px-6 py-10 text-center text-gray-400">Nenhum IP cadastrado.</td></tr>@endforelse

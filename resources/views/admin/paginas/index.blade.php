@@ -31,7 +31,7 @@
                         </button>
                         <a href="{{ route("pages.show", $page->slug) }}" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium px-1">Ver</a>
                         <a href="{{ route("admin.paginas.edit", $page) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
-                        <form method="POST" action="{{ route("admin.paginas.destroy", $page) }}" onsubmit="return confirm('Excluir esta página?')">@csrf @method("DELETE")<button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
+                        <form method="POST" action="{{ route("admin.paginas.destroy", $page) }}">@csrf @method("DELETE")<button type="submit" data-confirm="Excluir esta página?" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
                     </div>
                 </td>
             </tr>

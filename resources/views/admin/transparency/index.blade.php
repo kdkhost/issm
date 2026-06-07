@@ -28,7 +28,7 @@
                     <div class="flex items-center gap-1">
                         <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium px-1">Ver</a>
                         <a href="{{ route("admin.transparencia.edit", $doc) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
-                        <form method="POST" action="{{ route("admin.transparencia.destroy", $doc) }}" onsubmit="return confirm('Excluir este documento?')">@csrf @method("DELETE")<button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
+                        <form method="POST" action="{{ route("admin.transparencia.destroy", $doc) }}">@csrf @method("DELETE")<button type="submit" data-confirm="Excluir este documento?" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button></form>
                     </div>
                 </td>
             </tr>

@@ -64,9 +64,9 @@
                         @if($page->publicUrl())
                         <a href="{{ $page->publicUrl() }}" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium px-1">Ver</a>
                         @endif
-                        <form method="POST" action="{{ route('admin.cms-public-pages.clear-cache', $page) }}" class="inline" onsubmit="return confirm('Limpar cache desta página?')">
+                        <form method="POST" action="{{ route('admin.cms-public-pages.clear-cache', $page) }}" class="inline">
                             @csrf
-                            <button type="submit" class="text-gray-500 hover:text-gray-700 text-sm font-medium px-1">Cache</button>
+                            <button type="submit" data-confirm="Limpar cache desta página?" class="text-gray-500 hover:text-gray-700 text-sm font-medium px-1">Cache</button>
                         </form>
                     </div>
                 </td>

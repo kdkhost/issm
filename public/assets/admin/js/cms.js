@@ -141,9 +141,8 @@
           }
         });
       } else if (typeof callback === 'function') {
-        if (confirm(message || 'Tem certeza que deseja excluir este item?')) {
-          callback();
-        }
+        console.warn('Confirmação não disponível: ' + (message || 'Tem certeza que deseja excluir este item?'));
+        callback();
       }
     },
 
@@ -160,7 +159,7 @@
           close: true,
         }).showToast();
       } else {
-        alert(message);
+        console.warn(message);
       }
     },
 
@@ -177,7 +176,7 @@
           close: true,
         }).showToast();
       } else {
-        alert('Erro: ' + message);
+        console.warn('Erro: ' + message);
       }
     },
 
