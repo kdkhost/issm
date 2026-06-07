@@ -35,42 +35,98 @@ class CmsDefaultSeeder extends Seeder
 
             $this->command->info('Default CMS settings created.');
 
-            // Create default CMS menus
-            $existingMenu = DB::table('cms_menus')->where('slug', 'main')->first();
-            if (!$existingMenu) {
-                $menuId = DB::table('cms_menus')->insertGetId([
-                    'name' => 'Main Menu',
-                    'slug' => 'main',
-                    'description' => 'Main navigation menu',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            // Create default CMS menus (4 locations)
+            $menuDefinitions = [
+                'header' => [
+                    'name' => 'Cabeçalho',
+                    'slug' => 'header',
+                    'description' => 'Menu principal do cabeçalho (desktop)',
+                    'items' => [
+                        ['title' => 'Início', 'url' => '/', 'sort_order' => 0],
+                        ['title' => 'Sobre', 'url' => '/sobre', 'sort_order' => 1],
+                        ['title' => 'Projetos', 'url' => '/projetos', 'sort_order' => 2],
+                        ['title' => 'ODS 2030', 'url' => '/ods', 'sort_order' => 3],
+                        ['title' => 'Notícias', 'url' => '/noticias', 'sort_order' => 4],
+                        ['title' => 'Galeria', 'url' => '/galeria', 'sort_order' => 5],
+                        ['title' => 'Transparência', 'url' => '/transparencia', 'sort_order' => 6],
+                        ['title' => 'Contato', 'url' => '/contato', 'sort_order' => 7, 'css_class' => 'btn-primary'],
+                    ],
+                ],
+                'sidebar' => [
+                    'name' => 'Sidebar Mobile',
+                    'slug' => 'sidebar',
+                    'description' => 'Menu lateral mobile (drawer)',
+                    'items' => [
+                        ['title' => 'Início', 'url' => '/', 'sort_order' => 0],
+                        ['title' => 'Sobre o ISSM', 'url' => '/sobre', 'sort_order' => 1],
+                        ['title' => 'Projetos', 'url' => '/projetos', 'sort_order' => 2],
+                        ['title' => 'ODS 2030', 'url' => '/ods', 'sort_order' => 3],
+                        ['title' => 'Notícias', 'url' => '/noticias', 'sort_order' => 4],
+                        ['title' => 'Galeria', 'url' => '/galeria', 'sort_order' => 5],
+                        ['title' => 'Transparência', 'url' => '/transparencia', 'sort_order' => 6],
+                        ['title' => 'Fale Conosco', 'url' => '/contato', 'sort_order' => 7, 'css_class' => 'btn-cta'],
+                    ],
+                ],
+                'bottom' => [
+                    'name' => 'Barra Inferior',
+                    'slug' => 'bottom',
+                    'description' => 'Barra de navegação inferior (mobile)',
+                    'items' => [
+                        ['title' => 'Início', 'url' => '/', 'sort_order' => 0],
+                        ['title' => 'Projetos', 'url' => '/projetos', 'sort_order' => 1],
+                        ['title' => 'Notícias', 'url' => '/noticias', 'sort_order' => 3],
+                    ],
+                ],
+                'footer' => [
+                    'name' => 'Rodapé',
+                    'slug' => 'footer',
+                    'description' => 'Links rápidos do rodapé',
+                    'items' => [
+                        ['title' => 'Sobre o ISSM', 'url' => '/sobre', 'sort_order' => 0],
+                        ['title' => 'Nossos Projetos', 'url' => '/projetos', 'sort_order' => 1],
+                        ['title' => 'ODS 2030', 'url' => '/ods', 'sort_order' => 2],
+                        ['title' => 'Notícias', 'url' => '/noticias', 'sort_order' => 3],
+                        ['title' => 'Galeria', 'url' => '/galeria', 'sort_order' => 4],
+                        ['title' => 'Transparência', 'url' => '/transparencia', 'sort_order' => 5],
+                        ['title' => 'Nossa Equipe', 'url' => '/sobre#equipe', 'sort_order' => 6],
+                        ['title' => 'Contato', 'url' => '/contato', 'sort_order' => 7],
+                    ],
+                ],
+            ];
 
-                $menuItems = [
-                    ['label' => 'Inicio', 'route' => 'home', 'order' => 0],
-                    ['label' => 'Sobre', 'route' => 'about.index', 'order' => 1],
-                    ['label' => 'Projetos', 'route' => 'projects.index', 'order' => 2],
-                    ['label' => 'ODS 2030', 'route' => 'ods.index', 'order' => 3],
-                    ['label' => 'Noticias', 'route' => 'news.index', 'order' => 4],
-                    ['label' => 'Galeria', 'route' => 'gallery.index', 'order' => 5],
-                    ['label' => 'Transparencia', 'route' => 'transparency.index', 'order' => 6],
-                    ['label' => 'Contato', 'route' => 'contact.index', 'order' => 7],
-                ];
-
-                foreach ($menuItems as $item) {
-                    DB::table('cms_menu_items')->insert([
-                        'cms_menu_id' => $menuId,
-                        'title' => $item['label'],
-                        'route' => $item['route'],
-                        'sort_order' => $item['order'],
+            foreach ($menuDefinitions as $location => $def) {
+                $existing = DB::table('cms_menus')->where('slug', $def['slug'])->first();
+                if (!$existing) {
+                    $menuId = DB::table('cms_menus')->insertGetId([
+                        'name' => $def['name'],
+                        'slug' => $def['slug'],
+                        'location' => $location,
+                        'description' => $def['description'],
+                        'is_active' => true,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
-                }
 
-                $this->command->info('Default CMS menu created with ' . count($menuItems) . ' items.');
-            } else {
-                $this->command->info('Main menu already exists, skipping.');
+                    foreach ($def['items'] as $item) {
+                        $insertData = [
+                            'cms_menu_id' => $menuId,
+                            'title' => $item['title'],
+                            'url' => $item['url'],
+                            'sort_order' => $item['sort_order'],
+                            'is_active' => true,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                        if (isset($item['css_class'])) {
+                            $insertData['css_class'] = $item['css_class'];
+                        }
+                        DB::table('cms_menu_items')->insert($insertData);
+                    }
+
+                    $this->command->info("CMS menu '{$def['name']}' ({$location}) created with " . count($def['items']) . ' items.');
+                } else {
+                    $this->command->info("CMS menu '{$def['name']}' ({$location}) already exists, skipping.');
+                }
             }
 
             // Create default CMS pages for each public route

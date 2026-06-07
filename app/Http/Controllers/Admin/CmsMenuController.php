@@ -43,13 +43,18 @@ class CmsMenuController extends Controller
         $this->middleware('can:cms.menus.delete')->only(['destroy']);
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $menus = CmsMenu::with('items.children')->orderBy('sort_order')->get();
-        $menuItems = $menus->isNotEmpty() ? $menus->first()->items : collect();
+        $menus = CmsMenu::orderBy('sort_order')->get();
+        $selectedMenuId = $request->integer('menu_id', $menus->isNotEmpty() ? $menus->first()->id : 0);
+        $selectedMenu = CmsMenu::with(['items' => function ($q) {
+            $q->orderBy('sort_order');
+        }])->find($selectedMenuId);
+
+        $menuItems = $selectedMenu ? $selectedMenu->items : collect();
         $allItems = $menuItems;
 
-        return view('admin.cms.menus.index', compact('menuItems', 'allItems'));
+        return view('admin.cms.menus.index', compact('menus', 'selectedMenu', 'menuItems', 'allItems'));
     }
 
     public function store(Request $request): RedirectResponse|JsonResponse
