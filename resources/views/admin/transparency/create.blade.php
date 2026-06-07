@@ -34,9 +34,13 @@
                     <input type="date" name="published_at" value="{{ old("published_at", date("Y-m-d")) }}" required class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Arquivo (PDF, DOC, etc)</label>
-                    <input type="file" name="file" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                    <p class="text-xs text-gray-400 mt-1">Limite: {{ \App\Models\Setting::uploadLimitMb('document', 10) }}MB</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Arquivo (PDF, DOC, etc) *</label>
+                    <input type="file" name="file" required
+                        data-auto-upload="{{ route("admin.cms.media.upload") }}"
+                        data-url-name="file_path"
+                        data-hint="PDF, DOC, XLS, até 10MB"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.txt,.csv">
+                    <input type="hidden" name="file_path" value="">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Descrição (Opcional)</label>

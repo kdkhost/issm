@@ -25,7 +25,7 @@ class CmsMediaRequest extends FormRequest
         if ($this->isMethod('POST')) {
             return [
                 'file' => 'required|file|max:10240',
-                'title' => 'required|string|max:255',
+                'title' => 'nullable|string|max:255',
                 'alt_text' => 'nullable|string|max:255',
                 'caption' => 'nullable|string|max:500',
                 'credit' => 'nullable|string|max:255',

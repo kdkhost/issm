@@ -34,6 +34,11 @@ Route::name('cms.')->group(function () {
     Route::post('/pages/{cmsPage}/duplicate', [CmsPageController::class, 'duplicate'])->name('pages.duplicate');
     Route::get('/pages/{cmsPage}', [CmsPageController::class, 'show'])->name('pages.show');
     Route::post('/pages/{cmsPage}/toggle-status', [CmsPageController::class, 'toggleStatus'])->name('pages.toggle-status');
+    Route::post('/pages/{cmsPage}/settings', [CmsPageController::class, 'updateSettings'])->name('pages.settings');
+    Route::post('/pages/{cmsPage}/upload-banner', [CmsPageController::class, 'uploadBanner'])->name('pages.upload-banner');
+    Route::post('/pages/{cmsPage}/sections', [CmsPageController::class, 'saveSection'])->name('pages.sections.save');
+    Route::delete('/pages/sections/{cmsSection}', [CmsPageController::class, 'deleteSection'])->name('pages.sections.delete');
+    Route::post('/pages/{cmsPage}/sections/reorder', [CmsPageController::class, 'reorderSections'])->name('pages.sections.reorder');
 
     // Sections
     Route::get('/sections', [CmsSectionController::class, 'index'])->name('sections.index');

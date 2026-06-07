@@ -129,16 +129,47 @@ class CmsMenuController extends Controller
 
     public function reorderItems(Request $request): JsonResponse
     {
-        $request->validate([
-            'menu_id' => 'required|integer|exists:cms_menus,id',
-            'items' => 'required|array',
-            'items.*.id' => 'required|integer|exists:cms_menu_items,id',
-            'items.*.sort_order' => 'required|integer',
-        ]);
+        $items = $request->input('items', []);
 
-        $this->menuService->reorderItems($request->integer('menu_id'), collect($request->items)->pluck('sort_order', 'id')->toArray());
+        if (empty($items)) {
+            return response()->json(['success' => false, 'message' => 'Nenhum item para reordenar.'], 400);
+        }
+
+        $flatOrder = [];
+        $this->flattenTreeForReorder($items, $flatOrder);
+
+        if (!empty($flatOrder)) {
+            foreach ($flatOrder as $index => $itemInfo) {
+                CmsMenuItem::where('id', $itemInfo['id'])
+                    ->update([
+                        'sort_order' => $index,
+                        'parent_id' => $itemInfo['parent_id'],
+                    ]);
+            }
+        }
+
+        $this->cacheService->clearMenuCache();
 
         return response()->json(['success' => true, 'message' => 'Ordem atualizada com sucesso!']);
+    }
+
+    protected function flattenTreeForReorder(array $items, array &$result, ?int $parentId = null): void
+    {
+        foreach ($items as $item) {
+            $itemId = is_array($item) ? ($item['id'] ?? null) : $item;
+            $children = is_array($item) ? ($item['children'] ?? []) : [];
+
+            if ($itemId) {
+                $result[] = [
+                    'id' => $itemId,
+                    'parent_id' => $parentId,
+                ];
+            }
+
+            if (!empty($children)) {
+                $this->flattenTreeForReorder($children, $result, $itemId);
+            }
+        }
     }
 
     public function addItem(Request $request): JsonResponse

@@ -34,8 +34,13 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Substituir Arquivo (Opcional)</label>
-                    <input type="file" name="file" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                    <p class="text-xs text-gray-400 mt-1">Arquivo atual: <a href="{{ asset('storage/' . $transparency->file_path) }}" target="_blank" class="text-green-600 underline">{{ basename($transparency->file_path) }}</a></p>
+                    <input type="file" name="file"
+                        data-auto-upload="{{ route("admin.cms.media.upload") }}"
+                        data-url-name="file_path"
+                        data-hint="PDF, DOC, XLS, até 10MB"
+                        data-existing-url="{{ $transparency->file_path ? asset('storage/' . $transparency->file_path) : '' }}"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.txt,.csv">
+                    <input type="hidden" name="file_path" value="{{ $transparency->file_path }}">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Descrição (Opcional)</label>

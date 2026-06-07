@@ -40,6 +40,16 @@ class CmsPageRequest extends FormRequest
             'template' => 'nullable|string|max:100',
             'layout' => 'nullable|string|max:100',
             'css_class' => 'nullable|string|max:255',
+            'settings' => 'nullable|json',
+            'seo.meta_title' => 'nullable|string|max:255',
+            'seo.meta_description' => 'nullable|string|max:500',
+            'seo.meta_keywords' => 'nullable|string|max:500',
+            'seo.og_title' => 'nullable|string|max:255',
+            'seo.og_description' => 'nullable|string|max:500',
+            'seo.og_image' => 'nullable|string|max:500',
+            'seo.og_type' => 'nullable|string|max:50',
+            'seo.robots_index' => 'nullable|boolean',
+            'seo.robots_follow' => 'nullable|boolean',
         ];
 
         return $rules;

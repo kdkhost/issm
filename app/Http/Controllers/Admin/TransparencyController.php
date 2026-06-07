@@ -26,7 +26,8 @@ class TransparencyController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:' . Setting::uploadLimitKb('document', 10240),
+            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:' . Setting::uploadLimitKb('document', 10240),
+            'file_path' => 'nullable|string|max:500',
             'category' => 'required|string',
             'year' => 'required|integer|min:2000|max:' . (date('Y') + 1),
             'published_at' => 'required|date',
@@ -35,6 +36,9 @@ class TransparencyController extends Controller
 
         if ($request->hasFile('file')) {
             $validated['file_path'] = $request->file('file')->store('transparency', 'public');
+        } elseif (!empty($validated['file_path'])) {
+            // Already uploaded via XHR — strip domain prefix if present
+            $validated['file_path'] = str_replace(asset('storage/'), '', $validated['file_path']);
         }
 
         $validated['active'] = $request->boolean('active', true);
@@ -54,6 +58,7 @@ class TransparencyController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:' . Setting::uploadLimitKb('document', 10240),
+            'file_path' => 'nullable|string|max:500',
             'category' => 'required|string',
             'year' => 'required|integer|min:2000|max:' . (date('Y') + 1),
             'published_at' => 'required|date',
@@ -66,6 +71,12 @@ class TransparencyController extends Controller
                 Storage::disk('public')->delete($transparency->file_path);
             }
             $validated['file_path'] = $request->file('file')->store('transparency', 'public');
+        } elseif (!empty($validated['file_path']) && $validated['file_path'] !== $transparency->file_path) {
+            // New file uploaded via XHR — delete old and strip domain prefix
+            if ($transparency->file_path) {
+                Storage::disk('public')->delete($transparency->file_path);
+            }
+            $validated['file_path'] = str_replace(asset('storage/'), '', $validated['file_path']);
         }
 
         $validated['active'] = $request->boolean('active', true);

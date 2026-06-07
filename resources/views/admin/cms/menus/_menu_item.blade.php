@@ -19,7 +19,8 @@
                 data-url="{{ $item->url }}"
                 data-icon="{{ $item->icon }}"
                 data-target="{{ $item->target }}"
-                data-parent="{{ $item->parent_id }}">Editar</button>
+                data-parent="{{ $item->parent_id }}"
+                data-active="{{ $item->is_active ? '1' : '0' }}">Editar</button>
             <form method="POST" action="{{ route("admin.cms.menus.items.delete", $item) }}" class="inline">
                 @csrf @method("DELETE")
                 <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-medium px-1" data-confirm="Excluir este item e seus subitens?" data-tooltip="Excluir">Excluir</button>

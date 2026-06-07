@@ -82,6 +82,7 @@ class CmsPageService
                 'is_active' => $data['is_active'] ?? false,
                 'sort_order' => $data['sort_order'] ?? 0,
                 'template' => $data['template'] ?? 'default',
+                'settings' => $data['settings'] ?? null,
                 'published_at' => ($data['status'] ?? 'draft') === 'published' ? now() : null,
             ]);
 
@@ -102,6 +103,16 @@ class CmsPageService
                 $data['slug'] = $this->ensureUniqueSlug($data['slug'], $page->id);
             }
 
+            if (isset($data['settings']) && is_string($data['settings'])) {
+                $data['settings'] = json_decode($data['settings'], true);
+            }
+
+            $mergedSettings = $data['settings'] ?? null;
+            if (isset($data['settings']) && is_array($data['settings'])) {
+                $existing = $page->settings ? (array)$page->settings : [];
+                $mergedSettings = array_merge($existing, $data['settings']);
+            }
+
             $page->update([
                 'title' => $data['title'] ?? $page->title,
                 'slug' => $data['slug'] ?? $page->slug,
@@ -110,6 +121,7 @@ class CmsPageService
                 'is_active' => $data['is_active'] ?? $page->is_active,
                 'sort_order' => $data['sort_order'] ?? $page->sort_order,
                 'template' => $data['template'] ?? $page->template,
+                'settings' => $mergedSettings,
             ]);
 
             if (($data['status'] ?? $page->status) === 'published' && !$page->published_at) {
@@ -191,6 +203,7 @@ class CmsPageService
                 'is_active' => false,
                 'sort_order' => 0,
                 'template' => $page->template,
+                'settings' => $page->settings,
             ]);
 
             foreach ($page->sections as $section) {

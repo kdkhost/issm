@@ -8,7 +8,7 @@
         <div class="bg-white rounded-xl shadow-sm p-6 space-y-5">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Titulo *</label><input type="text" name="title" value="{{ old("title") }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">@error("title")<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror</div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Subtitulo</label><textarea name="subtitle" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">{{ old("subtitle") }}</textarea></div>
-            <div><label class="block text-sm font-medium text-gray-700 mb-1">Imagem</label><input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg px-3 py-2"></div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Imagem</label><input type="file" name="image" accept="image/*" data-hint="PNG, JPG, WebP até 5MB"></div>
             <div class="grid grid-cols-2 gap-4">
                 <div><label class="block text-sm font-medium text-gray-700 mb-1">Texto do Botao</label><input type="text" name="button_text" value="{{ old("button_text") }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"></div>
                 <div><label class="block text-sm font-medium text-gray-700 mb-1">URL do Botao</label><input type="text" name="button_url" value="{{ old("button_url") }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"></div>

@@ -155,6 +155,19 @@ function editBlock(id) {
             }
             document.getElementById("block-edit-content").innerHTML = html;
             modal.classList.remove("hidden");
+
+            // Re-init dropzones in modal content
+            if (typeof initDropZones === 'function') {
+                initDropZones(document.getElementById("block-edit-content"));
+            }
+
+            // Re-init Summernote in modal content
+            setTimeout(function() {
+                var sn = document.getElementById("block-edit-content").querySelector(".summernote");
+                if (sn && typeof $(sn).summernote === 'function') {
+                    try { $(sn).summernote({ height: 200 }); } catch(e) {}
+                }
+            }, 100);
         });
 }
 $(document).on("click", "#block-edit-modal", function(e) {

@@ -92,11 +92,19 @@
             position: absolute;
             bottom: 0; left: 0;
             height: 3px;
-            background: linear-gradient(90deg, #16a34a, #4ade80);
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
             border-radius: 0 0 10px 10px;
             animation: upload-progress 2s ease-in-out forwards;
         }
         @@keyframes upload-progress { from { width: 0; } to { width: 100%; } }
+        .drop-zone--selected { border-color: #16a34a; background: #f0fdf4; }
+        .drop-zone--done { border-color: #16a34a; background: #f0fdf4; border-style: solid; }
+        .drop-zone--error { border-color: #dc2626; background: #fef2f2; border-style: solid; }
+        .drop-zone--uploading { border-color: #2563eb; background: #eff6ff; }
+        [data-theme="dark"] .drop-zone--selected { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+        [data-theme="dark"] .drop-zone--done { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+        [data-theme="dark"] .drop-zone--error { border-color: #ef4444; background: rgba(239,68,68,0.08); }
+        [data-theme="dark"] .drop-zone--uploading { border-color: #60a5fa; background: rgba(96,165,250,0.08); }
 
         /* ═══ IMPROVED INPUTS ═══ */
         input[type="text"], input[type="email"], input[type="password"], input[type="number"],
@@ -810,61 +818,227 @@ document.querySelectorAll('[data-confirm]').forEach(function(btn) {
 });
 
 // ═══════════════════════════════════════════
-// DRAG & DROP FILE UPLOAD
+// DRAG & DROP FILE UPLOAD — REAL XHR PROGRESS
 // ═══════════════════════════════════════════
-function updateDropPreview(input, preview, label) {
+
+// Upload states
+var DZ_STATES = { IDLE: 0, SELECTED: 1, UPLOADING: 2, DONE: 3, ERROR: 4 };
+
+function buildDropZoneHTML() {
+    return {
+        label: '' +
+            '<svg class="dz-icon" style="width:32px;height:32px;margin:0 auto 8px;display:block;color:#9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>' +
+            '</svg>' +
+            '<p class="dz-text" style="font-size:13px;color:#6b7280;">Arraste e solte ou <span style="color:#16a34a;font-weight:500;cursor:pointer;">clique para selecionar</span></p>' +
+            '<p class="dz-hint" style="font-size:11px;color:#9ca3af;margin-top:4px;"></p>',
+        progressBar: '' +
+            '<div class="dz-progress-wrap" style="display:none;margin-top:10px;">' +
+            '<div class="dz-progress-track" style="background:#e5e7eb;border-radius:6px;height:8px;overflow:hidden;">' +
+            '<div class="dz-progress-fill" style="background:linear-gradient(90deg,#16a34a,#4ade80);height:100%;width:0%;border-radius:6px;transition:width 0.3s;"></div>' +
+            '</div>' +
+            '<p class="dz-progress-text" style="font-size:11px;color:#6b7280;margin-top:4px;text-align:center;">Enviando...</p>' +
+            '</div>',
+        result: '' +
+            '<div class="dz-result" style="display:none;margin-top:8px;text-align:center;">' +
+            '<span class="dz-result-msg" style="font-size:12px;font-weight:500;color:#16a34a;"></span>' +
+            '</div>'
+    };
+}
+
+function dzShowState(state, wrapper, preview, label, progressWrap, resultEl) {
+    wrapper.className = 'drop-zone';
+    if (state === DZ_STATES.SELECTED) {
+        wrapper.classList.add('drop-zone--selected');
+        if (label) label.style.display = 'none';
+        if (preview) preview.style.display = 'block';
+        if (progressWrap) progressWrap.style.display = 'none';
+        if (resultEl) resultEl.style.display = 'none';
+    } else if (state === DZ_STATES.UPLOADING) {
+        wrapper.classList.add('drop-zone--uploading');
+        if (progressWrap) progressWrap.style.display = 'block';
+        if (preview) preview.style.display = 'block';
+        if (resultEl) resultEl.style.display = 'none';
+    } else if (state === DZ_STATES.DONE) {
+        wrapper.classList.add('drop-zone--done');
+        if (progressWrap) progressWrap.style.display = 'none';
+        if (resultEl) resultEl.style.display = 'block';
+    } else if (state === DZ_STATES.ERROR) {
+        wrapper.classList.add('drop-zone--error');
+        if (progressWrap) progressWrap.style.display = 'none';
+        if (resultEl) resultEl.style.display = 'block';
+    } else { // IDLE
+        if (label) label.style.display = '';
+        if (preview) preview.style.display = 'none';
+        if (progressWrap) progressWrap.style.display = 'none';
+        if (resultEl) resultEl.style.display = 'none';
+    }
+}
+
+function updateDropPreview(input, preview, label, progressWrap, resultEl, wrapper) {
     var file = input.files[0];
-    if (!file) return;
+    if (!file) { dzShowState(DZ_STATES.IDLE, wrapper, preview, label, progressWrap, resultEl); return; }
+
     if (file.type && file.type.startsWith('image/')) {
         var reader = new FileReader();
         reader.onload = function(ev) {
             preview.innerHTML =
                 '<div style="display:inline-block;position:relative;">' +
-                '<img src="' + ev.target.result + '" style="height:100px;border-radius:8px;border:1px solid #d1d5db;object-fit:cover;" />' +
-                '<button type="button" class="drop-zone__remove" style="position:absolute;top:-8px;right:-8px;background:#ef4444;color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:14px;line-height:20px;text-align:center;cursor:pointer;" title="Remover">×</button>' +
+                '<img src="' + ev.target.result + '" style="height:100px;border-radius:8px;border:1px solid #d1d5db;object-fit:cover;" alt="Preview" />' +
+                '<button type="button" class="drop-zone__remove" style="position:absolute;top:-8px;right:-8px;background:#ef4444;color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:14px;line-height:22px;text-align:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.2);" title="Remover">×</button>' +
                 '</div>' +
-                '<p style="font-size:12px;color:#6b7280;margin-top:6px;">' + file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)</p>';
-            preview.style.display = 'block';
-            label.style.display = 'none';
-            preview.querySelector('.drop-zone__remove').addEventListener('click', function() {
+                '<p class="dz-file-info" style="font-size:11px;color:#6b7280;margin-top:6px;">' + file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)</p>';
+            dzShowState(DZ_STATES.SELECTED, wrapper, preview, label, progressWrap, resultEl);
+            preview.querySelector('.drop-zone__remove').addEventListener('click', function(e) {
+                e.stopPropagation();
                 input.value = '';
-                preview.style.display = 'none';
-                label.style.display = 'block';
                 preview.innerHTML = '';
+                dzShowState(DZ_STATES.IDLE, wrapper, preview, label, progressWrap, resultEl);
+                wrapper.classList.remove('drop-zone--selected', 'drop-zone--done', 'drop-zone--error');
+                // Clear the autoUpload URL if set
+                var hidden = wrapper.querySelector('.dz-hidden-url');
+                if (hidden) { hidden.value = ''; }
             });
         };
         reader.readAsDataURL(file);
     } else {
-        preview.innerHTML = '<p style="font-size:13px;color:#16a34a;font-weight:500;">📎 ' + file.name + '</p>';
-        preview.style.display = 'block';
-        label.style.display = 'none';
+        preview.innerHTML = '<p style="font-size:13px;color:#16a34a;font-weight:500;">📄 ' + file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)</p>';
+        dzShowState(DZ_STATES.SELECTED, wrapper, preview, label, progressWrap, resultEl);
+    }
+
+    // Auto-upload via XHR if data-auto-upload is set
+    var uploadUrl = input.getAttribute('data-auto-upload');
+    if (uploadUrl) {
+        uploadFileViaXHR(input, uploadUrl, wrapper, preview, label, progressWrap, resultEl);
     }
 }
 
+function uploadFileViaXHR(input, url, wrapper, preview, label, progressWrap, resultEl) {
+    var file = input.files[0];
+    if (!file) return;
+
+    dzShowState(DZ_STATES.UPLOADING, wrapper, preview, label, progressWrap, resultEl);
+    var fill = progressWrap.querySelector('.dz-progress-fill');
+    var text = progressWrap.querySelector('.dz-progress-text');
+
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+            var pct = Math.round((e.loaded / e.total) * 100);
+            if (fill) fill.style.width = pct + '%';
+            if (text) text.textContent = 'Enviando... ' + pct + '%';
+        }
+    };
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+                var resp = JSON.parse(xhr.responseText);
+                if (resp.success || resp.url) {
+                    var fileUrl = resp.url || resp.data?.url || '';
+                    var resultMsg = resultEl.querySelector('.dz-result-msg');
+                    if (resultMsg) resultMsg.textContent = '✅ Upload concluído!';
+                    dzShowState(DZ_STATES.DONE, wrapper, preview, label, progressWrap, resultEl);
+
+                    // Store URL in hidden input
+                    var hidden = wrapper.querySelector('.dz-hidden-url');
+                    if (!hidden) {
+                        hidden = document.createElement('input');
+                        hidden.type = 'hidden';
+                        hidden.className = 'dz-hidden-url';
+                        hidden.name = input.getAttribute('data-url-name') || input.name.replace(/[^a-z0-9_]/gi, '') + '_url';
+                        wrapper.appendChild(hidden);
+                    }
+                    hidden.value = fileUrl;
+
+                    // Show success URL
+                    if (resultMsg) {
+                        resultMsg.innerHTML = '✅ Upload concluído! <a href="' + fileUrl + '" target="_blank" style="color:#2563eb;text-decoration:underline;">Ver arquivo</a>';
+                    }
+                } else {
+                    throw new Error(resp.message || 'Erro no upload');
+                }
+            } catch (e) {
+                var resultMsg = resultEl.querySelector('.dz-result-msg');
+                if (resultMsg) resultMsg.textContent = '❌ ' + (e.message || 'Erro no upload');
+                resultMsg.style.color = '#dc2626';
+                dzShowState(DZ_STATES.ERROR, wrapper, preview, label, progressWrap, resultEl);
+            }
+        } else {
+            var resultMsg = resultEl.querySelector('.dz-result-msg');
+            if (resultMsg) { resultMsg.textContent = '❌ Erro ' + xhr.status; resultMsg.style.color = '#dc2626'; }
+            dzShowState(DZ_STATES.ERROR, wrapper, preview, label, progressWrap, resultEl);
+        }
+    };
+
+    xhr.onerror = function() {
+        var resultMsg = resultEl.querySelector('.dz-result-msg');
+        if (resultMsg) { resultMsg.textContent = '❌ Erro de conexão'; resultMsg.style.color = '#dc2626'; }
+        dzShowState(DZ_STATES.ERROR, wrapper, preview, label, progressWrap, resultEl);
+    };
+
+    xhr.send(formData);
+}
+
 function initDropZone(input) {
-    if (input.closest('.drop-zone')) return; // already initialized
+    if (input.closest('.drop-zone') || input.hasAttribute('data-no-dropzone')) return;
+
     var wrapper = document.createElement('div');
     wrapper.className = 'drop-zone';
 
+    var htmlParts = buildDropZoneHTML();
     var label = document.createElement('div');
     label.className = 'drop-zone__label';
-    label.innerHTML =
-        '<svg style="width:32px;height:32px;margin:0 auto 8px;display:block;color:#9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>' +
-        '</svg>' +
-        '<p style="font-size:13px;color:#6b7280;">Arraste e solte ou <span style="color:#16a34a;font-weight:500;cursor:pointer;">clique para selecionar</span></p>' +
-        '<p style="font-size:11px;color:#9ca3af;margin-top:4px;">PNG, JPG, GIF até 2MB</p>';
+    label.innerHTML = htmlParts.label;
+    // Set hint text from data attribute or default
+    var hintEl = label.querySelector('.dz-hint');
+    if (hintEl) hintEl.textContent = input.getAttribute('data-hint') || 'PNG, JPG, PDF até 10MB';
 
     var preview = document.createElement('div');
     preview.className = 'drop-zone__preview';
     preview.style.display = 'none';
 
-    // Move input into wrapper
+    var progressWrap = document.createElement('div');
+    progressWrap.innerHTML = htmlParts.progressBar;
+    progressWrap = progressWrap.firstElementChild;
+
+    var resultEl = document.createElement('div');
+    resultEl.innerHTML = htmlParts.result;
+    resultEl = resultEl.firstElementChild;
+
     input.parentNode.insertBefore(wrapper, input);
     wrapper.appendChild(label);
     wrapper.appendChild(preview);
+    wrapper.appendChild(progressWrap);
+    wrapper.appendChild(resultEl);
     wrapper.appendChild(input);
     input.classList.add('drop-zone__input');
+
+    // Show existing URL if provided
+    var existingUrl = input.getAttribute('data-existing-url');
+    if (existingUrl) {
+        var resultMsg = resultEl.querySelector('.dz-result-msg');
+        if (resultMsg) {
+            var isImg = existingUrl.match(/\.(jpe?g|png|gif|webp|svg)$/i);
+            resultMsg.innerHTML = (isImg ? '🖼️ ' : '📄 ') + ' <a href="' + existingUrl + '" target="_blank" style="color:#2563eb;text-decoration:underline;">Arquivo existente</a>';
+            resultMsg.style.color = '#4b5563';
+        }
+        resultEl.style.display = 'block';
+        // Store existing as hidden
+        var hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.className = 'dz-hidden-url';
+        hidden.name = input.getAttribute('data-url-name') || input.name.replace(/[^a-z0-9_]/gi, '') + '_url';
+        hidden.value = existingUrl;
+        wrapper.appendChild(hidden);
+    }
 
     wrapper.addEventListener('click', function(e) {
         if (e.target !== input && !e.target.classList.contains('drop-zone__remove')) input.click();
@@ -877,26 +1051,32 @@ function initDropZone(input) {
         wrapper.classList.remove('drop-zone--over');
         if (e.dataTransfer.files.length) {
             input.files = e.dataTransfer.files;
-            updateDropPreview(input, preview, label);
+            updateDropPreview(input, preview, label, progressWrap, resultEl, wrapper);
         }
     });
-    input.addEventListener('change', function() { updateDropPreview(input, preview, label); });
+    input.addEventListener('change', function() {
+        updateDropPreview(input, preview, label, progressWrap, resultEl, wrapper);
+    });
 
-    // Show progress animation on parent form submit
-    var form = input.closest('form');
-    if (form) {
-        form.addEventListener('submit', function() {
-            if (input.files && input.files.length > 0) {
-                wrapper.classList.add('drop-zone--uploading');
-            }
-        });
-    }
+    // Enable re-init later
+    input.dataset.dzInitialized = '1';
 }
 
-// Initialize all file inputs (skip ones with data-no-dropzone)
-document.querySelectorAll('input[type="file"]').forEach(function(input) {
-    if (!input.closest('table') && !input.hasAttribute('data-no-dropzone')) initDropZone(input);
-});
+function initDropZones(container) {
+    container = container || document;
+    container.querySelectorAll('input[type="file"]').forEach(function(input) {
+        if (!input.hasAttribute('data-no-dropzone') && !input.dataset.dzInitialized) {
+            initDropZone(input);
+        }
+    });
+}
+
+// Init on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { initDropZones(); });
+} else {
+    initDropZones();
+}
 
 // ═══════════════════════════════════════════
 // ADMIN SIDEBAR — MOBILE TOGGLE

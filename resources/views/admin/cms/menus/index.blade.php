@@ -41,8 +41,19 @@ $(function() {
         });
     }
 
+    function showToast(msg, type) {
+        if (typeof Toastify !== "undefined") {
+            var bg = type === "success" ? "#28a745" : "#dc3545";
+            Toastify({ text: msg, duration: 3000, gravity: "top", position: "right", style: { background: bg }, close: true }).showToast();
+        } else if (type === "error") {
+            alert("Erro: " + msg);
+        }
+    }
+
     function updateMenuOrder() {
         var data = buildMenuTree(document.getElementById("menu-root"));
+        var menuId = document.getElementById("menu_id").value;
+        if (!menuId) return;
         fetch("{{ route("admin.cms.menus.items.reorder") }}", {
             method: "POST",
             headers: {
@@ -50,10 +61,12 @@ $(function() {
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ items: data })
+            body: JSON.stringify({ menu_id: menuId, items: data })
         }).then(function(r) {
             if (r.ok) showToast("Ordem atualizada!", "success");
             else showToast("Erro ao reordenar.", "error");
+        }).catch(function() {
+            showToast("Erro de conexão.", "error");
         });
     }
 
@@ -78,17 +91,15 @@ $(function() {
         var icon = $(this).data("icon");
         var target = $(this).data("target");
         var parent = $(this).data("parent");
+        var active = $(this).data("active");
         $("#edit_item_id").val(id);
         $("#edit_title").val(title);
         $("#edit_url").val(url);
         $("#edit_icon").val(icon);
         $("#edit_target").val(target);
         $("#edit_parent_id").val(parent);
-        $("#edit-menu-modal").removeClass("hidden");
-    });
-
-    $(".close-menu-modal").on("click", function() {
-        $("#edit-menu-modal").addClass("hidden");
+        $("#edit_is_active").prop("checked", active !== false);
+        $("#edit-menu-item-modal").removeClass("hidden");
     });
 });
 </script>
@@ -304,15 +315,15 @@ $(function() {
     </div>
 </div>
 
-<div id="edit-menu-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40" style="backdrop-filter:blur(2px);">
+<div id="edit-menu-item-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40" style="backdrop-filter:blur(2px);">
     <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-gray-800">Editar Item de Menu</h3>
-            <button type="button" class="close-menu-modal text-gray-400 hover:text-gray-600">
+            <button type="button" onclick="document.getElementById('edit-menu-item-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <form method="POST" action="{{ route("admin.cms.menus.items.update", "ITEM_ID") }}" id="edit-menu-form">
+        <form method="POST" action="{{ route("admin.cms.menus.items.update", "ITEM_ID") }}" id="edit-menu-item-form">
             @csrf @method("PUT")
             <input type="hidden" name="id" id="edit_item_id">
             <div class="space-y-4">
@@ -346,8 +357,12 @@ $(function() {
                         @endforeach
                     </select>
                 </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="is_active" value="1" id="edit_is_active" checked class="w-4 h-4 text-green-600 rounded">
+                    <label for="edit_is_active" class="text-sm font-medium text-gray-700">Ativo</label>
+                </div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                    <button type="button" class="close-menu-modal text-gray-600 hover:text-gray-800 font-medium">Cancelar</button>
+                    <button type="button" onclick="document.getElementById('edit-menu-item-modal').classList.add('hidden')" class="text-gray-600 hover:text-gray-800 font-medium">Cancelar</button>
                     <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Salvar</button>
                 </div>
             </div>
@@ -356,7 +371,7 @@ $(function() {
 </div>
 
 <script>
-document.getElementById("edit-menu-form")?.addEventListener("submit", function(e) {
+document.getElementById("edit-menu-item-form")?.addEventListener("submit", function(e) {
     e.preventDefault();
     var id = document.getElementById("edit_item_id").value;
     this.action = "{{ route("admin.cms.menus.items.update", "ID") }}".replace("ID", id);

@@ -71,7 +71,7 @@ class CmsMediaController extends Controller
         $path = $file->store(config('cms.uploads.path', 'uploads') . '/media', 'public');
 
         $media = CmsMedia::create([
-            'title' => $request->title,
+            'title' => $request->title ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
             'alt_text' => $request->alt_text,
             'caption' => $request->caption,
             'credit' => $request->credit,
@@ -90,8 +90,14 @@ class CmsMediaController extends Controller
         $this->auditService->logUpload('cms_media', $media);
         $this->cacheService->clearMediaCache();
 
+        $media->load('user');
+
+        $response = $media->toArray();
+        $response['url'] = asset('storage/' . $media->path);
+        $response['thumbnail_url'] = $media->thumbnail_path ? asset('storage/' . $media->thumbnail_path) : null;
+
         if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'message' => 'Arquivo enviado com sucesso!', 'data' => $media]);
+            return response()->json(['success' => true, 'message' => 'Arquivo enviado com sucesso!', 'data' => $response, 'url' => $response['url']]);
         }
 
         return redirect()->route('admin.cms.media.index')->with('success', 'Arquivo enviado com sucesso!');
