@@ -39,59 +39,46 @@
 
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch">
-            <div class="lg:col-span-2">
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Nossa Identidade</span>
-                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">Preservação e <span class="text-green-700">Sustentabilidade</span></h2>
-                <div class="prose prose-green max-w-none text-gray-600 leading-relaxed mb-10">
-                    {!! nl2br(e($settings['about_text'])) !!}
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-green-50 rounded-2xl p-6 border-l-4 border-green-600">
-                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-700 mb-4">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <h4 class="font-bold text-green-800 mb-3">Missão</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["mission"] }}</p>
-                    </div>
-                    <div class="bg-blue-50 rounded-2xl p-6 border-l-4 border-blue-600">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700 mb-4">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </div>
-                        <h4 class="font-bold text-blue-800 mb-3">Visão</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["vision"] }}</p>
-                    </div>
-                    <div class="bg-yellow-50 rounded-2xl p-6 border-l-4 border-yellow-600">
-                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-700 mb-4">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <h4 class="font-bold text-yellow-800 mb-3">Valores</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["values"] }}</p>
-                    </div>
-                </div>
+        <div class="max-w-5xl mx-auto">
+            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Nossa Identidade</span>
+            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">Preservação e <span class="text-green-700">Sustentabilidade</span></h2>
+            <div class="prose prose-green max-w-none text-gray-600 leading-relaxed mb-10">
+                {!! nl2br(e($settings['about_text'])) !!}
             </div>
 
-            <div class="h-full">
-                <div class="bg-green-800 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden h-full flex flex-col justify-center">
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-                    <h3 class="text-xl font-black mb-4 relative z-10">
-                        {{ $settings['about_ods_title'] ?: 'ODS 2030' }}
-                    </h3>
-                    <p class="text-green-100 text-sm leading-relaxed mb-8 relative z-10">
-                        {!! nl2br(e($settings['about_ods_description'] ?: 'Nossas ações são norteadas pelos Objetivos de Desenvolvimento Sustentável da ONU para garantir um futuro viável.')) !!}
-                    </p>
-                    <div class="relative z-10">
-                        <a href="{{ route('ods.index') }}" class="inline-flex items-center gap-2 bg-white text-green-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-green-50 transition-colors">
-                            {{ $settings['about_ods_button_text'] ?: 'Ver nossos ODS' }}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-green-50 rounded-2xl p-6 border-l-4 border-green-600">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-700 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
+                    <h4 class="font-bold text-green-800 mb-3">Missão</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["mission"] }}</p>
+                </div>
+                <div class="bg-blue-50 rounded-2xl p-6 border-l-4 border-blue-600">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </div>
+                    <h4 class="font-bold text-blue-800 mb-3">Visão</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["vision"] }}</p>
+                </div>
+                <div class="bg-yellow-50 rounded-2xl p-6 border-l-4 border-yellow-600">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-700 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h4 class="font-bold text-yellow-800 mb-3">Valores</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["values"] }}</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+{{-- CMS Blocks Dinâmicos --}}
+@if(isset($cmsBlocks) && $cmsBlocks->count() > 0)
+    @foreach($cmsBlocks as $block)
+        @includeIf('public.cms.blocks.' . $block->type, ['block' => $block])
+    @endforeach
+@endif
 
 {{-- Equipe --}}
 @if($teamMembers->count() > 0)
