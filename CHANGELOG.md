@@ -11,6 +11,7 @@
 - Editor de rich text padronizado com Summernote nas telas de conteúdo CMS
 - Manutenção do fallback original: conteúdo público exibe valores atuais quando o CMS não estiver preenchido
 - Atualização de validação e segurança do painel sem alterar visual público
+- Adicionadas migrações de Spatie Permissions para criar as tabelas de roles e permissions no deploy
 
 ## [1.1.0] - 2026-06-07
 
