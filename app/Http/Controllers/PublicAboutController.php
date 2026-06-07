@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CmsPage;
-use App\Models\CmsBlock;
 use App\Models\Setting;
 use App\Models\TeamMember;
-use Illuminate\Http\Request;
 
 class PublicAboutController extends Controller
 {
@@ -21,16 +18,10 @@ class PublicAboutController extends Controller
         
         $teamMembers = TeamMember::active()->orderBy('order')->get();
 
-        $cmsBlocks = collect();
-        $cmsPage = CmsPage::active()->published()->where('slug', 'sobre')->first();
-        if ($cmsPage) {
-            $cmsBlocks = CmsBlock::where('cms_page_id', $cmsPage->id)
-                ->active()
-                ->published()
-                ->orderBy('sort_order')
-                ->get();
-        }
+        $cmsData = $this->loadCmsPage('sobre');
         
-        return view('about.index', compact('settings', 'teamMembers', 'cmsBlocks'));
+        return view('about.index', array_merge(
+            compact('settings', 'teamMembers'), $cmsData
+        ));
     }
 }

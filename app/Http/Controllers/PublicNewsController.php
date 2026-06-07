@@ -12,7 +12,8 @@ class PublicNewsController extends Controller
         $news = News::active()->latest('published_at')->paginate(9);
         $featured = News::active()->featured()->latest('published_at')->take(3)->get();
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        return view('news.index', compact('news', 'featured', 'settings'));
+        $cmsData = $this->loadCmsPage('noticias');
+        return view('news.index', array_merge(compact('news', 'featured', 'settings'), $cmsData));
     }
 
     public function show(string $slug)
@@ -20,6 +21,7 @@ class PublicNewsController extends Controller
         $item = News::active()->where('slug', $slug)->firstOrFail();
         $related = News::active()->where('id', '!=', $item->id)->latest('published_at')->take(3)->get();
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        return view('news.show', compact('item', 'related', 'settings'));
+        $cmsData = $this->loadCmsPage('noticias');
+        return view('news.show', array_merge(compact('item', 'related', 'settings'), $cmsData));
     }
 }

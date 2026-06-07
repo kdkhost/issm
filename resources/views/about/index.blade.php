@@ -37,6 +37,8 @@
     </div>
 </div>
 
+@include("public.cms._sections")
+
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-5xl mx-auto">
@@ -72,13 +74,6 @@
         </div>
     </div>
 </section>
-
-{{-- CMS Blocks Dinâmicos --}}
-@if(isset($cmsBlocks) && $cmsBlocks->count() > 0)
-    @foreach($cmsBlocks as $block)
-        @includeIf('public.cms.blocks.' . $block->type, ['block' => $block])
-    @endforeach
-@endif
 
 {{-- Equipe --}}
 @if($teamMembers->count() > 0)

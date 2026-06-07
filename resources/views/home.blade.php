@@ -473,9 +473,7 @@ a.partner-logo-wrap { cursor: pointer; }
     </div>
 </section>
 
-
-
-
+@include("public.cms._sections")
 
 @if($featuredProjects->count() > 0)
 <section id="projetos" class="py-20 bg-white">

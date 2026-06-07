@@ -11,7 +11,8 @@ class PublicProjectController extends Controller
     {
         $projects = Project::active()->paginate(9);
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        return view('projects.index', compact('projects', 'settings'));
+        $cmsData = $this->loadCmsPage('projetos');
+        return view('projects.index', array_merge(compact('projects', 'settings'), $cmsData));
     }
 
     public function show(string $slug)
@@ -19,6 +20,7 @@ class PublicProjectController extends Controller
         $project = Project::active()->where('slug', $slug)->firstOrFail();
         $related = Project::active()->where('id', '!=', $project->id)->take(3)->get();
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        return view('projects.show', compact('project', 'related', 'settings'));
+        $cmsData = $this->loadCmsPage('projetos');
+        return view('projects.show', array_merge(compact('project', 'related', 'settings'), $cmsData));
     }
 }

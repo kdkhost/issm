@@ -73,6 +73,38 @@ class CmsDefaultSeeder extends Seeder
                 $this->command->info('Main menu already exists, skipping.');
             }
 
+            // Create default CMS pages for each public route
+            $pages = [
+                ['title' => 'Início', 'slug' => 'inicio', 'content' => 'Página inicial gerenciável via CMS.'],
+                ['title' => 'Sobre', 'slug' => 'sobre', 'content' => 'Página institucional gerenciável via CMS.'],
+                ['title' => 'ODS 2030', 'slug' => 'ods', 'content' => 'Página ODS gerenciável via CMS.'],
+                ['title' => 'Galeria', 'slug' => 'galeria', 'content' => 'Página de galeria gerenciável via CMS.'],
+                ['title' => 'Notícias', 'slug' => 'noticias', 'content' => 'Página de notícias gerenciável via CMS.'],
+                ['title' => 'Projetos', 'slug' => 'projetos', 'content' => 'Página de projetos gerenciável via CMS.'],
+                ['title' => 'Contato', 'slug' => 'contato', 'content' => 'Página de contato gerenciável via CMS.'],
+                ['title' => 'Transparência', 'slug' => 'transparencia', 'content' => 'Portal da transparência gerenciável via CMS.'],
+            ];
+
+            foreach ($pages as $page) {
+                $existing = DB::table('cms_pages')->where('slug', $page['slug'])->first();
+                if (!$existing) {
+                    DB::table('cms_pages')->insert([
+                        'title' => $page['title'],
+                        'slug' => $page['slug'],
+                        'content' => $page['content'],
+                        'status' => 'published',
+                        'is_active' => true,
+                        'template' => 'default',
+                        'layout' => 'default',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $this->command->info("CMS page '{$page['title']}' created.");
+                } else {
+                    $this->command->info("CMS page '{$page['title']}' already exists, skipping.");
+                }
+            }
+
             // Create default blocks config
             $blocksConfig = [
                 'cms_blocks_enabled' => '1',

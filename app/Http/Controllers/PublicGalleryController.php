@@ -62,9 +62,11 @@ class PublicGalleryController extends Controller
         $totalGallery  = $galleryItems->count();
         $totalProjects = $projectItems->count();
 
-        return view('gallery.index', compact(
+        $cmsData = $this->loadCmsPage('galeria');
+
+        return view('gallery.index', array_merge(compact(
             'allItems', 'filter', 'filterOptions', 'settings',
             'totalGallery', 'totalProjects'
-        ));
+        ), $cmsData));
     }
 }

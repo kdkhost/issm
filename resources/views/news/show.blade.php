@@ -1,7 +1,6 @@
 @extends("layouts.app")
 @section("title", $item->title . " - ISSM")
 @section("content")
-@section("content")
 
 {{-- Hero Banner Premium --}}
 <div style="background:linear-gradient(135deg,#166534 0%,#15803d 50%,#059669 100%);padding:56px 0 40px;">
@@ -30,6 +29,8 @@
         </div>
     </div>
 </div>
+
+@include("public.cms._sections")
 
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article class="bg-white rounded-[32px] overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100">
