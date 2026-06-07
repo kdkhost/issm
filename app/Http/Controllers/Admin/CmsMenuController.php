@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+/**
+ * @autor marcelo-brad rj
+ * @contato Tel: 21 981325441
+ * Email: contato@kdkhost.com.br
+ * Telegram: @MARCELO_BRAD
+ * Instagram: @marcelobradrj
+ * WhatsApp: 21981325441
+ */
+
+use App\Http\Controllers\Controller;
+use App\Models\CmsMenu;
+use App\Models\CmsMenuItem;
+use App\Services\Cms\CmsAuditService;
+use App\Services\Cms\CmsCacheService;
+use App\Services\Cms\CmsMenuService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class CmsMenuController extends Controller
+{
+    protected CmsMenuService $menuService;
+    protected CmsCacheService $cacheService;
+    protected CmsAuditService $auditService;
+
+    public function __construct(
+        CmsMenuService $menuService,
+        CmsCacheService $cacheService,
+        CmsAuditService $auditService
+    ) {
+        $this->menuService = $menuService;
+        $this->cacheService = $cacheService;
+        $this->auditService = $auditService;
+    }
+
+    public function index(): View
+    {
+        $menus = CmsMenu::with('items')->orderBy('sort_order')->get();
+
+        return view('admin.cms.menus.index', compact('menus'));
+    }
+
+    public function store(Request $request): RedirectResponse|JsonResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:200|unique:cms_menus,slug',
+            'description' => 'nullable|string|max:500',
+            'location' => 'nullable|string|max:100',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
+        $validated['created_by'] = auth()->id();
+
+        $menu = CmsMenu::create($validated);
+
+        $this->auditService->logCreate('cms_menu', $menu);
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Menu criado com sucesso!', 'data' => $menu]);
+        }
+
+        return redirect()->route('admin.cms.menus.index')->with('success', 'Menu criado com sucesso!');
+    }
+
+    public function update(Request $request, CmsMenu $cmsMenu): RedirectResponse|JsonResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:200|unique:cms_menus,slug,' . $cmsMenu->id,
+            'description' => 'nullable|string|max:500',
+            'location' => 'nullable|string|max:100',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
+
+        $oldValues = $cmsMenu->toArray();
+        $cmsMenu->update($validated);
+
+        $this->auditService->logUpdate('cms_menu', $cmsMenu, $oldValues, $cmsMenu->fresh()->toArray());
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Menu atualizado com sucesso!', 'data' => $cmsMenu->fresh()]);
+        }
+
+        return redirect()->route('admin.cms.menus.index')->with('success', 'Menu atualizado com sucesso!');
+    }
+
+    public function destroy(CmsMenu $cmsMenu): RedirectResponse|JsonResponse
+    {
+        $cmsMenu->items()->delete();
+        $cmsMenu->delete();
+
+        $this->auditService->logDelete('cms_menu', $cmsMenu);
+        $this->cacheService->clearMenuCache();
+
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Menu excluído com sucesso!']);
+        }
+
+        return redirect()->route('admin.cms.menus.index')->with('success', 'Menu excluído com sucesso!');
+    }
+
+    public function getMenuItems(int $menuId): JsonResponse
+    {
+        $menu = CmsMenu::with('items.children')->findOrFail($menuId);
+
+        return response()->json(['success' => true, 'data' => $menu->items]);
+    }
+
+    public function reorderItems(Request $request): JsonResponse
+    {
+        $request->validate([
+            'menu_id' => 'required|integer|exists:cms_menus,id',
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:cms_menu_items,id',
+            'items.*.sort_order' => 'required|integer',
+        ]);
+
+        $this->menuService->reorderItems($request->integer('menu_id'), collect($request->items)->pluck('sort_order', 'id')->toArray());
+
+        return response()->json(['success' => true, 'message' => 'Ordem atualizada com sucesso!']);
+    }
+
+    public function addItem(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'cms_menu_id' => 'required|integer|exists:cms_menus,id',
+            'parent_id' => 'nullable|integer|exists:cms_menu_items,id',
+            'title' => 'required|string|max:255',
+            'url' => 'nullable|string|max:500',
+            'route' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:100',
+            'target' => 'nullable|in:_self,_blank',
+            'is_active' => 'nullable|boolean',
+            'css_class' => 'nullable|string|max:255',
+        ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
+        $validated['created_by'] = auth()->id();
+
+        $item = CmsMenuItem::create($validated);
+
+        $this->cacheService->clearMenuCache();
+
+        return response()->json(['success' => true, 'message' => 'Item adicionado com sucesso!', 'data' => $item]);
+    }
+
+    public function updateItem(Request $request, CmsMenuItem $cmsMenuItem): JsonResponse
+    {
+        $validated = $request->validate([
+            'parent_id' => 'nullable|integer|exists:cms_menu_items,id',
+            'title' => 'required|string|max:255',
+            'url' => 'nullable|string|max:500',
+            'route' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:100',
+            'target' => 'nullable|in:_self,_blank',
+            'is_active' => 'nullable|boolean',
+            'css_class' => 'nullable|string|max:255',
+        ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
+        $cmsMenuItem->update($validated);
+
+        $this->cacheService->clearMenuCache();
+
+        return response()->json(['success' => true, 'message' => 'Item atualizado com sucesso!', 'data' => $cmsMenuItem->fresh()]);
+    }
+
+    public function deleteItem(CmsMenuItem $cmsMenuItem): JsonResponse
+    {
+        $cmsMenuItem->delete();
+
+        $this->cacheService->clearMenuCache();
+
+        return response()->json(['success' => true, 'message' => 'Item excluído com sucesso!']);
+    }
+}

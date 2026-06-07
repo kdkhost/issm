@@ -1,0 +1,26 @@
+# ============================================================
+# ISSM - Redireciona document root para pasta public/ do Laravel
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloqueia acesso direto a arquivos sensíveis do Laravel
+    RewriteRule ^(vendor|bootstrap|config|database|resources|routes|storage|tests|app)(/|$) - [F,L]
+    RewriteRule ^\.env$ - [F,L]
+    RewriteRule ^artisan$ - [F,L]
+    RewriteRule ^composer\.(json|lock)$ - [F,L]
+
+    # Se a requisição já começa com /public/, passa direto
+    RewriteCond %{REQUEST_URI} ^/public/ [NC]
+    RewriteRule ^ - [L]
+
+    # Redireciona tudo para /public/
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Defina o pacote “ea-php56” como a linguagem padrão de programação “PHP”.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php56 .php .php5 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

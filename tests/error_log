@@ -1,0 +1,8 @@
+[02-Mar-2026 17:22:31 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Testing\TestCase" not found in /home/issmorg/public_html/tests/TestCase.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/tests/TestCase.php on line 7
+[02-Mar-2026 21:50:33 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Testing\TestCase" not found in /home/issmorg/public_html/tests/TestCase.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/issmorg/public_html/tests/TestCase.php on line 7
