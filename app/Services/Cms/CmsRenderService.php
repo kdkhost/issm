@@ -35,13 +35,13 @@ class CmsRenderService
     {
         if ($this->hasCmsContent($slug)) {
             $page = CmsPage::where('slug', $slug)
-                ->where('active', true)
+                ->where('is_active', true)
                 ->where('status', 'published')
                 ->firstOrFail();
 
             $sections = $page->sections()
-                ->where('active', true)
-                ->orderBy('order')
+                ->where('is_active', true)
+                ->orderBy('sort_order')
                 ->get();
 
             return view(static::PAGE_VIEW_PATH, compact('page', 'sections'));
@@ -77,9 +77,9 @@ class CmsRenderService
         $key = "cms.blocks.section.{$sectionId}";
 
         return $this->cacheService->remember($key, function () use ($sectionId) {
-            $blocks = CmsBlock::where('section_id', $sectionId)
-                ->where('active', true)
-                ->orderBy('order')
+            $blocks = CmsBlock::where('cms_section_id', $sectionId)
+                ->where('is_active', true)
+                ->orderBy('sort_order')
                 ->get();
 
             $output = '';
@@ -98,7 +98,7 @@ class CmsRenderService
 
         return $this->cacheService->remember($key, function () use ($sectionId) {
             $section = CmsSection::with(['blocks' => function ($query) {
-                $query->where('active', true)->orderBy('order');
+                $query->where('is_active', true)->orderBy('sort_order');
             }])->findOrFail($sectionId);
 
             $viewPath = 'public.cms.sections.' . ($section->template ?? 'default');
@@ -192,7 +192,7 @@ class CmsRenderService
 
         return $this->cacheService->remember($key, function () use ($slug) {
             return CmsPage::where('slug', $slug)
-                ->where('active', true)
+                ->where('is_active', true)
                 ->where('status', 'published')
                 ->exists();
         });

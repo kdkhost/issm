@@ -43,7 +43,7 @@ class CmsPageService
 
         return $this->cacheService->remember($key, function () use ($slug) {
             return CmsPage::where('slug', $slug)
-                ->with(['sections.blocks', 'seo', 'meta'])
+                ->with(['sections.blocks', 'seo'])
                 ->first();
         });
     }
@@ -51,9 +51,9 @@ class CmsPageService
     public function getActivePages(): Collection
     {
         return $this->cacheService->remember('cms.pages.active', function () {
-            return CmsPage::where('active', true)
+            return CmsPage::where('is_active', true)
                 ->where('status', 'published')
-                ->orderBy('order')
+                ->orderBy('sort_order')
                 ->orderBy('title')
                 ->get();
         });
@@ -61,8 +61,7 @@ class CmsPageService
 
     public function getPaginated(int $perPage = 15): LengthAwarePaginator
     {
-        return CmsPage::with('author')
-            ->orderBy('created_at', 'desc')
+        return CmsPage::orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
 
@@ -79,16 +78,10 @@ class CmsPageService
                 'title' => $data['title'],
                 'slug' => $data['slug'],
                 'content' => $data['content'] ?? null,
-                'excerpt' => $data['excerpt'] ?? null,
-                'meta_title' => $data['meta_title'] ?? null,
-                'meta_description' => $data['meta_description'] ?? null,
-                'image' => $data['image'] ?? null,
                 'status' => $data['status'] ?? 'draft',
-                'active' => $data['active'] ?? false,
-                'show_in_menu' => $data['show_in_menu'] ?? false,
-                'order' => $data['order'] ?? 0,
+                'is_active' => $data['is_active'] ?? false,
+                'sort_order' => $data['sort_order'] ?? 0,
                 'template' => $data['template'] ?? 'default',
-                'author_id' => $data['author_id'] ?? auth()->id(),
                 'published_at' => ($data['status'] ?? 'draft') === 'published' ? now() : null,
             ]);
 
@@ -113,14 +106,9 @@ class CmsPageService
                 'title' => $data['title'] ?? $page->title,
                 'slug' => $data['slug'] ?? $page->slug,
                 'content' => $data['content'] ?? $page->content,
-                'excerpt' => $data['excerpt'] ?? $page->excerpt,
-                'meta_title' => $data['meta_title'] ?? $page->meta_title,
-                'meta_description' => $data['meta_description'] ?? $page->meta_description,
-                'image' => $data['image'] ?? $page->image,
                 'status' => $data['status'] ?? $page->status,
-                'active' => $data['active'] ?? $page->active,
-                'show_in_menu' => $data['show_in_menu'] ?? $page->show_in_menu,
-                'order' => $data['order'] ?? $page->order,
+                'is_active' => $data['is_active'] ?? $page->is_active,
+                'sort_order' => $data['sort_order'] ?? $page->sort_order,
                 'template' => $data['template'] ?? $page->template,
             ]);
 
@@ -145,7 +133,6 @@ class CmsPageService
 
             $page->sections()->delete();
             $page->seo()->delete();
-            $page->meta()->delete();
 
             $result = $page->delete();
 
@@ -161,7 +148,7 @@ class CmsPageService
         return DB::transaction(function () use ($page) {
             $page->update([
                 'status' => 'published',
-                'active' => true,
+                'is_active' => true,
                 'published_at' => $page->published_at ?? now(),
             ]);
 
@@ -180,7 +167,7 @@ class CmsPageService
         return DB::transaction(function () use ($page) {
             $page->update([
                 'status' => 'archived',
-                'active' => false,
+                'is_active' => false,
             ]);
 
             $page->refresh();
@@ -200,24 +187,18 @@ class CmsPageService
                 'title' => $page->title . ' (cópia)',
                 'slug' => $this->ensureUniqueSlug(Str::slug($page->title . '-copia')),
                 'content' => $page->content,
-                'excerpt' => $page->excerpt,
-                'meta_title' => $page->meta_title,
-                'meta_description' => $page->meta_description,
-                'image' => $page->image,
                 'status' => 'draft',
-                'active' => false,
-                'show_in_menu' => false,
-                'order' => 0,
+                'is_active' => false,
+                'sort_order' => 0,
                 'template' => $page->template,
-                'author_id' => auth()->id(),
             ]);
 
             foreach ($page->sections as $section) {
                 $newSection = $duplicated->sections()->create([
                     'title' => $section->title,
                     'template' => $section->template,
-                    'order' => $section->order,
-                    'active' => $section->active,
+                    'sort_order' => $section->sort_order,
+                    'is_active' => $section->is_active,
                 ]);
 
                 foreach ($section->blocks as $block) {
@@ -225,8 +206,8 @@ class CmsPageService
                         'type' => $block->type,
                         'content' => $block->content,
                         'settings' => $block->settings,
-                        'order' => $block->order,
-                        'active' => $block->active,
+                        'sort_order' => $block->sort_order,
+                        'is_active' => $block->is_active,
                     ]);
                 }
             }
@@ -244,26 +225,24 @@ class CmsPageService
 
     public function toggleStatus(CmsPage $page): bool
     {
-        $page->update(['active' => !$page->active]);
+        $page->update(['is_active' => !$page->is_active]);
         $page->refresh();
 
         $this->cacheService->clearPageCache($page->slug);
 
-        return $page->active;
+        return $page->is_active;
     }
 
     public function getPageWithRelations(CmsPage $page): CmsPage
     {
         return $page->load([
             'sections' => function ($query) {
-                $query->where('active', true)->orderBy('order');
+                $query->where('is_active', true)->orderBy('sort_order');
             },
             'sections.blocks' => function ($query) {
-                $query->where('active', true)->orderBy('order');
+                $query->where('is_active', true)->orderBy('sort_order');
             },
             'seo',
-            'meta',
-            'author',
             'versions' => function ($query) {
                 $query->orderBy('id', 'desc')->take(10);
             },
@@ -273,13 +252,13 @@ class CmsPageService
     public function getAllSlugs(): Collection
     {
         return $this->cacheService->remember('cms.pages.all_slugs', function () {
-            return CmsPage::select('id', 'slug', 'title', 'active', 'status')
+            return CmsPage::select('id', 'slug', 'title', 'is_active', 'status')
                 ->orderBy('slug')
                 ->get()
                 ->mapWithKeys(fn ($page) => [$page->slug => [
                     'id' => $page->id,
                     'title' => $page->title,
-                    'active' => $page->active,
+                    'is_active' => $page->is_active,
                     'status' => $page->status,
                 ]]);
         });

@@ -23,6 +23,8 @@ class CmsAuditController extends Controller
     public function __construct(CmsAuditService $auditService)
     {
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.audit.view')->only(['index']);
     }
 
     public function index(Request $request): View

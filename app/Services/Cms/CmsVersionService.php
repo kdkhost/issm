@@ -22,9 +22,9 @@ class CmsVersionService
     public function createVersion(Model $model, string $summary = ''): CmsVersion
     {
         return CmsVersion::create([
-            'model_type' => get_class($model),
-            'model_id' => $model->id,
-            'version_data' => $model->toArray(),
+            'versionable_type' => get_class($model),
+            'versionable_id' => $model->id,
+            'data' => $model->toArray(),
             'summary' => $summary,
             'user_id' => Auth::id(),
         ]);
@@ -32,20 +32,20 @@ class CmsVersionService
 
     public function restoreVersion(CmsVersion $version): Model
     {
-        $modelClass = $version->model_type;
-        $model = $modelClass::findOrFail($version->model_id);
+        $modelClass = $version->versionable_type;
+        $model = $modelClass::findOrFail($version->versionable_id);
 
         $this->createVersion($model, 'Restaurado para versão #' . $version->id);
 
-        $model->update($version->version_data);
+        $model->update($version->data);
 
         return $model->fresh();
     }
 
     public function getVersions(Model $model): Collection
     {
-        return CmsVersion::where('model_type', get_class($model))
-            ->where('model_id', $model->id)
+        return CmsVersion::where('versionable_type', get_class($model))
+            ->where('versionable_id', $model->id)
             ->with('user')
             ->orderBy('id', 'desc')
             ->get();
@@ -53,10 +53,10 @@ class CmsVersionService
 
     public function getVersionDiff(CmsVersion $version): array
     {
-        $currentData = $version->version_data;
+        $currentData = $version->data;
 
-        $previous = CmsVersion::where('model_type', $version->model_type)
-            ->where('model_id', $version->model_id)
+        $previous = CmsVersion::where('versionable_type', $version->versionable_type)
+            ->where('versionable_id', $version->versionable_id)
             ->where('id', '<', $version->id)
             ->orderBy('id', 'desc')
             ->first();
@@ -69,7 +69,7 @@ class CmsVersionService
             ];
         }
 
-        $oldData = $previous->version_data;
+        $oldData = $previous->data;
 
         $added = array_diff_key($currentData, $oldData);
         $removed = array_diff_key($oldData, $currentData);
@@ -90,23 +90,23 @@ class CmsVersionService
 
     public function getLatestVersion(Model $model): ?CmsVersion
     {
-        return CmsVersion::where('model_type', get_class($model))
-            ->where('model_id', $model->id)
+        return CmsVersion::where('versionable_type', get_class($model))
+            ->where('versionable_id', $model->id)
             ->orderBy('id', 'desc')
             ->first();
     }
 
     public function pruneVersions(Model $model, int $keep = 10): void
     {
-        $versionIds = CmsVersion::where('model_type', get_class($model))
-            ->where('model_id', $model->id)
+        $versionIds = CmsVersion::where('versionable_type', get_class($model))
+            ->where('versionable_id', $model->id)
             ->orderBy('id', 'desc')
             ->take($keep)
             ->pluck('id');
 
         if ($versionIds->isNotEmpty()) {
-            CmsVersion::where('model_type', get_class($model))
-                ->where('model_id', $model->id)
+            CmsVersion::where('versionable_type', get_class($model))
+                ->where('versionable_id', $model->id)
                 ->whereNotIn('id', $versionIds)
                 ->delete();
         }
@@ -117,8 +117,8 @@ class CmsVersionService
         $v1 = CmsVersion::findOrFail($versionId1);
         $v2 = CmsVersion::findOrFail($versionId2);
 
-        $data1 = $v1->version_data;
-        $data2 = $v2->version_data;
+        $data1 = $v1->data;
+        $data2 = $v2->data;
 
         $added = array_diff_key($data2, $data1);
         $removed = array_diff_key($data1, $data2);

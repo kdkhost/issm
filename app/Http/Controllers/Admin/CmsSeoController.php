@@ -35,6 +35,9 @@ class CmsSeoController extends Controller
         $this->seoService = $seoService;
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.seo.view')->only(['edit']);
+        $this->middleware('can:cms.seo.update')->only(['update']);
     }
 
     public function edit(int $pageId): View

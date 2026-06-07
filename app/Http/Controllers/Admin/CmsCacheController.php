@@ -29,6 +29,9 @@ class CmsCacheController extends Controller
     {
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.cache.view')->only(['index']);
+        $this->middleware('can:cms.cache.clear')->only(['clearCache', 'clearPageCache']);
     }
 
     public function index(): View

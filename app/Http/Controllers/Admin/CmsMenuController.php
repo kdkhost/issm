@@ -36,6 +36,11 @@ class CmsMenuController extends Controller
         $this->menuService = $menuService;
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.menus.view')->only(['index']);
+        $this->middleware('can:cms.menus.create')->only(['store']);
+        $this->middleware('can:cms.menus.edit')->only(['update']);
+        $this->middleware('can:cms.menus.delete')->only(['destroy']);
     }
 
     public function index(): View

@@ -181,7 +181,7 @@ class CmsSeoService
         $xml .= $this->urlTag(url('/'), now(), '1.0', 'daily');
 
         $pages = CmsPage::where('status', 'published')
-            ->where('active', true)
+            ->where('is_active', true)
             ->orderBy('updated_at', 'desc')
             ->get();
 

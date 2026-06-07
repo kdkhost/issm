@@ -19,7 +19,7 @@ class AdminAuditMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (app('cms.audit.enabled', true) && $request->user()) {
-            app(\App\Services\Cms\CmsAuditService::class)->log([
+            app(\App\Services\Cms\CmsAuditService::class)->log('access', 'admin', null, [], [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
                 'ip' => $request->ip(),

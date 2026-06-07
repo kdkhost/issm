@@ -36,6 +36,9 @@ class CmsVersionController extends Controller
         $this->versionService = $versionService;
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.versions.view')->only(['index', 'show']);
+        $this->middleware('can:cms.versions.restore')->only(['restore']);
     }
 
     public function index(Request $request): View

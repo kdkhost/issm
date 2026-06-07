@@ -36,6 +36,11 @@ class CmsBlockController extends Controller
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
         $this->versionService = $versionService;
+
+        $this->middleware('can:cms.blocks.view')->only(['index', 'show']);
+        $this->middleware('can:cms.blocks.create')->only(['create', 'store']);
+        $this->middleware('can:cms.blocks.edit')->only(['edit', 'update']);
+        $this->middleware('can:cms.blocks.delete')->only(['destroy']);
     }
 
     public function index(Request $request): View

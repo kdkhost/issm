@@ -30,6 +30,11 @@ class CmsSectionController extends Controller
     {
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.sections.view')->only(['index', 'show']);
+        $this->middleware('can:cms.sections.create')->only(['create', 'store']);
+        $this->middleware('can:cms.sections.edit')->only(['edit', 'update']);
+        $this->middleware('can:cms.sections.delete')->only(['destroy']);
     }
 
     public function index(Request $request): View

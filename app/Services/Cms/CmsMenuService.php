@@ -32,11 +32,11 @@ class CmsMenuService
 
         return $this->cacheService->remember($key, function () use ($location) {
             return CmsMenu::where('location', $location)
-                ->where('active', true)
+                ->where('is_active', true)
                 ->with(['items' => function ($query) {
-                    $query->where('active', true)
+                    $query->where('is_active', true)
                         ->orderBy('parent_id')
-                        ->orderBy('order');
+                        ->orderBy('sort_order');
                 }])
                 ->first();
         });
@@ -59,9 +59,9 @@ class CmsMenuService
 
     public function getMenuTree(int $menuId): Collection
     {
-        $items = CmsMenuItem::where('menu_id', $menuId)
-            ->where('active', true)
-            ->orderBy('order')
+        $items = CmsMenuItem::where('cms_menu_id', $menuId)
+            ->where('is_active', true)
+            ->orderBy('sort_order')
             ->get();
 
         return $this->buildTree($items);
@@ -103,21 +103,21 @@ class CmsMenuService
             'name' => $data['name'],
             'location' => $data['location'],
             'description' => $data['description'] ?? null,
-            'active' => $data['active'] ?? true,
+            'is_active' => $data['is_active'] ?? true,
         ]);
 
         if (!empty($data['items'])) {
             foreach ($data['items'] as $order => $itemData) {
                 $menu->items()->create([
-                    'label' => $itemData['label'],
+                    'title' => $itemData['title'],
                     'url' => $itemData['url'] ?? null,
                     'route' => $itemData['route'] ?? null,
                     'params' => $itemData['params'] ?? null,
                     'icon' => $itemData['icon'] ?? null,
                     'target' => $itemData['target'] ?? '_self',
                     'parent_id' => $itemData['parent_id'] ?? null,
-                    'order' => $order,
-                    'active' => $itemData['active'] ?? true,
+                    'sort_order' => $order,
+                    'is_active' => $itemData['is_active'] ?? true,
                 ]);
             }
         }
@@ -133,7 +133,7 @@ class CmsMenuService
             'name' => $data['name'] ?? $menu->name,
             'location' => $data['location'] ?? $menu->location,
             'description' => $data['description'] ?? $menu->description,
-            'active' => $data['active'] ?? $menu->active,
+            'is_active' => $data['is_active'] ?? $menu->is_active,
         ]);
 
         if (isset($data['items'])) {
@@ -141,15 +141,15 @@ class CmsMenuService
 
             foreach ($data['items'] as $order => $itemData) {
                 $menu->items()->create([
-                    'label' => $itemData['label'],
+                    'title' => $itemData['title'],
                     'url' => $itemData['url'] ?? null,
                     'route' => $itemData['route'] ?? null,
                     'params' => $itemData['params'] ?? null,
                     'icon' => $itemData['icon'] ?? null,
                     'target' => $itemData['target'] ?? '_self',
                     'parent_id' => $itemData['parent_id'] ?? null,
-                    'order' => $order,
-                    'active' => $itemData['active'] ?? true,
+                    'sort_order' => $order,
+                    'is_active' => $itemData['is_active'] ?? true,
                 ]);
             }
         }
@@ -163,8 +163,8 @@ class CmsMenuService
     {
         foreach ($order as $index => $itemId) {
             CmsMenuItem::where('id', $itemId)
-                ->where('menu_id', $menuId)
-                ->update(['order' => $index]);
+                ->where('cms_menu_id', $menuId)
+                ->update(['sort_order' => $index]);
         }
 
         $menu = CmsMenu::find($menuId);
@@ -199,7 +199,7 @@ class CmsMenuService
             $icon = $item->icon ? '<i class="' . e($item->icon) . '"></i> ' : '';
 
             $html .= '<li' . $active . '>';
-            $html .= '<a href="' . e($url) . '"' . $target . '>' . $icon . e($item->label) . '</a>';
+            $html .= '<a href="' . e($url) . '"' . $target . '>' . $icon . e($item->title) . '</a>';
 
             if ($item->children->isNotEmpty()) {
                 $html .= $this->renderTree($item->children);

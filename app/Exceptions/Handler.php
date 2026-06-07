@@ -26,5 +26,35 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Registro não encontrado.'], 404);
+            }
+        });
+
+        $this->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Rota não encontrada.'], 404);
+            }
+        });
+
+        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Não autenticado.'], 401);
+            }
+        });
+
+        $this->renderable(function (\Illuminate\Auth\Access\AuthorizationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Acesso negado.'], 403);
+            }
+        });
+
+        $this->renderable(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $e->getMessage() ?: 'Erro do servidor.'], $e->getStatusCode());
+            }
+        });
     }
 }

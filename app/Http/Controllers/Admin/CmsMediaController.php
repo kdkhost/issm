@@ -31,6 +31,11 @@ class CmsMediaController extends Controller
     {
         $this->cacheService = $cacheService;
         $this->auditService = $auditService;
+
+        $this->middleware('can:cms.media.view')->only(['index']);
+        $this->middleware('can:cms.media.upload')->only(['upload']);
+        $this->middleware('can:cms.media.edit')->only(['update']);
+        $this->middleware('can:cms.media.delete')->only(['destroy']);
     }
 
     public function index(Request $request): View
