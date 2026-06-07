@@ -20,6 +20,17 @@ class PublicAboutController extends Controller
 
         $cmsData = $this->loadCmsPage('sobre');
 
+        if ($cmsData['cmsPage']) {
+            return view('public.cms.page', array_merge(
+                [
+                    'page' => $cmsData['cmsPage'],
+                    'sections' => $cmsData['cmsSections'],
+                ],
+                compact('settings', 'teamMembers'),
+                $cmsData
+            ));
+        }
+
         return view('about.index', array_merge(
             compact('settings', 'teamMembers'), $cmsData
         ));

@@ -23,6 +23,14 @@ class PublicContactController extends Controller
         ];
 
         $cmsData = $this->loadCmsPage('contato');
+
+        if ($cmsData['cmsPage']) {
+            return view('public.cms.page', array_merge(
+                ['page' => $cmsData['cmsPage'], 'sections' => $cmsData['cmsSections']],
+                compact('settings'), $cmsData
+            ));
+        }
+
         return view('contact.index', array_merge(compact('settings'), $cmsData));
     }
 }

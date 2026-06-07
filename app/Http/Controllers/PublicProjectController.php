@@ -9,9 +9,18 @@ class PublicProjectController extends Controller
 {
     public function index()
     {
+        $featuredProjects = Project::active()->featured()->take(3)->get();
         $projects = Project::active()->paginate(9);
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
         $cmsData = $this->loadCmsPage('projetos');
+
+        if ($cmsData['cmsPage']) {
+            return view('public.cms.page', array_merge(
+                ['page' => $cmsData['cmsPage'], 'sections' => $cmsData['cmsSections']],
+                compact('featuredProjects', 'projects', 'settings'), $cmsData
+            ));
+        }
+
         return view('projects.index', array_merge(compact('projects', 'settings'), $cmsData));
     }
 

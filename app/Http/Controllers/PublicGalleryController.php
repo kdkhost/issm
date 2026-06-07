@@ -64,6 +64,14 @@ class PublicGalleryController extends Controller
 
         $cmsData = $this->loadCmsPage('galeria');
 
+        if ($cmsData['cmsPage']) {
+            return view('public.cms.page', array_merge(
+                ['page' => $cmsData['cmsPage'], 'sections' => $cmsData['cmsSections']],
+                compact('allItems', 'filter', 'filterOptions', 'settings', 'totalGallery', 'totalProjects'),
+                $cmsData
+            ));
+        }
+
         return view('gallery.index', array_merge(compact(
             'allItems', 'filter', 'filterOptions', 'settings',
             'totalGallery', 'totalProjects'

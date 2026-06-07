@@ -11,8 +11,17 @@ class PublicNewsController extends Controller
     {
         $news = News::active()->latest('published_at')->paginate(9);
         $featured = News::active()->featured()->latest('published_at')->take(3)->get();
+        $latestNews = $featured;
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
         $cmsData = $this->loadCmsPage('noticias');
+
+        if ($cmsData['cmsPage']) {
+            return view('public.cms.page', array_merge(
+                ['page' => $cmsData['cmsPage'], 'sections' => $cmsData['cmsSections']],
+                compact('news', 'featured', 'latestNews', 'settings'), $cmsData
+            ));
+        }
+
         return view('news.index', array_merge(compact('news', 'featured', 'settings'), $cmsData));
     }
 
