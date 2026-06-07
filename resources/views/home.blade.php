@@ -453,9 +453,9 @@ a.partner-logo-wrap { cursor: pointer; }
         rgba(5,150,105,{{ $heroAlpha * 0.75 }}));z-index:1;"></div>
     @endif
     <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:5rem 1rem;text-align:center;width:100%;">
-        <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-4">{!! $cms['hero_principal_title'] ?? 'Instituto Socioambiental<br>Serra do Mendanha' !!}</h1>
-        <p class="text-xl text-green-100 mb-8">{{ $cms['hero_principal_subtitle'] ?? 'Comprometidos com a preservacao ambiental e o desenvolvimento sustentavel' }}</p>
-        <a href="{{ route('about.index') }}" class="inline-block bg-white text-green-800 font-bold px-8 py-3 rounded-full hover:bg-green-50 shadow-lg">Conheca o ISSM</a>
+        <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-4">{{ cms('home', 'hero', 'title_line1', 'Instituto Socioambiental') }}<br>{{ cms('home', 'hero', 'title_line2', 'Serra do Mendanha') }}</h1>
+        <p class="text-xl text-green-100 mb-8">{{ cms('home', 'hero', 'subtitle', 'Comprometidos com a preservacao ambiental e o desenvolvimento sustentavel') }}</p>
+        <a href="{{ cms('home', 'hero', 'cta_url', '/sobre') }}" class="inline-block bg-white text-green-800 font-bold px-8 py-3 rounded-full hover:bg-green-50 shadow-lg">{{ cms('home', 'hero', 'cta_text', 'Conheca o ISSM') }}</a>
     </div>
 </section>
 @endif
@@ -482,10 +482,10 @@ a.partner-logo-wrap { cursor: pointer; }
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-end mb-12">
             <div>
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">O que fazemos</span>
-                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Nossos <span class="text-green-700">Projetos</span></h2>
+                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('home', 'projects', 'eyebrow', 'O que fazemos') }}</span>
+                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">{{ cms('home', 'projects', 'title', 'Nossos Projetos') }}</h2>
             </div>
-            <a href="{{ route("projects.index") }}" class="text-green-700 hover:text-green-900 font-medium flex items-center gap-1">Ver todos <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+            <a href="{{ route("projects.index") }}" class="text-green-700 hover:text-green-900 font-medium flex items-center gap-1">{{ cms('home', 'projects', 'link_text', 'Ver todos') }} <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($featuredProjects as $project)
@@ -515,8 +515,8 @@ a.partner-logo-wrap { cursor: pointer; }
 <section class="py-24 bg-gray-50 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Impacto Real</span>
-            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">O que dizem <span class="text-green-700">Sobre Nós</span></h2>
+            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('home', 'testimonials', 'eyebrow', 'Impacto Real') }}</span>
+            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">{{ cms('home', 'testimonials', 'title', 'O que dizem Sobre Nós') }}</h2>
         </div>
 
         <div class="testimonials-swiper swiper" id="testimonials-swiper">
@@ -555,10 +555,10 @@ a.partner-logo-wrap { cursor: pointer; }
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-end mb-12">
             <div>
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Fique por dentro</span>
-                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Últimas <span class="text-green-700">Notícias</span></h2>
+                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('home', 'news', 'eyebrow', 'Fique por dentro') }}</span>
+                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">{{ cms('home', 'news', 'title', 'Últimas Notícias') }}</h2>
             </div>
-            <a href="{{ route("news.index") }}" class="text-green-700 hover:text-green-900 font-medium flex items-center gap-1">Ver todas <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+            <a href="{{ route("news.index") }}" class="text-green-700 hover:text-green-900 font-medium flex items-center gap-1">{{ cms('home', 'news', 'link_text', 'Ver todas') }} <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($latestNews as $news)
@@ -584,8 +584,8 @@ a.partner-logo-wrap { cursor: pointer; }
 <section class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">Dúvidas Comuns</span>
-            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Perguntas <span class="text-green-700">Frequentes</span></h2>
+            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('home', 'faq', 'eyebrow', 'Dúvidas Comuns') }}</span>
+            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">{{ cms('home', 'faq', 'title', 'Perguntas Frequentes') }}</h2>
         </div>
         
         <div class="space-y-4">
@@ -624,7 +624,7 @@ a.partner-logo-wrap { cursor: pointer; }
 <section id="parceiros" class="py-16 bg-white" style="overflow-x:clip; overflow-y:visible;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
-            <h2 class="text-2xl font-black text-gray-700">Nossos <span class="text-green-700">Parceiros</span></h2>
+            <h2 class="text-2xl font-black text-gray-700">{{ cms('home', 'partners', 'title', 'Nossos Parceiros') }}</h2>
         </div>
         <div class="partners-swiper swiper" id="partners-swiper">
             <div class="swiper-wrapper">

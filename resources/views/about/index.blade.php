@@ -23,15 +23,15 @@
             <span style="color:#fff;">{{ $cms['hero_sobre_title'] ?? 'Sobre o ISSM' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            Instituto <span style="color:#86efac;">Socioambiental</span>
+            {{ cms('about', 'hero', 'title', 'Instituto Socioambiental') }}
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            {{ $cms['hero_sobre_content'] ?? 'Conheça nossa história, missão e o compromisso com a preservação da Serra do Mendanha.' }}
+            {{ cms('about', 'hero', 'subtitle', 'Conheça nossa história, missão e o compromisso com a preservação da Serra do Mendanha.') }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <div class="page-stat">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                {{ $teamMembers->count() }} Colaboradores ativos
+                {{ $teamMembers->count() }} {{ cms('about', 'hero', 'stat_label', 'Colaboradores ativos') }}
             </div>
         </div>
     </div>
@@ -41,8 +41,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch">
             <div class="lg:col-span-2">
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ $cms['nossa_identidade_title'] ?? 'Nossa Identidade' }}</span>
-                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">Preservação e <span class="text-green-700">Sustentabilidade</span></h2>
+                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('about', 'identity', 'eyebrow', 'Nossa Identidade') }}</span>
+                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">{{ cms('about', 'identity', 'title', 'Preservação e Sustentabilidade') }}</h2>
                 <div class="prose prose-green max-w-none text-gray-600 leading-relaxed mb-10">
                     {!! nl2br(e($settings['about_text'])) !!}
                 </div>
@@ -52,21 +52,21 @@
                         <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-700 mb-4">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         </div>
-                        <h4 class="font-bold text-green-800 mb-3">Missão</h4>
+                        <h4 class="font-bold text-green-800 mb-3">{{ cms('about', 'identity', 'mission_label', 'Missão') }}</h4>
                         <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["mission"] }}</p>
                     </div>
                     <div class="bg-blue-50 rounded-2xl p-6 border-l-4 border-blue-600">
                         <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700 mb-4">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                         </div>
-                        <h4 class="font-bold text-blue-800 mb-3">Visão</h4>
+                        <h4 class="font-bold text-blue-800 mb-3">{{ cms('about', 'identity', 'vision_label', 'Visão') }}</h4>
                         <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["vision"] }}</p>
                     </div>
                     <div class="bg-yellow-50 rounded-2xl p-6 border-l-4 border-yellow-600">
                         <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-700 mb-4">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
-                        <h4 class="font-bold text-yellow-800 mb-3">Valores</h4>
+                        <h4 class="font-bold text-yellow-800 mb-3">{{ cms('about', 'identity', 'values_label', 'Valores') }}</h4>
                         <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["values"] }}</p>
                     </div>
                 </div>
@@ -98,9 +98,9 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-                <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ $cms['cta_equipe_title'] ?? 'Capital Humano' }}</span>
-            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Nossa <span class="text-green-700">Equipe</span></h2>
-            <p class="text-gray-500 mt-4 max-w-2xl mx-auto">{{ $cms['cta_equipe_content'] ?? 'Conheça as pessoas dedicadas que fazem o ISSM acontecer todos os dias.' }}</p>
+            <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('about', 'team', 'eyebrow', 'Capital Humano') }}</span>
+            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">{{ cms('about', 'team', 'title', 'Nossa Equipe') }}</h2>
+            <p class="text-gray-500 mt-4 max-w-2xl mx-auto">{{ cms('about', 'team', 'subtitle', 'Conheça as pessoas dedicadas que fazem o ISSM acontecer todos os dias.') }}</p>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             @foreach($teamMembers as $member)

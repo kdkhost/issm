@@ -23,10 +23,10 @@
             <span style="color:#fff;">{{ $cms['hero_transparencia_title'] ?? 'Transparência' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            Portal da <span style="color:#86efac;">Transparência</span>
+            {{ cms('transparency', 'hero', 'title', 'Portal da Transparência') }}
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            {{ $cms['hero_transparencia_subtitle'] ?? 'Compromisso com a integridade, ética e a prestação de contas clara das nossas atividades e recursos.' }}
+            {{ cms('transparency', 'hero', 'subtitle', 'Compromisso com a integridade, ética e a prestação de contas clara das nossas atividades e recursos.') }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <div class="page-stat">
@@ -48,9 +48,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-black text-gray-900 mb-3">Nenhum documento encontrado</h3>
+                <h3 class="text-2xl font-black text-gray-900 mb-3">{{ cms('transparency', 'empty', 'title', 'Nenhum documento encontrado') }}</h3>
                 <p class="text-gray-500 font-medium max-w-sm mx-auto leading-relaxed">
-                    No momento não há documentos ou relatórios disponíveis para visualização. Por favor, volte em breve.
+                    {{ cms('transparency', 'empty', 'message', 'No momento não há documentos ou relatórios disponíveis para visualização. Por favor, volte em breve.') }}
                 </p>
             </div>
         </div>
@@ -109,12 +109,12 @@
         <div class="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-lg mb-8">
             <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
         </div>
-        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-6 tracking-tight">Dúvidas ou Informações?</h2>
+        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-6 tracking-tight">{{ cms('transparency', 'cta', 'title', 'Dúvidas ou Informações?') }}</h2>
         <p class="text-lg text-gray-600 mb-10 leading-relaxed font-medium">
-            Caso não encontre o documento que procura ou precise de informações adicionais sobre nossas contas e relatórios, entre em contato através dos nossos canais oficiais.
+            {{ cms('transparency', 'cta', 'text', 'Caso não encontre o documento que procura ou precise de informações adicionais sobre nossas contas e relatórios, entre em contato através dos nossos canais oficiais.') }}
         </p>
         <a href="{{ route('home') }}#contato" class="inline-flex items-center justify-center px-10 py-4 bg-green-700 text-white font-black rounded-2xl hover:bg-green-800 hover:shadow-2xl hover:shadow-green-900/20 transform hover:-translate-y-1 transition-all duration-300">
-            Fale com nossa equipe
+            {{ cms('transparency', 'cta', 'button_text', 'Fale com nossa equipe') }}
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
     </div>

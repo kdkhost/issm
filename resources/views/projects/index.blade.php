@@ -23,15 +23,15 @@
             <span style="color:#fff;">{{ $cms['hero_projetos_title'] ?? 'Projetos' }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            Nossos <span style="color:#86efac;">Projetos</span>
+            {{ cms('projects', 'hero', 'title', 'Nossos Projetos') }}
         </h1>
         <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
-            {{ $cms['hero_projetos_subtitle'] ?? 'Iniciativas dedicadas à preservação, educação e sustentabilidade, alinhadas com os ODS 2030.' }}
+            {{ cms('projects', 'hero', 'subtitle', 'Iniciativas dedicadas à preservação, educação e sustentabilidade, alinhadas com os ODS 2030.') }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <div class="page-stat">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                {{ $projects->total() }} Iniciativas ativas
+                {{ $projects->total() }} {{ cms('projects', 'hero', 'stat_label', 'Iniciativas ativas') }}
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\CmsPublicPageController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -72,6 +73,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('galeria', GalleryController::class)->parameters(['galeria' => 'gallery']);
     Route::resource('contatos', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('paginas', PageController::class)->parameters(['paginas' => 'page']);
+    Route::get('cms-paginas-publicas', [CmsPublicPageController::class, 'index'])->name('cms-public-pages.index');
+    Route::get('cms-paginas-publicas/{cmsPublicPage}/editar', [CmsPublicPageController::class, 'edit'])->name('cms-public-pages.edit');
+    Route::put('cms-paginas-publicas/{cmsPublicPage}', [CmsPublicPageController::class, 'update'])->name('cms-public-pages.update');
+    Route::get('cms-paginas-publicas/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'editSeo'])->name('cms-public-pages.seo');
+    Route::put('cms-paginas-publicas/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'updateSeo'])->name('cms-public-pages.update-seo');
+    Route::post('cms-paginas-publicas/{cmsPublicPage}/limpar-cache', [CmsPublicPageController::class, 'clearCache'])->name('cms-public-pages.clear-cache');
     Route::resource('ods', OdsController::class)->only(['index', 'edit', 'update']);
     Route::resource('ips-manutencao', MaintenanceIpController::class)->parameters(['ips-manutencao' => 'maintenanceIp']);
     Route::resource('transparencia', TransparencyController::class)->parameters(['transparencia' => 'transparency']);
