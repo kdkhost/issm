@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CmsMenu;
 use App\Models\CmsMenuItem;
+use App\Models\CmsPublicPage;
 use App\Services\Cms\CmsAuditService;
 use App\Services\Cms\CmsCacheService;
 use App\Services\Cms\CmsMenuService;
@@ -39,7 +40,7 @@ class CmsMenuController extends Controller
 
         $this->middleware('can:cms.menus.view')->only(['index']);
         $this->middleware('can:cms.menus.create')->only(['store']);
-        $this->middleware('can:cms.menus.edit')->only(['update']);
+        $this->middleware('can:cms.menus.edit')->only(['update', 'buildPublicPages']);
         $this->middleware('can:cms.menus.delete')->only(['destroy']);
     }
 
@@ -53,8 +54,12 @@ class CmsMenuController extends Controller
 
         $menuItems = $selectedMenu ? $selectedMenu->items : collect();
         $allItems = $menuItems;
+        $publicPages = CmsPublicPage::where('is_active', true)
+            ->where('is_editable', true)
+            ->orderBy('admin_label')
+            ->get();
 
-        return view('admin.cms.menus.index', compact('menus', 'selectedMenu', 'menuItems', 'allItems'));
+        return view('admin.cms.menus.index', compact('menus', 'selectedMenu', 'menuItems', 'allItems', 'publicPages'));
     }
 
     public function store(Request $request): RedirectResponse|JsonResponse
@@ -118,6 +123,55 @@ class CmsMenuController extends Controller
         }
 
         return redirect()->route('admin.cms.menus.index')->with('success', 'Menu excluído com sucesso!');
+    }
+
+    public function buildPublicPages(Request $request): RedirectResponse
+    {
+        $menuId = $request->integer('cms_menu_id', 0);
+        $menu = CmsMenu::find($menuId);
+
+        if (!$menu) {
+            $menu = CmsMenu::firstOrCreate(
+                ['slug' => 'menu-paginas-publicas'],
+                [
+                    'name' => 'Menu de Páginas Públicas',
+                    'description' => 'Menu gerado automaticamente com páginas públicas reais.',
+                    'location' => 'header',
+                    'is_active' => true,
+                    'sort_order' => 0,
+                    'created_by' => auth()->id(),
+                ]
+            );
+        }
+
+        $existingUrls = $menu->items()->pluck('url')->filter()->toArray();
+        $currentMaxOrder = $menu->items()->max('sort_order');
+        $pages = CmsPublicPage::where('is_active', true)
+            ->where('is_editable', true)
+            ->orderBy('admin_label')
+            ->get();
+
+        foreach ($pages as $index => $page) {
+            $url = $page->publicUrl();
+            if (!$url || in_array($url, $existingUrls, true)) {
+                continue;
+            }
+
+            $menu->items()->create([
+                'title' => $page->admin_label ?? $page->title,
+                'url' => $url,
+                'icon' => null,
+                'target' => '_self',
+                'is_active' => true,
+                'sort_order' => ($currentMaxOrder !== null ? $currentMaxOrder + $index + 1 : $index),
+                'created_by' => auth()->id(),
+            ]);
+        }
+
+        $this->cacheService->clearMenuCache($menu->location);
+
+        return redirect()->route('admin.cms.menus.index', ['menu_id' => $menu->id])
+            ->with('success', 'Menu montado com as páginas públicas reais.');
     }
 
     public function getMenuItems(int $menuId): JsonResponse
