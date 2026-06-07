@@ -10,15 +10,6 @@ class PublicGalleryController extends Controller
 {
     public function index()
     {
-        $cmsData = $this->loadCmsPage('galeria');
-
-        if ($cmsData['cmsPage'] && $cmsData['cmsSections']->isNotEmpty()) {
-            return view('public.cms.page', [
-                'page' => $cmsData['cmsPage'],
-                'sections' => $cmsData['cmsSections'],
-            ]);
-        }
-
         $filter = request('filter'); // 'galeria', 'projetos', or album name
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
 
@@ -70,6 +61,8 @@ class PublicGalleryController extends Controller
 
         $totalGallery  = $galleryItems->count();
         $totalProjects = $projectItems->count();
+
+        $cmsData = $this->loadCmsPage('galeria');
 
         return view('gallery.index', array_merge(compact(
             'allItems', 'filter', 'filterOptions', 'settings',
