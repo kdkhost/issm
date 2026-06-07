@@ -72,18 +72,6 @@ class HomeController extends Controller
 
         $cmsData = $this->loadCmsPage('inicio');
 
-        if ($cmsData['cmsPage']) {
-            return view('public.cms.page', array_merge(
-                ['page' => $cmsData['cmsPage'], 'sections' => $cmsData['cmsSections']],
-                compact(
-                    'banners', 'featuredProjects', 'latestNews', 'odsList',
-                    'teamMembers', 'partners', 'galleryItems', 'settings', 'homeStats',
-                    'testimonials', 'faqs'
-                ),
-                $cmsData
-            ));
-        }
-
         return view('home', array_merge(compact(
             'banners', 'featuredProjects', 'latestNews', 'odsList',
             'teamMembers', 'partners', 'galleryItems', 'settings', 'homeStats',
