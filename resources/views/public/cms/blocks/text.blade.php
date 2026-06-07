@@ -17,7 +17,7 @@
                 {!! $content !!}
             </div>
             @else
-            @foreach($blocks as $block)
+            @foreach($blocks ?? [] as $block)
             @if($block->content)
             <div class="prose prose-green prose-lg max-w-none text-gray-700">
                 {!! $block->content !!}

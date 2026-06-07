@@ -18,12 +18,13 @@
 @section("content")
 @if($page && $sections && $sections->count() > 0)
     @foreach($sections as $section)
-        @if($section->is_active && $section->blocks->isNotEmpty())
-            @foreach($section->blocks as $block)
+        @php $blocks = $section->blocks; @endphp
+        @if($section->is_active && $blocks->isNotEmpty())
+            @foreach($blocks as $block)
                 @if($block->is_active)
                     @php $t = $block->type ?? 'text'; @endphp
                     @if(view()->exists("public.cms.blocks.{$t}"))
-                        @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => $section])
+                        @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => $section, 'blocks' => $blocks])
                     @endif
                 @endif
             @endforeach

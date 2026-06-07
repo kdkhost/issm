@@ -53,7 +53,7 @@
                 </div>
             </div>
             @empty
-            @foreach($blocks as $block)
+            @foreach($blocks ?? [] as $block)
             <div class="{{ $cardBg }} rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100 p-6">
                 @if($block->title)
                 <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $block->title }}</h3>

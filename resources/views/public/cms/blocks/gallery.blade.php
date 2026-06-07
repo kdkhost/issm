@@ -40,7 +40,7 @@
                 @endif
             </div>
             @empty
-            @foreach($blocks as $block)
+            @foreach($blocks ?? [] as $block)
             @if($block->content && file_exists(public_path("media/" . $block->content)))
             <div class="group relative overflow-hidden rounded-lg shadow-sm hover:shadow-md">
                 <img src="{{ asset("media/" . $block->content) }}" alt="{{ $block->title ?? "" }}" class="w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105">

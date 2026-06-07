@@ -34,19 +34,7 @@
                 </div>
             </div>
             @empty
-            @foreach($blocks as $block)
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none" aria-expanded="false">
-                    <span class="font-semibold text-gray-800 pr-4">{{ $block->title ?? "Pergunta" }}</span>
-                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="faq-answer px-4 sm:px-5 pb-4 sm:pb-5 hidden">
-                    <div class="text-gray-600 leading-relaxed">{{ strip_tags($block->content) }}</div>
-                </div>
-            </div>
-            @endforeach
+            <p class="text-gray-400 text-center py-4">Nenhuma pergunta cadastrada.</p>
             @endforelse
         </div>
     </div>

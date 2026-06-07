@@ -1,10 +1,11 @@
 @if(isset($cmsSections) && $cmsSections->isNotEmpty())
     @foreach($cmsSections as $section)
-        @if($section->blocks->isNotEmpty())
-            @foreach($section->blocks as $block)
+        @php $blocks = $section->blocks; @endphp
+        @if($blocks->isNotEmpty())
+            @foreach($blocks as $block)
                 @php $t = $block->type ?? 'text'; @endphp
                 @if(view()->exists("public.cms.blocks.{$t}"))
-                    @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => $section])
+                    @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => $section, 'blocks' => $blocks])
                 @endif
             @endforeach
         @endif
@@ -13,7 +14,7 @@
     @foreach($cmsBlocks as $block)
         @php $t = $block->type ?? 'text'; @endphp
         @if(view()->exists("public.cms.blocks.{$t}"))
-            @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => null])
+            @include("public.cms.blocks.{$t}", ['block' => $block, 'section' => null, 'blocks' => $cmsBlocks])
         @endif
     @endforeach
 @endif
