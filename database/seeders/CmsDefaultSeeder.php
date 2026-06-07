@@ -59,10 +59,10 @@ class CmsDefaultSeeder extends Seeder
 
                 foreach ($menuItems as $item) {
                     DB::table('cms_menu_items')->insert([
-                        'menu_id' => $menuId,
-                        'label' => $item['label'],
+                        'cms_menu_id' => $menuId,
+                        'title' => $item['label'],
                         'route' => $item['route'],
-                        'order' => $item['order'],
+                        'sort_order' => $item['order'],
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
