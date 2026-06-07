@@ -29,8 +29,6 @@
     </div>
 </div>
 
-@include("public.cms._sections")
-
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article class="bg-white rounded-[32px] overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100">
         @if($project->image)

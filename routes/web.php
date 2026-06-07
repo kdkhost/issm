@@ -46,11 +46,11 @@ Route::get('/sobre', [PublicAboutController::class, 'index'])->name('about.index
 Route::get('/ods', [PublicOdsController::class, 'index'])->name('ods.index');
 Route::get('/galeria', [PublicGalleryController::class, 'index'])->name('gallery.index');
 Route::get('/noticias', [PublicNewsController::class, 'index'])->name('news.index');
-Route::get('/noticias/{slug}', [PublicNewsController::class, 'show'])->name('news.show')->where('slug', '[a-z0-9-]+');
+Route::get('/noticias/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
 Route::get('/projetos', [PublicProjectController::class, 'index'])->name('projects.index');
-Route::get('/projetos/{slug}', [PublicProjectController::class, 'show'])->name('projects.show')->where('slug', '[a-z0-9-]+');
+Route::get('/projetos/{slug}', [PublicProjectController::class, 'show'])->name('projects.show');
 Route::post('/contato', [ContactFormController::class, 'store'])->name('contact.store');
-Route::get('/pagina/{slug}', [PublicPageController::class, 'show'])->name('pages.show')->where('slug', '[a-z0-9-]+');
+Route::get('/pagina/{slug}', [PublicPageController::class, 'show'])->name('pages.show');
 Route::get('/transparencia', [PublicTransparencyController::class, 'index'])->name('transparency.index');
 Route::get('/contato', [PublicContactController::class, 'index'])->name('contact.index');
 
@@ -97,7 +97,7 @@ Route::get('/sitemap.xml', [CmsPublicController::class, 'sitemap'])->name('cms.s
 Route::get('/robots.txt', [CmsPublicController::class, 'robotsTxt'])->name('cms.robots');
 
 // CMS Redirect Handler (must be near the end to not interfere)
-Route::get('/r/{from}', [CmsPublicController::class, 'redirect'])->name('cms.redirect')->where('from', '.*');
+Route::get('/r/{from}', [CmsPublicController::class, 'redirect'])->name('cms.redirect');
 
-// CMS Páginas Dinâmicas (root-level, must be LAST - catches unmatched slugs)
-Route::get('/{slug}', [CmsPublicController::class, 'show'])->name('cms.page')->where('slug', '[a-z0-9-]+');
+// CMS Páginas Dinâmicas (catch-all for CMS-managed pages)
+Route::get('/cms/{slug}', [CmsPublicController::class, 'show'])->name('cms.page');

@@ -58,8 +58,6 @@
     </div>
 </div>
 
-@include("public.cms._sections")
-
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" style="margin-bottom: 80px;">

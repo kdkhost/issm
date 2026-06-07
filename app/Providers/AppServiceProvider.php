@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\CmsMenu;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,32 +35,6 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('pt_BR');
         setlocale(LC_TIME, 'pt_BR.UTF-8', 'pt_BR', 'portuguese');
         $this->configureMailFromDatabase();
-        $this->shareCmsMenus();
-    }
-
-    private function shareCmsMenus(): void
-    {
-        try {
-            if (!Schema::hasTable('cms_menus')) {
-                return;
-            }
-
-            $locations = ['header', 'sidebar', 'bottom', 'footer'];
-            $cmsMenus = [];
-
-            foreach ($locations as $location) {
-                $cmsMenus[$location] = CmsMenu::where('location', $location)
-                    ->where('is_active', true)
-                    ->with(['items' => function ($q) {
-                        $q->where('is_active', true)->orderBy('sort_order');
-                    }])
-                    ->first();
-            }
-
-            View::share('cmsMenus', $cmsMenus);
-        } catch (\Throwable $e) {
-            // Table might not exist yet during migrations
-        }
     }
 
     /**
