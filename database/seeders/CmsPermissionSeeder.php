@@ -30,13 +30,13 @@ class CmsPermissionSeeder extends Seeder
                 // Media
                 'cms.media.view', 'cms.media.upload', 'cms.media.edit', 'cms.media.delete',
                 // SEO
-                'cms.seo.view', 'cms.seo.edit',
+                'cms.seo.view', 'cms.seo.edit', 'cms.seo.update',
                 // Audit
                 'cms.audit.view',
                 // Settings
                 'cms.settings.view', 'cms.settings.edit',
                 // Cache
-                'cms.cache.clear',
+                'cms.cache.view', 'cms.cache.clear',
                 // Versions
                 'cms.versions.view', 'cms.versions.restore',
                 // Menus
@@ -50,7 +50,18 @@ class CmsPermissionSeeder extends Seeder
             $adminRole = Role::firstOrCreate(['name' => 'admin']);
             $adminRole->givePermissionTo($permissions);
 
-            $this->command->info('CMS permissions created successfully. Total: ' . count($permissions));
+            // Assign admin role to all existing admin users
+            $adminUsers = \App\Models\User::where('is_admin', true)->whereDoesntHave('roles')->get();
+            foreach ($adminUsers as $user) {
+                $user->assignRole('admin');
+            }
+
+            $count = count($permissions);
+            $assigned = $adminUsers->count();
+            $this->command->info("CMS permissions created successfully. Total: {$count}");
+            if ($assigned > 0) {
+                $this->command->info("Admin role assigned to {$assigned} existing user(s).");
+            }
         } catch (\Exception $e) {
             $this->command->error('Error creating CMS permissions: ' . $e->getMessage());
         }
