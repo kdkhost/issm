@@ -6,13 +6,13 @@
 @push("scripts")
 <script>
 $(function() {
-    $(".show-diff").on("click", function() {
-        var versionId = $(this).data("id");
+    $(".show-diff:not([disabled])").on("click", function() {
+        var v2 = $(this).data("id");
         var v1 = $(this).data("v1");
         var modal = $("#diff-modal");
         modal.find("#diff-content").html('<div class="text-center text-gray-400 py-4">Carregando...</div>');
         modal.removeClass("hidden");
-        $.get("{{ route("admin.cms.versions.diff") }}?version_id_1=" + v1 + "&version_id_2=" + versionId, function(data) {
+        $.get("{{ route("admin.cms.versions.diff") }}?version_id_1=" + v1 + "&version_id_2=" + v2, function(data) {
             modal.find("#diff-content").html(data);
         });
     });
@@ -48,6 +48,7 @@ $(function() {
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
+                @php $prevId = null; @endphp
                 @forelse($versions as $version)
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-4 py-3 text-gray-600 text-sm font-mono">v{{ $version->version_number ?? $loop->iteration }}</td>
@@ -57,14 +58,15 @@ $(function() {
                     <td class="px-4 py-3 hidden md:table-cell"><span class="badge-gray">{{ ucfirst($version->module ?? "page") }}</span></td>
                     <td class="px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center gap-1">
-                            <button type="button" class="show-diff text-blue-600 hover:text-blue-800 text-sm font-medium px-1" data-id="{{ $version->id }}">Diff</button>
+                            <button type="button" class="show-diff text-blue-600 hover:text-blue-800 text-sm font-medium px-1 @if(!$prevId) opacity-30 cursor-not-allowed @endif" data-id="{{ $version->id }}" data-v1="{{ $prevId ?? '' }}" @if(!$prevId) disabled @endif>Diff</button>
                             <form method="POST" action="{{ route("admin.cms.versions.restore", $version) }}" class="inline">
                                 @csrf
-                                <button type="submit" class="text-green-600 hover:text-green-800 text-sm font-medium px-1" data-tooltip="Restaurar esta versão">Restaurar</button>
+                                <button type="submit" class="text-green-600 hover:text-green-800 text-sm font-medium px-1">Restaurar</button>
                             </form>
                         </div>
                     </td>
                 </tr>
+                @php $prevId = $version->id; @endphp
                 @empty
                 <tr><td colspan="6" class="px-6 py-10 text-center text-gray-400">Nenhuma versão encontrada.</td></tr>
                 @endforelse
