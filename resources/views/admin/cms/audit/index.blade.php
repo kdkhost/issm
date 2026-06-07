@@ -72,7 +72,7 @@
             <tbody class="divide-y divide-gray-100">
                 @forelse($audits as $audit)
                 <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="px-4 py-3 text-gray-600 text-sm whitespace-nowrap">{{ $audit->created_at->format("d/m/Y H:i:s") }}</td>
+                    <td class="px-4 py-3 text-gray-600 text-sm whitespace-nowrap">{{ optional($audit->created_at)->format("d/m/Y H:i:s") ?? '-' }}</td>
                     <td class="px-4 py-3 text-gray-900 text-sm font-medium">{{ $audit->user?->name ?? "Sistema" }}</td>
                     <td class="px-4 py-3">
                         <span class="px-2 py-0.5 rounded-full text-xs font-medium
