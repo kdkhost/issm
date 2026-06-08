@@ -396,6 +396,7 @@ class CmsPageDefinitions
                 'fields' => [
                     ['field_key' => 'title', 'field_label' => 'Título', 'field_type' => 'text', 'default_value' => 'Portal da Transparência', 'sort_order' => 1],
                     ['field_key' => 'subtitle', 'field_label' => 'Subtítulo', 'field_type' => 'textarea', 'default_value' => 'Compromisso com a integridade e a prestação de contas à sociedade.', 'sort_order' => 2],
+                    ['field_key' => 'stat_text', 'field_label' => 'Texto do stat', 'field_type' => 'text', 'default_value' => 'Documentação Oficial', 'sort_order' => 3],
                 ],
             ],
             [

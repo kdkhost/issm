@@ -47,12 +47,12 @@
                 <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ $item->excerpt ?? Str::limit(strip_tags($item->content), 120) }}</p>
                 <div class="flex justify-between items-center">
                     <span class="text-xs text-gray-400">{{ $item->published_at ? $item->published_at->format("d/m/Y") : "" }}</span>
-                    <a href="{{ route("news.show", $item->slug) }}" class="text-green-700 hover:text-green-900 font-medium text-sm">Ler mais</a>
+                    <a href="{{ route("news.show", $item->slug) }}" class="text-green-700 hover:text-green-900 font-medium text-sm">{{ cms('news', 'list', 'card_cta', 'Ler mais') }}</a>
                 </div>
             </div>
         </article>
         @empty
-        <div class="col-span-3 text-center py-16 text-gray-400">Nenhuma noticia publicada ainda.</div>
+        <div class="col-span-3 text-center py-16 text-gray-400">{{ cms('news', 'list', 'empty_message', 'Nenhuma notícia publicada ainda.') }}</div>
         @endforelse
     </div>
     <div class="mt-8">{{ $news->links() }}</div>

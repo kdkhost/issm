@@ -52,11 +52,11 @@
                     @endforeach
                 </div>
                 @endif
-                <a href="{{ route("projects.show", $project->slug) }}" class="text-green-700 hover:text-green-900 font-medium text-sm">Saiba mais</a>
+                <a href="{{ route("projects.show", $project->slug) }}" class="text-green-700 hover:text-green-900 font-medium text-sm">{{ cms('projects', 'list', 'card_cta', 'Saiba mais') }}</a>
             </div>
         </article>
         @empty
-        <div class="col-span-3 text-center py-16 text-gray-400">Nenhum projeto publicado ainda.</div>
+        <div class="col-span-3 text-center py-16 text-gray-400">{{ cms('projects', 'list', 'empty_message', 'Nenhum projeto publicado ainda.') }}</div>
         @endforelse
     </div>
     <div class="mt-8">{{ $projects->links() }}</div>
