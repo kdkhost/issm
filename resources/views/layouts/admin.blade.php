@@ -106,22 +106,101 @@
         [data-theme="dark"] .drop-zone--error { border-color: #ef4444; background: rgba(239,68,68,0.08); }
         [data-theme="dark"] .drop-zone--uploading { border-color: #60a5fa; background: rgba(96,165,250,0.08); }
 
-        /* ═══ IMPROVED INPUTS ═══ */
-        input[type="text"], input[type="email"], input[type="password"], input[type="number"],
-        input[type="date"], input[type="datetime-local"], input[type="url"], input[type="tel"],
-        textarea, select {
-            transition: border-color 0.2s, box-shadow 0.2s !important;
+        /* ═══ FORM GLOBAL STYLES ═══ */
+        /* Labels */
+        .form-label, body.admin-page form label:not(.custom-control-label):not(.form-check-label):not(.note-form-label) {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #374151;
+            margin-bottom: 6px;
         }
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus,
-        input[type="number"]:focus, input[type="date"]:focus, input[type="datetime-local"]:focus,
-        input[type="url"]:focus, input[type="tel"]:focus, textarea:focus, select:focus {
+        [data-theme="dark"] .form-label,
+        [data-theme="dark"] body.admin-page form label:not(.custom-control-label):not(.form-check-label):not(.note-form-label) {
+            color: #d1d5db;
+        }
+
+        /* Inputs, selects, textareas global reset (exclui summernote) */
+        body.admin-page input[type="text"], body.admin-page input[type="email"],
+        body.admin-page input[type="password"], body.admin-page input[type="number"],
+        body.admin-page input[type="date"], body.admin-page input[type="datetime-local"],
+        body.admin-page input[type="url"], body.admin-page input[type="tel"],
+        body.admin-page input[type="file"],
+        body.admin-page textarea:not(.note-codable):not(.note-editor), /* exclui wysiwyg */
+        body.admin-page select {
+            background-color: #ffffff !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 10px !important;
+            padding: 10px 14px !important;
+            font-size: 14px !important;
+            color: #111827 !important;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
+            width: 100%;
+            min-height: 44px;
+        }
+        body.admin-page textarea:not(.note-codable):not(.note-editor) { min-height: 120px; resize: vertical; }
+        body.admin-page select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 12px center; background-repeat: no-repeat; background-size: 16px; padding-right: 40px !important; }
+
+        body.admin-page input:focus, body.admin-page textarea:focus, body.admin-page select:focus {
             outline: none !important;
             border-color: #16a34a !important;
             box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12) !important;
         }
-        [data-theme="dark"] input:focus, [data-theme="dark"] textarea:focus, [data-theme="dark"] select:focus {
+        body.admin-page input::placeholder, body.admin-page textarea::placeholder { color: #9ca3af !important; }
+
+        [data-theme="dark"] body.admin-page input[type="text"], [data-theme="dark"] body.admin-page input[type="email"],
+        [data-theme="dark"] body.admin-page input[type="password"], [data-theme="dark"] body.admin-page input[type="number"],
+        [data-theme="dark"] body.admin-page input[type="date"], [data-theme="dark"] body.admin-page input[type="datetime-local"],
+        [data-theme="dark"] body.admin-page input[type="url"], [data-theme="dark"] body.admin-page input[type="tel"],
+        [data-theme="dark"] body.admin-page input[type="file"],
+        [data-theme="dark"] body.admin-page textarea:not(.note-codable):not(.note-editor),
+        [data-theme="dark"] body.admin-page select {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #f9fafb !important;
+        }
+        [data-theme="dark"] body.admin-page input:focus, [data-theme="dark"] body.admin-page textarea:focus, [data-theme="dark"] body.admin-page select:focus {
             border-color: #22c55e !important;
             box-shadow: 0 0 0 3px rgba(34,197,94,0.15) !important;
+        }
+        [data-theme="dark"] body.admin-page input::placeholder, [data-theme="dark"] body.admin-page textarea::placeholder { color: #9ca3af !important; }
+
+        /* Checkboxes & radios */
+        input[type="checkbox"], input[type="radio"] {
+            width: 18px; height: 18px; accent-color: #16a34a; cursor: pointer;
+        }
+
+        /* Form groups */
+        .form-group { margin-bottom: 20px; }
+
+        /* Required asterisk */
+        .form-label .required, label .required { color: #dc2626; margin-left: 2px; }
+
+        /* Form cards (white bg sections inside forms) */
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+        .form-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        [data-theme="dark"] .form-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        [data-theme="dark"] .form-card-title {
+            color: #f9fafb;
+            border-color: #374151;
         }
 
         /* ═══ BADGE / PILL ═══ */
@@ -329,7 +408,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 admin-page">
 
 <div class="flex h-screen overflow-hidden">
 
