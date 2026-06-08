@@ -43,6 +43,12 @@
 
 - Adicionada dependencia `google/apiclient` ao `composer.json` que estava faltando. Sem ela, a integracao com Google Drive falhava com erro `Class "Google\Client" not found` no servidor
 
+## [1.1.2] - 2026-06-08 (teste OK)
+
+### Testado
+
+- Sincronizacao executada com sucesso no servidor de producao. Resultado: 2 pastas (`Atas 2026`, `Estatuto 2025`) e 2 documentos criados automaticamente no Portal da Transparencia. Integracao Google Drive operacional
+
 ## [1.1.2] - 2026-06-08 (melhoria docs)
 
 ### Atualizado
