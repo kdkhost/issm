@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\CronController;
 use App\Http\Controllers\Admin\CmsPublicPageController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
@@ -98,6 +99,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('menu-site', [FrontendMenuController::class, 'index'])->name('frontend-menu.index');
     Route::post('menu-site/ordenar', [FrontendMenuController::class, 'updateOrder'])->name('frontend-menu.update-order');
     Route::get('menu-site/render', [FrontendMenuController::class, 'renderMenu'])->name('frontend-menu.render');
+
+    // Central de Cron
+    Route::get('cron', [CronController::class, 'index'])->name('cron.index');
+    Route::put('cron/{task}', [CronController::class, 'update'])->name('cron.update');
+    Route::post('cron/{task}/toggle', [CronController::class, 'toggle'])->name('cron.toggle');
+    Route::post('cron/{task}/run', [CronController::class, 'runNow'])->name('cron.run');
 
     // CMS Routes
 });

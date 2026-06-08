@@ -49,6 +49,19 @@
 
 - Sincronizacao executada com sucesso no servidor de producao. Resultado: 2 pastas (`Atas 2026`, `Estatuto 2025`) e 2 documentos criados automaticamente no Portal da Transparencia. Integracao Google Drive operacional
 
+## [1.1.2] - 2026-06-08 (Central de Cron)
+
+### Adicionado
+
+- **Central de Cron** — painel administrativo para gerenciamento de tarefas agendadas
+- Tabela `scheduled_tasks` armazena comando, descricao, frequencia e status (ativo/inativo)
+- `app/Console/Kernel.php` le tasks ativas do banco e agenda automaticamente no Laravel Scheduler
+- Controller `Admin\CronController` com listagem, edicao de frequencia, ativar/desativar e executar manualmente
+- View `admin/cron/index.blade.php` com interface para controle total das tarefas
+- Link **Central de Cron** na sidebar do admin (secao Sistema)
+- Frequencias suportadas: a cada minuto, a cada hora, diario, semanal, mensal
+- Sem necessidade de trafego HTTP — o servidor executa `php artisan schedule:run` a cada minuto e o sistema decide internamente quais comandos rodar
+
 ## [1.1.2] - 2026-06-08 (melhoria docs)
 
 ### Atualizado

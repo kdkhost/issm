@@ -6,6 +6,7 @@ use App\Console\Commands\CmsAuditPublicPageFields;
 use App\Console\Commands\CmsMapPublicPages;
 use App\Console\Commands\CmsSyncPublicPageDefaults;
 use App\Console\Commands\SyncTransparencyFromDrive;
+use App\Models\ScheduledTask;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,10 +23,29 @@ class Kernel extends ConsoleKernel
     ];
     /**
      * Define the application's command schedule.
+     * Le as tasks ativas do banco de dados (scheduled_tasks) e agenda automaticamente.
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        try {
+            $tasks = ScheduledTask::where('active', true)->get();
+            foreach ($tasks as $task) {
+                $event = match ($task->frequency) {
+                    'everyMinute' => $schedule->command($task->command)->everyMinute(),
+                    'hourly'      => $schedule->command($task->command)->hourly(),
+                    'daily'       => $schedule->command($task->command)->daily(),
+                    'weekly'      => $schedule->command($task->command)->weekly(),
+                    'monthly'     => $schedule->command($task->command)->monthly(),
+                    default       => $schedule->command($task->command)->daily(),
+                };
+
+                $event->onSuccess(function () use ($task) {
+                    $task->update(['last_run_at' => now()]);
+                });
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Scheduler: falha ao carregar tarefas agendadas do banco: ' . $e->getMessage());
+        }
     }
 
     /**
