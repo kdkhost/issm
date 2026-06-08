@@ -38,6 +38,14 @@
                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">Meta Keywords</label>
                     <input id="mk" name="meta_keywords" type="text" value="{{ old('meta_keywords', $page->seo?->meta_keywords) }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
                 </div>
+                <div>
+                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <span>SEO Tags Persistentes</span>
+                        <span id="cst" class="text-xs">0 tags</span>
+                    </label>
+                    <input id="st" name="seo_tags" type="text" value="{{ old('seo_tags', $page->seo?->seo_tags) }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500" placeholder="#issm, #meioambiente, #sustentabilidade, #ods2030, #floresta, #preservacao">
+                    <p class="text-xs text-gray-500 mt-1">Adicione hashtags separadas por virgula. Essas tags sao combinadas com as keywords para melhorar a indexacao do Google.</p>
+                </div>
             </div>
 
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 space-y-4 border border-gray-100 dark:border-gray-700">
@@ -153,10 +161,10 @@
 (function() {
     const d = document;
     const el = {
-        mt: d.getElementById('mt'), md: d.getElementById('md'), mk: d.getElementById('mk'),
+        mt: d.getElementById('mt'), md: d.getElementById('md'), mk: d.getElementById('mk'), st: d.getElementById('st'),
         ot: d.getElementById('ot'), od: d.getElementById('od'), oi: d.getElementById('oi'),
         cu: d.getElementById('cu'), rm: d.getElementById('rm'),
-        ct: d.getElementById('ct'), cd: d.getElementById('cd'),
+        ct: d.getElementById('ct'), cd: d.getElementById('cd'), cst: d.getElementById('cst'),
         cot: d.getElementById('cot'), cod: d.getElementById('cod'),
         ring: d.getElementById('ring'), sv: d.getElementById('sv'), sl: d.getElementById('sl'), tips: d.getElementById('tips'),
         pgt: d.getElementById('pgt'), pgd: d.getElementById('pgd'),
@@ -174,7 +182,7 @@
         let s = 0, t = [];
         const mt = el.mt.value.trim(), md = el.md.value.trim(), ot = el.ot.value.trim();
         const od = el.od.value.trim(), oi = el.oi.value.trim(), mk = el.mk.value.trim();
-        const cu = el.cu.value.trim(), rm = el.rm.value.trim();
+        const st = el.st.value.trim(), cu = el.cu.value.trim(), rm = el.rm.value.trim();
 
         if (mt) { s += 15; } else { t.push('Adicione um Meta Title'); }
         if (mt.length >= 50 && mt.length <= 60) { s += 10; } else if (mt) { t.push('Meta Title ideal: 50-60 chars (atual: ' + mt.length + ')'); }
@@ -184,6 +192,7 @@
         if (od) { s += 10; } else { t.push('Adicione uma OG Description'); }
         if (oi) { s += 15; } else { t.push('Adicione uma OG Image (1200x630)'); }
         if (mk) { s += 5; } else { t.push('Adicione Meta Keywords'); }
+        if (st) { s += 5; } else { t.push('Adicione SEO Tags persistentes'); }
         if (cu) { s += 5; } else { t.push('Adicione URL Canonica'); }
         if (rm) { s += 5; } else { t.push('Defina Robots Meta'); }
 
@@ -213,6 +222,9 @@
     function run() {
         cnt(el.ct, el.mt.value.length, 50, 60);
         cnt(el.cd, el.md.value.length, 120, 160);
+        const tagCount = el.st.value.split(',').filter(x => x.trim()).length;
+        el.cst.textContent = tagCount + ' tag' + (tagCount !== 1 ? 's' : '');
+        el.cst.style.color = tagCount > 0 ? '#16a34a' : '#9ca3af';
         cnt(el.cot, el.ot.value.length, 50, 60);
         cnt(el.cod, el.od.value.length, 100, 200);
         score(); preview();
@@ -221,7 +233,7 @@
     ['input', 'change', 'keyup'].forEach(e => {
         el.mt.addEventListener(e, run); el.md.addEventListener(e, run);
         el.ot.addEventListener(e, run); el.od.addEventListener(e, run);
-        el.oi.addEventListener(e, run); el.mk.addEventListener(e, run);
+        el.oi.addEventListener(e, run); el.mk.addEventListener(e, run); el.st.addEventListener(e, run);
         el.cu.addEventListener(e, run); el.rm.addEventListener(e, run);
     });
     run();

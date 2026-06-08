@@ -28,6 +28,7 @@ class PageController extends Controller
             'content' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'seo_tags' => 'nullable|string|max:500',
             'og_title' => 'nullable|string|max:255',
             'og_description' => 'nullable|string',
             'og_image' => 'nullable|string|max:255',
@@ -64,6 +65,7 @@ class PageController extends Controller
             'content' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'seo_tags' => 'nullable|string|max:500',
             'og_title' => 'nullable|string|max:255',
             'og_description' => 'nullable|string',
             'og_image' => 'nullable|string|max:255',
@@ -109,6 +111,7 @@ class PageController extends Controller
         if (trim($mk)) { $score += 5; }
         if (trim($cu)) { $score += 5; }
         if (trim($rm)) { $score += 5; }
+        if (trim($data['seo_tags'] ?? '')) { $score += 5; }
 
         return min($score, 100);
     }

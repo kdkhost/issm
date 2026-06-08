@@ -167,6 +167,9 @@ class CmsContentService
         // Robots Meta (5)
         if (trim($rm)) { $score += 5; }
 
+        // SEO Tags persistentes (5)
+        if (trim($data['seo_tags'] ?? '')) { $score += 5; }
+
         return min($score, 100);
     }
 

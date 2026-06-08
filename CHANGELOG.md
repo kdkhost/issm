@@ -71,6 +71,11 @@
   - Campos `og_title`, `og_description`, `og_image`, `canonical_url`, `robots_meta`, `seo_score` na tabela `pages`
   - Preview em tempo real e pontuacao nas telas de criar e editar pagina
   - Calculo de `seo_score` automatico no `PageController`
+- **SEO Tags Persistentes (Hashtags)**
+  - Campo `seo_tags` nas tabelas `cms_public_page_seo` e `pages`
+  - Tags separadas por virgula com contador visual em tempo real
+  - 5 pontos extras na pontuacao SEO quando tags estao presentes
+  - Combina automaticamente com meta keywords para melhor indexacao no Google
 
 ## [1.1.2] - 2026-06-08 (correcao menu admin v2)
 

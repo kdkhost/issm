@@ -10,7 +10,7 @@ class CmsPublicPageSeo extends Model
     protected $table = 'cms_public_page_seo';
 
     protected $fillable = [
-        'page_id', 'meta_title', 'meta_description', 'meta_keywords',
+        'page_id', 'meta_title', 'meta_description', 'meta_keywords', 'seo_tags',
         'og_title', 'og_description', 'og_image', 'canonical_url', 'robots_meta',
         'seo_score',
     ];
