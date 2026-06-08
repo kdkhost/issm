@@ -39,7 +39,15 @@
 </style>
 @endpush
 
+@php
+$cmsPage = cms_page('contact');
+@endphp
+
 @section("content")
+
+@if($cmsPage && $cmsPage->use_custom_html)
+    {!! $cmsPage->custom_html !!}
+@else
 
 {{-- Hero Banner Premium --}}
 <div style="background:linear-gradient(135deg,#166534 0%,#15803d 50%,#059669 100%);padding:56px 0 40px;">
@@ -184,5 +192,7 @@
 </script>
 @endif
 @endpush
+
+@endif
 
 @endsection

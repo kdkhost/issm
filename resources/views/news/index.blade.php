@@ -12,7 +12,15 @@
 </style>
 @endpush
 
+@php
+$cmsPage = cms_page('news');
+@endphp
+
 @section("content")
+
+@if($cmsPage && $cmsPage->use_custom_html)
+    {!! $cmsPage->custom_html !!}
+@else
 
 {{-- Hero Banner Premium --}}
 <div style="background:linear-gradient(135deg,#166534 0%,#15803d 50%,#059669 100%);padding:56px 0 40px;">
@@ -57,4 +65,7 @@
     </div>
     <div class="mt-8">{{ $news->links() }}</div>
 </div>
+
+@endif
+
 @endsection

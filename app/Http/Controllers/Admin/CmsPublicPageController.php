@@ -81,6 +81,42 @@ class CmsPublicPageController extends Controller
             ->with('success', 'SEO atualizado com sucesso!');
     }
 
+    public function editFullHtml(CmsPublicPage $cmsPublicPage)
+    {
+        if (!$cmsPublicPage->is_editable) {
+            return redirect()
+                ->route('admin.cms-public-pages.index')
+                ->with('error', 'Esta página é um modelo dinâmico e não pode ser editada por aqui.');
+        }
+
+        return view('admin.cms-public-pages.edit-full-html', ['page' => $cmsPublicPage]);
+    }
+
+    public function updateFullHtml(Request $request, CmsPublicPage $cmsPublicPage, CmsContentService $cms)
+    {
+        if (!$cmsPublicPage->is_editable) {
+            return redirect()
+                ->route('admin.cms-public-pages.index')
+                ->with('error', 'Página não editável.');
+        }
+
+        $validated = $request->validate([
+            'custom_html' => 'nullable|string',
+            'use_custom_html' => 'boolean',
+        ]);
+
+        $cmsPublicPage->update([
+            'custom_html' => $validated['custom_html'] ?? null,
+            'use_custom_html' => $validated['use_custom_html'] ?? false,
+        ]);
+
+        $cms->clearPageCache($cmsPublicPage);
+
+        return redirect()
+            ->route('admin.cms-public-pages.edit-full-html', $cmsPublicPage)
+            ->with('success', 'HTML completo atualizado com sucesso!');
+    }
+
     public function clearCache(CmsPublicPage $cmsPublicPage, CmsContentService $cms)
     {
         $cms->clearPageCache($cmsPublicPage);

@@ -15,3 +15,10 @@ if (!function_exists('cms_html')) {
         return app(CmsContentService::class)->getHtml($pageKey, $sectionKey, $fieldKey, $default);
     }
 }
+
+if (!function_exists('cms_page')) {
+    function cms_page(string $pageKey): ?\App\Models\CmsPublicPage
+    {
+        return \App\Models\CmsPublicPage::where('page_key', $pageKey)->where('is_active', true)->first();
+    }
+}

@@ -403,7 +403,15 @@ a.partner-logo-wrap { cursor: pointer; }
 </style>
 @endpush
 
+@php
+$cmsPage = cms_page('home');
+@endphp
+
 @section("content")
+
+@if($cmsPage && $cmsPage->use_custom_html)
+    {!! $cmsPage->custom_html !!}
+@else
 
 @if($banners->count() > 0)
 <section class="relative overflow-hidden">
@@ -829,6 +837,8 @@ if (slides.length > 1) {
 })();
 </script>
 @endpush
+@endif
+
 @endif
 
 @endsection

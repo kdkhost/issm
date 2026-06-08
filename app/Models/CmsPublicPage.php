@@ -14,12 +14,14 @@ class CmsPublicPage extends Model
     protected $fillable = [
         'route_name', 'route_uri', 'controller', 'method', 'view_path',
         'page_key', 'title', 'admin_label', 'is_editable', 'is_active',
+        'custom_html', 'use_custom_html',
         'sort_order', 'seo_enabled', 'cache_enabled', 'needs_review', 'last_mapped_at',
     ];
 
     protected $casts = [
         'is_editable' => 'boolean',
         'is_active' => 'boolean',
+        'use_custom_html' => 'boolean',
         'seo_enabled' => 'boolean',
         'cache_enabled' => 'boolean',
         'needs_review' => 'boolean',

@@ -16,6 +16,31 @@
     @endif
 </div>
 
+{{-- Abas --}}
+<div class="flex gap-1 mb-6 border-b border-gray-200">
+    <a href="{{ route('admin.cms-public-pages.edit', $page) }}" class="px-4 py-2 text-sm font-medium text-green-700 border-b-2 border-green-700 bg-green-50 rounded-t-lg">
+        Campos/Seções
+    </a>
+    <a href="{{ route('admin.cms-public-pages.edit-full-html', $page) }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300">
+        HTML Completo
+    </a>
+    @if($page->seo_enabled)
+    <a href="{{ route('admin.cms-public-pages.seo', $page) }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300">
+        SEO
+    </a>
+    @endif
+</div>
+
+@if($page->use_custom_html)
+<div class="mb-4 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-start gap-3">
+    <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+    <div>
+        <p class="text-sm font-medium text-amber-800">Modo HTML Completo ativo</p>
+        <p class="text-xs text-amber-700 mt-1">Esta página está usando HTML personalizado. Os campos abaixo não serão exibidos no site enquanto o modo HTML Completo estiver ativo.</p>
+    </div>
+</div>
+@endif
+
 <form method="POST" action="{{ route('admin.cms-public-pages.update', $page) }}">
     @csrf
     @method('PUT')

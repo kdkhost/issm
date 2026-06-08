@@ -51,6 +51,9 @@
                     @else
                     <span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Modelo</span>
                     @endif
+                    @if($page->use_custom_html)
+                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 ml-1" title="Usando HTML personalizado">HTML</span>
+                    @endif
                     @if($page->cache_enabled)
                     <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 ml-1">Cache</span>
                     @endif
@@ -59,6 +62,7 @@
                     <div class="flex items-center gap-1 flex-wrap">
                         @if($page->is_editable)
                         <a href="{{ route('admin.cms-public-pages.edit', $page) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
+                        <a href="{{ route('admin.cms-public-pages.edit-full-html', $page) }}" class="text-amber-600 hover:text-amber-800 text-sm font-medium px-1">HTML</a>
                         <a href="{{ route('admin.cms-public-pages.seo', $page) }}" class="text-purple-600 hover:text-purple-800 text-sm font-medium px-1">SEO</a>
                         @endif
                         @if($page->publicUrl())
