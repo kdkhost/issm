@@ -61,6 +61,7 @@
 - Link **Central de Cron** na sidebar do admin (secao Sistema)
 - Frequencias suportadas: a cada minuto, a cada hora, diario, semanal, mensal
 - Sem necessidade de trafego HTTP — o servidor executa `php artisan schedule:run` a cada minuto e o sistema decide internamente quais comandos rodar
+- Cron principal registrado no servidor de producao: `* * * * * cd /home/issmorg/public_html && php artisan schedule:run`
 
 ## [1.1.2] - 2026-06-08 (melhoria docs)
 
