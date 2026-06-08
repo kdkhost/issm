@@ -56,6 +56,9 @@ $g3 = cms('contact', 'hero', 'gradient_end', '#059669');
 $bcColor = cms('contact', 'hero', 'breadcrumb_color', '#86efac');
 $titleHighlight = cms('contact', 'hero', 'title_highlight', 'Conosco');
 $titleColor = cms('contact', 'hero', 'title_highlight_color', '#86efac');
+$titleUseGradient = cms('contact', 'hero', 'title_use_gradient', '') === '1';
+$titleGradStart = cms('contact', 'hero', 'title_gradient_start', '#86efac');
+$titleGradEnd = cms('contact', 'hero', 'title_gradient_end', '#34d399');
 $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
 @endphp
 
@@ -70,7 +73,7 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
         @php
             $fullTitle = cms('contact', 'hero', 'title', 'Fale Conosco');
         @endphp
-        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
+        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
             @if($titleHighlight && str_contains($fullTitle, $titleHighlight))
                 {!! str_replace($titleHighlight, '<span style="color:'.$titleColor.'">'.$titleHighlight.'</span>', e($fullTitle)) !!}
             @else

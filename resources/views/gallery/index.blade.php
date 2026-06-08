@@ -126,6 +126,9 @@ $g3 = cms('gallery', 'hero', 'gradient_end', '#059669');
 $bcColor = cms('gallery', 'hero', 'breadcrumb_color', '#86efac');
 $titleHighlight = cms('gallery', 'hero', 'title_highlight', '');
 $titleColor = cms('gallery', 'hero', 'title_highlight_color', '#86efac');
+$titleUseGradient = cms('gallery', 'hero', 'title_use_gradient', '') === '1';
+$titleGradStart = cms('gallery', 'hero', 'title_gradient_start', '#86efac');
+$titleGradEnd = cms('gallery', 'hero', 'title_gradient_end', '#34d399');
 $subColor = cms('gallery', 'hero', 'subtitle_color', '#bbf7d0');
 $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 @endphp
@@ -144,7 +147,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span style="color:#fff;">{{ cms('gallery', 'hero', 'breadcrumb', 'Galeria') }}</span>
         </div>
-        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
+        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
             @if($titleHighlight && str_contains($fullTitle, $titleHighlight))
                 {!! str_replace($titleHighlight, '<span style="color:'.$titleColor.'">'.$titleHighlight.'</span>', e($fullTitle)) !!}
             @else

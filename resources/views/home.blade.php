@@ -457,6 +457,9 @@ $bg3 = cms('home', 'hero', 'gradient_end', '#059669');
     $tl1c = cms('home', 'hero', 'title_line1_color', '#ffffff');
     $tl2c = cms('home', 'hero', 'title_line2_color', '#86efac');
     $subc = cms('home', 'hero', 'subtitle_color', '#d1fae5');
+    $titleUseGradient = cms('home', 'hero', 'title_use_gradient', '') === '1';
+    $titleGradStart = cms('home', 'hero', 'title_gradient_start', '#86efac');
+    $titleGradEnd = cms('home', 'hero', 'title_gradient_end', '#34d399');
 @endphp
 <section
     style="position:relative;min-height:500px;display:flex;align-items:center;overflow:hidden;
@@ -474,7 +477,13 @@ $bg3 = cms('home', 'hero', 'gradient_end', '#059669');
         rgba(5,150,105,{{ $heroAlpha * 0.75 }}));z-index:1;"></div>
     @endif
     <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:5rem 1rem;text-align:center;width:100%;">
+        @if($titleUseGradient)
+        <h1 class="text-4xl lg:text-6xl font-black leading-tight mb-4" style="-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,{{ $titleGradStart }},{{ $titleGradEnd }});background-clip:text;">
+            {{ cms('home', 'hero', 'title_line1', 'Instituto Socioambiental') }}<br>{{ cms('home', 'hero', 'title_line2', 'Serra do Mendanha') }}
+        </h1>
+        @else
         <h1 class="text-4xl lg:text-6xl font-black leading-tight mb-4"><span style="color:{{ $tl1c }}">{{ cms('home', 'hero', 'title_line1', 'Instituto Socioambiental') }}</span><br><span style="color:{{ $tl2c }}">{{ cms('home', 'hero', 'title_line2', 'Serra do Mendanha') }}</span></h1>
+        @endif
         <p class="text-xl mb-8" style="color:{{ $subc }}">{{ cms('home', 'hero', 'subtitle', 'Comprometidos com a preservacao ambiental e o desenvolvimento sustentavel') }}</p>
         <a href="{{ cms('home', 'hero', 'cta_url', '/sobre') }}" class="inline-block bg-white text-green-800 font-bold px-8 py-3 rounded-full hover:bg-green-50 shadow-lg">{{ cms('home', 'hero', 'cta_text', 'Conheca o ISSM') }}</a>
     </div>

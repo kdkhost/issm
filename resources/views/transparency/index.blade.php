@@ -29,6 +29,9 @@ $g3 = cms('transparency', 'hero', 'gradient_end', '#059669');
 $bcColor = cms('transparency', 'hero', 'breadcrumb_color', '#86efac');
 $titleHighlight = cms('transparency', 'hero', 'title_highlight', 'Transparência');
 $titleColor = cms('transparency', 'hero', 'title_highlight_color', '#86efac');
+$titleUseGradient = cms('transparency', 'hero', 'title_use_gradient', '') === '1';
+$titleGradStart = cms('transparency', 'hero', 'title_gradient_start', '#86efac');
+$titleGradEnd = cms('transparency', 'hero', 'title_gradient_end', '#34d399');
 $subColor = cms('transparency', 'hero', 'subtitle_color', '#bbf7d0');
 @endphp
 
@@ -43,7 +46,7 @@ $subColor = cms('transparency', 'hero', 'subtitle_color', '#bbf7d0');
         @php
             $fullTitle = cms('transparency', 'hero', 'title', 'Portal da Transparência');
         @endphp
-        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
+        <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
             @if($titleHighlight && str_contains($fullTitle, $titleHighlight))
                 {!! str_replace($titleHighlight, '<span style="color:'.$titleColor.'">'.$titleHighlight.'</span>', e($fullTitle)) !!}
             @else
