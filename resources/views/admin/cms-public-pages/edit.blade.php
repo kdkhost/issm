@@ -45,6 +45,86 @@
     @csrf
     @method('PUT')
 
+    @php
+    $heroFields = $page->fields->where('section_key', 'hero')->keyBy('field_key');
+    $heroVal = fn($key, $default = '') => $heroFields->get($key)?->field_value ?? $default;
+    @endphp
+
+    {{-- Configuracoes do Banner --}}
+    <div class="form-card mb-6">
+        <h3 class="form-card-title">Configuracoes do Banner</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="form-group">
+                <label class="form-label">Titulo do Banner</label>
+                <input type="text" name="hero[title]" value="{{ $heroVal('title') }}" class="form-input" placeholder="Ex: Nossos Projetos">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Palavra em Destaque <small class="text-gray-400 font-normal">(dentro do titulo)</small></label>
+                <input type="text" name="hero[title_highlight]" value="{{ $heroVal('title_highlight') }}" class="form-input" placeholder="Ex: Projetos">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cor da Palavra Destacada</label>
+                <div class="flex items-center gap-2">
+                    <input type="color" name="hero[title_highlight_color]" value="{{ $heroVal('title_highlight_color', '#86efac') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                    <input type="text" name="hero[title_highlight_color]" value="{{ $heroVal('title_highlight_color', '#86efac') }}" class="form-input flex-1" placeholder="#86efac">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cor do Breadcrumb</label>
+                <div class="flex items-center gap-2">
+                    <input type="color" name="hero[breadcrumb_color]" value="{{ $heroVal('breadcrumb_color', '#86efac') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                    <input type="text" name="hero[breadcrumb_color]" value="{{ $heroVal('breadcrumb_color', '#86efac') }}" class="form-input flex-1" placeholder="#86efac">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cor do Subtitulo</label>
+                <div class="flex items-center gap-2">
+                    <input type="color" name="hero[subtitle_color]" value="{{ $heroVal('subtitle_color', '#bbf7d0') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                    <input type="text" name="hero[subtitle_color]" value="{{ $heroVal('subtitle_color', '#bbf7d0') }}" class="form-input flex-1" placeholder="#bbf7d0">
+                </div>
+            </div>
+            <div class="form-group md:col-span-2 border-t border-gray-100 pt-4 mt-2">
+                <label class="form-label">Gradiente do Fundo</label>
+                <div class="flex items-center gap-3 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <input type="color" name="hero[gradient_start]" value="{{ $heroVal('gradient_start', '#166534') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <input type="text" name="hero[gradient_start]" value="{{ $heroVal('gradient_start', '#166534') }}" class="form-input w-28" placeholder="#166534">
+                    </div>
+                    <span class="text-gray-400">→</span>
+                    <div class="flex items-center gap-2">
+                        <input type="color" name="hero[gradient_mid]" value="{{ $heroVal('gradient_mid', '#15803d') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <input type="text" name="hero[gradient_mid]" value="{{ $heroVal('gradient_mid', '#15803d') }}" class="form-input w-28" placeholder="#15803d">
+                    </div>
+                    <span class="text-gray-400">→</span>
+                    <div class="flex items-center gap-2">
+                        <input type="color" name="hero[gradient_end]" value="{{ $heroVal('gradient_end', '#059669') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <input type="text" name="hero[gradient_end]" value="{{ $heroVal('gradient_end', '#059669') }}" class="form-input w-28" placeholder="#059669">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group md:col-span-2 border-t border-gray-100 pt-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="hero[title_use_gradient]" value="1" class="sr-only peer" {{ $heroVal('title_use_gradient') === '1' ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                        <span class="ml-3 text-sm font-medium text-gray-700">Gradiente no texto do titulo</span>
+                    </label>
+                </div>
+                <div class="flex items-center gap-3 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <input type="color" name="hero[title_gradient_start]" value="{{ $heroVal('title_gradient_start', '#86efac') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <input type="text" name="hero[title_gradient_start]" value="{{ $heroVal('title_gradient_start', '#86efac') }}" class="form-input w-28" placeholder="#86efac">
+                    </div>
+                    <span class="text-gray-400">→</span>
+                    <div class="flex items-center gap-2">
+                        <input type="color" name="hero[title_gradient_end]" value="{{ $heroVal('title_gradient_end', '#34d399') }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <input type="text" name="hero[title_gradient_end]" value="{{ $heroVal('title_gradient_end', '#34d399') }}" class="form-input w-28" placeholder="#34d399">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @foreach($page->sections as $section)
     <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
@@ -84,4 +164,18 @@
         <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Salvar Conteúdo</button>
     </div>
 </form>
+@push('scripts')
+<script>
+// Sincroniza inputs color <-> text
+document.querySelectorAll('input[type="color"]').forEach(colorInput => {
+    const name = colorInput.name;
+    const textInput = document.querySelector('input[type="text"][name="' + name + '"');
+    if (textInput) {
+        colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+        textInput.addEventListener('input', () => colorInput.value = textInput.value);
+    }
+});
+</script>
+@endpush
+
 @endsection

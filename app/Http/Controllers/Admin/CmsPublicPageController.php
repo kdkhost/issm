@@ -53,6 +53,31 @@ class CmsPublicPageController extends Controller
 
         $cms->updateFields($cmsPublicPage, $request->input('fields', []));
 
+        // Processa campos hero (aparencia do banner)
+        $heroData = $request->input('hero', []);
+        foreach ($heroData as $fieldKey => $value) {
+            $field = \App\Models\CmsPublicPageField::where('page_id', $cmsPublicPage->id)
+                ->where('section_key', 'hero')
+                ->where('field_key', $fieldKey)
+                ->first();
+            if ($field) {
+                $field->update(['field_value' => $value]);
+            } else {
+                \App\Models\CmsPublicPageField::create([
+                    'page_id' => $cmsPublicPage->id,
+                    'section_key' => 'hero',
+                    'field_key' => $fieldKey,
+                    'field_type' => 'text',
+                    'field_label' => ucwords(str_replace('_', ' ', $fieldKey)),
+                    'field_value' => $value,
+                    'default_value' => '',
+                    'is_required' => false,
+                    'is_editable' => true,
+                    'sort_order' => 0,
+                ]);
+            }
+        }
+
         return redirect()
             ->route('admin.cms-public-pages.edit', $cmsPublicPage)
             ->with('success', 'Conteúdo da página atualizado com sucesso!');
