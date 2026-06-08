@@ -55,6 +55,19 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (SEO Preview + Pontuacao)
+
+### Adicionado
+
+- **Painel SEO interativo** para paginas CMS com:
+  - **Preview em tempo real** do Google SERP, Facebook/LinkedIn e WhatsApp/Telegram
+  - **Pontuacao SEO** (0-100) com anel de progresso colorido e dicas automaticas
+  - **Contadores de caracteres** para Meta Title (50-60 ideal) e Meta Description (120-160 ideal)
+  - **Select de Robots Meta** (index/follow, noindex, etc.)
+  - Tema dark compativel em todos os elementos
+- Campo `seo_score` na tabela `cms_public_page_seo` via migration
+- Calculo automatico de pontuacao no `CmsContentService` ao salvar SEO
+
 ## [1.1.2] - 2026-06-08 (correcao menu admin v2)
 
 ### Corrigido

@@ -12,6 +12,7 @@ class CmsPublicPageSeo extends Model
     protected $fillable = [
         'page_id', 'meta_title', 'meta_description', 'meta_keywords',
         'og_title', 'og_description', 'og_image', 'canonical_url', 'robots_meta',
+        'seo_score',
     ];
 
     public function page(): BelongsTo

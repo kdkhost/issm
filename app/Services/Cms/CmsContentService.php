@@ -116,6 +116,8 @@ class CmsContentService
     {
         $old = $page->seo?->toArray();
 
+        $seoData['seo_score'] = $this->calculateSeoScore($seoData);
+
         CmsPublicPageSeo::updateOrCreate(
             ['page_id' => $page->id],
             $seoData
@@ -123,6 +125,49 @@ class CmsContentService
 
         $this->audit($page, 'update_seo', 'seo', $page->id, $old, $seoData);
         Cache::forget("cms_seo_{$page->page_key}");
+    }
+
+    public function calculateSeoScore(array $data): int
+    {
+        $score = 0;
+        $mt = $data['meta_title'] ?? '';
+        $md = $data['meta_description'] ?? '';
+        $ot = $data['og_title'] ?? '';
+        $od = $data['og_description'] ?? '';
+        $oi = $data['og_image'] ?? '';
+        $mk = $data['meta_keywords'] ?? '';
+        $cu = $data['canonical_url'] ?? '';
+        $rm = $data['robots_meta'] ?? '';
+
+        // Meta Title: presente (15) + tamanho ideal 50-60 (10)
+        if (trim($mt)) { $score += 15; }
+        $mtLen = mb_strlen($mt);
+        if ($mtLen >= 50 && $mtLen <= 60) { $score += 10; }
+
+        // Meta Description: presente (15) + tamanho ideal 120-160 (10)
+        if (trim($md)) { $score += 15; }
+        $mdLen = mb_strlen($md);
+        if ($mdLen >= 120 && $mdLen <= 160) { $score += 10; }
+
+        // OG Title (10)
+        if (trim($ot)) { $score += 10; }
+
+        // OG Description (10)
+        if (trim($od)) { $score += 10; }
+
+        // OG Image (15)
+        if (trim($oi)) { $score += 15; }
+
+        // Keywords (5)
+        if (trim($mk)) { $score += 5; }
+
+        // Canonical URL (5)
+        if (trim($cu)) { $score += 5; }
+
+        // Robots Meta (5)
+        if (trim($rm)) { $score += 5; }
+
+        return min($score, 100);
     }
 
     public function buildSnapshot(CmsPublicPage $page): array
