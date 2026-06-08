@@ -104,7 +104,12 @@ $subColor = cms('transparency', 'hero', 'subtitle_color', '#bbf7d0');
 
                         <div class="space-y-4 flex-1">
                             @foreach($docs as $doc)
-                            <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank"
+                            @php
+                                $docUrl = ($doc->source === 'drive' && $doc->google_drive_url)
+                                    ? $doc->google_drive_url
+                                    : asset('storage/' . $doc->file_path);
+                            @endphp
+                            <a href="{{ $docUrl }}" target="_blank"
                                class="group block p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-green-900/5 hover:border-green-100 transition-all duration-300">
                                 <div class="flex items-start gap-4">
                                     <div class="w-12 h-12 rounded-xl bg-white border border-gray-100 text-green-700 flex items-center justify-center flex-shrink-0 group-hover:bg-green-700 group-hover:text-white group-hover:border-green-700 transition-all duration-300 shadow-sm">

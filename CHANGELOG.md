@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## [1.1.2] - 2026-06-08
+
+### Adicionado - Integracao Google Drive para Portal da Transparencia
+
+- Sincronizacao automatica de documentos do Google Drive com o Portal da Transparencia
+- Service `GoogleDriveService` para leitura da API do Google Drive via Service Account
+- Command `php artisan transparency:sync-drive` para sincronizacao manual ou agendada
+- Command suporta modo simulacao (`--dry-run`) para testar sem alterar o banco
+- Novos campos na tabela `transparency_documents`: `google_drive_file_id`, `google_drive_url`, `source`
+- View publica ajustada para exibir documentos do Drive em somente leitura/download
+- Documentos removidos do Drive sao automaticamente desativados no portal
+- Documentos manuais do admin (`source = local`) continuam independentes da sincronizacao
+
+### Painel Administrativo
+
+- Configuracao do Google Drive movida para o painel admin (banco de dados, nao mais `.env`)
+- Nova aba **Google Drive** em **Configuracoes** com:
+  - Toggle para ativar/desativar a integracao
+  - Campo para ID da pasta raiz do Drive
+  - Upload do arquivo JSON de credenciais da Service Account
+- Novo link fixo **Configuracoes** na sidebar do admin (secao Sistema)
+- Seeder `AdminMenuSeeder` atualizado: "Configuracoes" agora e item top-level no menu
+
+### Documentacao
+
+- `GOOGLE_DRIVE_SETUP.md` - Guia completo de configuracao da integracao
+
 ## [1.1.1] - 2026-06-07
 
 ### Atualizado - CMS de Páginas Públicas Reais

@@ -36,8 +36,19 @@ class SettingsController extends Controller
             }
         }
 
+        // Upload do arquivo JSON de credenciais do Google Drive
+        if ($request->hasFile('google_drive_credentials_file')) {
+            $credFile = $request->file('google_drive_credentials_file');
+            if ($credFile->isValid() && $credFile->getMimeType() === 'application/json') {
+                $credFile->storeAs('google', 'credentials.json', 'local');
+            }
+        }
+
         // Process image file uploads (fields ending with _file)
         foreach ($request->allFiles() as $fileKey => $file) {
+            if ($fileKey === 'google_drive_credentials_file') {
+                continue; // handled separately above
+            }
             if (str_ends_with($fileKey, '_file')) {
                 $settingKey = substr($fileKey, 0, -5); // remove "_file" suffix
                 // Skip upload if remove was requested
@@ -165,6 +176,10 @@ class SettingsController extends Controller
             ['key' => 'about_ods_title', 'value' => 'ODS 2030', 'type' => 'text', 'group' => 'institucional', 'label' => 'Página Sobre: Título do Card ODS'],
             ['key' => 'about_ods_description', 'value' => 'Nossas ações são norteadas pelos Objetivos de Desenvolvimento Sustentável da ONU para garantir um futuro viável e próspero para a Serra do Mendanha.', 'type' => 'textarea', 'group' => 'institucional', 'label' => 'Página Sobre: Descrição do Card ODS'],
             ['key' => 'about_ods_button_text', 'value' => 'Ver nossos ODS', 'type' => 'text', 'group' => 'institucional', 'label' => 'Página Sobre: Texto do Botão ODS'],
+
+            // Google Drive — Transparência
+            ['key' => 'google_drive_enabled', 'value' => '0', 'type' => 'boolean', 'group' => 'google_drive', 'label' => 'Ativar integração com Google Drive'],
+            ['key' => 'google_drive_folder_id', 'value' => '', 'type' => 'text', 'group' => 'google_drive', 'label' => 'ID da pasta raiz no Google Drive'],
         ];
 
         foreach ([

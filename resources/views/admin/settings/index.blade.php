@@ -245,6 +245,7 @@ $groupLabels = [
     'security'    => ['label' => 'Segurança',        'icon' => 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', 'color' => '#dc2626', 'bg' => '#fef2f2'],
     'partners'    => ['label' => 'Parceiros',        'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', 'color' => '#0d9488', 'bg' => '#f0fdfa'],
     'institucional' => ['label' => 'Institucional',  'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'color' => '#6366f1', 'bg' => '#eef2ff'],
+    'google_drive'  => ['label' => 'Google Drive',     'icon' => 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z', 'color' => '#ea580c', 'bg' => '#fff7ed'],
 ];
 
 /* ─── Placeholders ─── */
@@ -295,6 +296,7 @@ $placeholders = [
     'global_image_max_upload_mb' => 'Ex: 5',
     'global_video_max_upload_mb' => 'Ex: 50',
     'ods_card_image_opacity' => 'Ex: 34',
+    'google_drive_folder_id' => 'Ex: 1aBcD2eFgHiJkLmN3oPqRsTuVwXyZ4',
     'recaptcha_site_key'    => 'Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
     'recaptcha_secret_key'  => 'Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
     'mail_host'             => 'Ex: mail.issm.org.br',
@@ -386,6 +388,35 @@ $firstGroup = $sorted->keys()->first();
                         <p>{{ $items->count() }} configuração{{ $items->count()!=1?'ões':'' }}</p>
                     </div>
                 </div>
+
+                @if($group === 'google_drive')
+                <div class="cfg-card">
+                    <div class="cfg-card-head">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <p>Credenciais Google Cloud</p>
+                    </div>
+                    <div class="cfg-card-body">
+                        <label class="cfg-label">Arquivo JSON de credenciais da Service Account</label>
+                        @if(file_exists(storage_path('app/google/credentials.json')))
+                        <div class="cfg-img-current">
+                            <div class="cfg-img-info">
+                                <div class="cfg-img-name">credentials.json</div>
+                                <div class="cfg-img-hint">Arquivo de credenciais ja enviado</div>
+                            </div>
+                        </div>
+                        @endif
+                        <label class="cfg-upload-zone">
+                            <div class="cfg-upload-circle">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            </div>
+                            <span class="cfg-upload-text" id="lbl-gdrive-cred">{{ file_exists(storage_path('app/google/credentials.json')) ? 'Clique para substituir' : 'Selecionar arquivo JSON' }}</span>
+                            <span class="cfg-upload-hint">Apenas arquivos .json</span>
+                            <input type="file" name="google_drive_credentials_file" accept="application/json" style="display:none"
+                                   onchange="document.getElementById('lbl-gdrive-cred').textContent=this.files[0]?.name??'Selecionado'">
+                        </label>
+                    </div>
+                </div>
+                @endif
 
                 {{-- ════════════════════════════════════════
                      PARCEIROS — Layout especial do carrossel
