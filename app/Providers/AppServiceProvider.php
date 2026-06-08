@@ -15,13 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(\App\Services\Cms\CmsCacheService::class);
-        $this->app->singleton(\App\Services\Cms\CmsAuditService::class);
-        $this->app->singleton(\App\Services\Cms\CmsPageService::class);
-        $this->app->singleton(\App\Services\Cms\CmsRenderService::class);
-        $this->app->singleton(\App\Services\Cms\CmsSeoService::class);
-        $this->app->singleton(\App\Services\Cms\CmsMenuService::class);
-        $this->app->singleton(\App\Services\Cms\CmsVersionService::class);
         $this->app->singleton(\App\Services\Security\SanitizeHtmlService::class);
         $this->app->singleton(\App\Services\Security\UploadSecurityService::class);
         $this->app->singleton(\App\Services\Security\RequestSecurityService::class);

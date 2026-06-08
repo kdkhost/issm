@@ -431,6 +431,7 @@
             </div>
 
             {{-- ═══ CMS Institucional ═══ --}}
+            @if(false)
             <div class="nav-dropdown {{ request()->routeIs('admin.cms.*') ? 'active' : '' }}">
                 <button type="button" class="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-green-100 hover:bg-green-700 hover:text-white transition-colors nav-dropdown-trigger">
                     <div class="flex items-center gap-3">
@@ -478,6 +479,8 @@
                     </a>
                 </div>
             </div>
+
+            @endif
 
             {{-- Sistema --}}
             <div class="nav-dropdown {{ request()->routeIs('admin.faq*', 'admin.analytics*', 'admin.contatos*', 'admin.settings*', 'admin.ips-manutencao*') ? 'active' : '' }}">

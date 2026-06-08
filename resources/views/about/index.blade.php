@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", $cmsPage?->meta_title ?? $cmsPage?->title ?? "Sobre o ISSM - Instituto Socioambiental Serra do Mendanha")
+@section("title", "Sobre o ISSM - Instituto Socioambiental Serra do Mendanha")
 
 @push("styles")
 <style>
@@ -20,7 +20,7 @@
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;margin-bottom:16px;">
             <a href="{{ route('home') }}" style="color:#86efac;text-decoration:none;transition:color .2s;">Início</a>
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span style="color:#fff;">{{ $cms['hero_sobre_title'] ?? 'Sobre o ISSM' }}</span>
+            <span style="color:#fff;">{{ cms('about', 'hero', 'breadcrumb', 'Sobre o ISSM') }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
             {{ cms('about', 'hero', 'title', 'Instituto Socioambiental') }}

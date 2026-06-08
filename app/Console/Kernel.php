@@ -2,12 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\CmsAuditHardcodedContentCommand;
 use App\Console\Commands\CmsAuditPublicPageFields;
-use App\Console\Commands\CmsClearCacheCommand;
-use App\Console\Commands\CmsHealthCheckCommand;
 use App\Console\Commands\CmsMapPublicPages;
-use App\Console\Commands\CmsRefreshDefaultsCommand;
 use App\Console\Commands\CmsSyncPublicPageDefaults;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -21,10 +17,6 @@ class Kernel extends ConsoleKernel
         CmsMapPublicPages::class,
         CmsSyncPublicPageDefaults::class,
         CmsAuditPublicPageFields::class,
-        CmsAuditHardcodedContentCommand::class,
-        CmsClearCacheCommand::class,
-        CmsHealthCheckCommand::class,
-        CmsRefreshDefaultsCommand::class,
     ];
     /**
      * Define the application's command schedule.

@@ -36,11 +36,8 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Arquivo (PDF, DOC, etc) *</label>
                     <input type="file" name="file" required
-                        data-auto-upload="{{ route("admin.cms.media.upload") }}"
-                        data-url-name="file_path"
                         data-hint="PDF, DOC, XLS, até 10MB"
                         accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.txt,.csv">
-                    <input type="hidden" name="file_path" value="">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Descrição (Opcional)</label>

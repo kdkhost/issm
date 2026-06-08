@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", $cmsPage?->meta_title ?? $cmsPage?->title ?? "Inicio - ISSM")
+@section("title", "Inicio - ISSM")
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">

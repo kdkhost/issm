@@ -22,9 +22,6 @@ class PublicAboutController extends Controller
         
         $teamMembers = TeamMember::active()->orderBy('order')->get();
         
-        $cmsData = $this->loadCmsPage('sobre');
-        $cms = $this->extractCmsContent($cmsData['cmsSections']);
-        
-        return view('about.index', array_merge(compact('settings', 'teamMembers'), $cmsData, compact('cms')));
+        return view('about.index', compact('settings', 'teamMembers'));
     }
 }

@@ -10,8 +10,6 @@ class PublicOdsController extends Controller
     public function index()
     {
         $odsList = Ods::active()->orderBy('number')->get();
-        $cmsData = $this->loadCmsPage('ods');
-        $cms = $this->extractCmsContent($cmsData['cmsSections']);
-        return view('ods.index', array_merge(compact('odsList'), $cmsData, compact('cms')));
+        return view('ods.index', compact('odsList'));
     }
 }

@@ -35,8 +35,6 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Substituir Arquivo (Opcional)</label>
                     <input type="file" name="file"
-                        data-auto-upload="{{ route("admin.cms.media.upload") }}"
-                        data-url-name="file_path"
                         data-hint="PDF, DOC, XLS, até 10MB"
                         data-existing-url="{{ $transparency->file_path ? asset('storage/' . $transparency->file_path) : '' }}"
                         accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.txt,.csv">

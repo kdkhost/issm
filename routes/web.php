@@ -27,16 +27,6 @@ use App\Http\Controllers\PublicNewsController;
 use App\Http\Controllers\PublicOdsController;
 use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\PublicProjectController;
-use App\Http\Controllers\Admin\CmsPageController;
-use App\Http\Controllers\Admin\CmsSectionController;
-use App\Http\Controllers\Admin\CmsBlockController;
-use App\Http\Controllers\Admin\CmsMediaController;
-use App\Http\Controllers\Admin\CmsSeoController;
-use App\Http\Controllers\Admin\CmsAuditController;
-use App\Http\Controllers\Admin\CmsCacheController;
-use App\Http\Controllers\Admin\CmsVersionController;
-use App\Http\Controllers\Admin\CmsMenuController;
-use App\Http\Controllers\Public\CmsPublicController;
 use App\Http\Controllers\PublicTransparencyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -96,15 +86,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
     // CMS Routes
-    require __DIR__.'/cms.php';
 });
 
 // CMS Public Routes
-Route::get('/sitemap.xml', [CmsPublicController::class, 'sitemap'])->name('cms.sitemap');
-Route::get('/robots.txt', [CmsPublicController::class, 'robotsTxt'])->name('cms.robots');
 
 // CMS Redirect Handler (must be near the end to not interfere)
-Route::get('/r/{from}', [CmsPublicController::class, 'redirect'])->name('cms.redirect');
 
 // CMS Páginas Dinâmicas (catch-all for CMS-managed pages)
-Route::get('/cms/{slug}', [CmsPublicController::class, 'show'])->name('cms.page');

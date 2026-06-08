@@ -69,7 +69,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         'security.headers' => \App\Http\Middleware\SecurityHeaders::class,
-        'admin.audit' => \App\Http\Middleware\AdminAuditMiddleware::class,
         'block.suspicious' => \App\Http\Middleware\BlockSuspiciousRequests::class,
     ];
 }

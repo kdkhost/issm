@@ -70,13 +70,10 @@ class HomeController extends Controller
             'show_about' => Setting::get('show_about', '1'),
         ];
 
-        $cmsData = $this->loadCmsPage('inicio');
-        $cms = $this->extractCmsContent($cmsData['cmsSections']);
-
-        return view('home', array_merge(compact(
+        return view('home', compact(
             'banners', 'featuredProjects', 'latestNews', 'odsList',
             'teamMembers', 'partners', 'galleryItems', 'settings', 'homeStats',
             'testimonials', 'faqs'
-        ), $cmsData, compact('cms')));
+        ));
     }
 }

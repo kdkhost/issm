@@ -15,8 +15,6 @@ class PublicTransparencyController extends Controller
             ->get()
             ->groupBy(['year', 'category']);
 
-        $cmsData = $this->loadCmsPage('transparencia');
-        $cms = $this->extractCmsContent($cmsData['cmsSections']);
-        return view('transparency.index', array_merge(compact('documents'), $cmsData, compact('cms')));
+        return view('transparency.index', compact('documents'));
     }
 }

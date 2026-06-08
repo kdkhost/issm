@@ -12,9 +12,7 @@ class PublicProjectController extends Controller
         $featuredProjects = Project::active()->featured()->take(3)->get();
         $projects = Project::active()->paginate(9);
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        $cmsData = $this->loadCmsPage('projetos');
-        $cms = $this->extractCmsContent($cmsData['cmsSections']);
-        return view('projects.index', array_merge(compact('featuredProjects', 'projects', 'settings'), $cmsData, compact('cms')));
+        return view('projects.index', compact('featuredProjects', 'projects', 'settings'));
     }
 
     public function show(string $slug)
