@@ -27,6 +27,10 @@
 
 - `GOOGLE_DRIVE_SETUP.md` - Guia completo de configuracao da integracao
 
+### Melhorias UX
+
+- Adicionado card de instrucoes passo a passo diretamente na aba **Google Drive** do painel de configuracoes, facilitando a descoberta do processo de setup
+
 ## [1.1.1] - 2026-06-07
 
 ### Atualizado - CMS de Páginas Públicas Reais

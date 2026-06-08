@@ -390,6 +390,27 @@ $firstGroup = $sorted->keys()->first();
                 </div>
 
                 @if($group === 'google_drive')
+                {{-- Instrucoes de configuracao --}}
+                <div class="cfg-card" style="border-left:4px solid #ea580c">
+                    <div class="cfg-card-head">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p>Como configurar o Google Drive</p>
+                    </div>
+                    <div class="cfg-card-body" style="font-size:.8125rem;color:#374151;line-height:1.6">
+                        <ol style="margin:0;padding-left:1.25rem">
+                            <li><strong>Crie um projeto</strong> no <a href="https://console.cloud.google.com" target="_blank" style="color:#2563eb;text-decoration:underline">Google Cloud Console</a>.</li>
+                            <li><strong>Habilite a Google Drive API</strong> em APIs e Servicos > Biblioteca.</li>
+                            <li><strong>Crie uma Conta de Servico</strong> em APIs e Servicos > Credenciais > + Criar credenciais.</li>
+                            <li><strong>Gere uma chave JSON</strong> na aba Chaves da conta de servico e baixe o arquivo.</li>
+                            <li><strong>Envie o JSON aqui</strong> na secao Credenciais abaixo.</li>
+                            <li><strong>Compartilhe a pasta do Drive</strong> com o e-mail da Service Account (campo <code>client_email</code> do JSON) como <strong>Leitor</strong>.</li>
+                            <li><strong>Copie o ID da pasta raiz</strong> da URL do Drive (ex: <code>/folders/1aBc...</code>) e cole no campo abaixo.</li>
+                            <li><strong>Ative a integracao</strong>, salve e execute <code>php artisan transparency:sync-drive</code> no servidor.</li>
+                        </ol>
+                        <p style="margin:.75rem 0 0;color:#6b7280;font-size:.75rem">Mais detalhes no arquivo <code>GOOGLE_DRIVE_SETUP.md</code> do projeto.</p>
+                    </div>
+                </div>
+
                 <div class="cfg-card">
                     <div class="cfg-card-head">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
