@@ -17,6 +17,7 @@ class TransparencyDocument extends Model
         'google_drive_url',
         'source',
         'category',
+        'category_id',
         'year',
         'published_at',
         'active'
@@ -26,4 +27,9 @@ class TransparencyDocument extends Model
         'published_at' => 'date',
         'active' => 'boolean'
     ];
+
+    public function categoryModel()
+    {
+        return $this->belongsTo(TransparencyCategory::class, 'category_id');
+    }
 }

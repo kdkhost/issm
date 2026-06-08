@@ -15,12 +15,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                        <select name="category" required class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500">
-                            <option value="Financeiro" {{ old("category", $transparency->category) == "Financeiro" ? "selected" : "" }}>Financeiro</option>
-                            <option value="Administrativo" {{ old("category", $transparency->category) == "Administrativo" ? "selected" : "" }}>Administrativo</option>
-                            <option value="Atas" {{ old("category", $transparency->category) == "Atas" ? "selected" : "" }}>Atas</option>
-                            <option value="Relatórios" {{ old("category", $transparency->category) == "Relatórios" ? "selected" : "" }}>Relatórios</option>
-                            <option value="Estatuto" {{ old("category", $transparency->category) == "Estatuto" ? "selected" : "" }}>Estatuto</option>
+                        <select name="category_id" required class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500">
+                            <option value="">Selecione...</option>
+                            @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ old("category_id", $transparency->category_id) == $cat->id ? "selected" : "" }}>{{ $cat->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div>

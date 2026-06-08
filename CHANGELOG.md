@@ -55,6 +55,20 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (Categorias de Transparencia)
+
+### Adicionado
+
+- **Gerenciamento de Categorias** do Portal da Transparencia via `/admin/transparencia-categorias`
+- Tabela `transparency_categories` com nome, `google_drive_folder_id`, ordem e status
+- Model `TransparencyCategory` com relacionamento para documentos
+- Controller `Admin\TransparencyCategoryController` com CRUD completo
+- Ao criar uma categoria no sistema, a pasta correspondente e criada automaticamente no Google Drive (se configurado)
+- Ao renomear uma categoria, a pasta no Drive tambem e renomeada
+- Formularios de documentos (create/edit) agora usam select dinamico de categorias do banco (`category_id`)
+- Link **Categorias de Transparencia** na sidebar do admin (secao Sistema)
+- Campo `category_id` nullable em `transparency_documents` para migracao gradual
+
 ## [1.1.2] - 2026-06-08 (Pastas do Drive)
 
 ### Adicionado

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\TransparencyCategoryController;
 use App\Http\Controllers\Admin\TransparencyController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
@@ -78,6 +79,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('ods', OdsController::class)->only(['index', 'edit', 'update']);
     Route::resource('ips-manutencao', MaintenanceIpController::class)->parameters(['ips-manutencao' => 'maintenanceIp']);
     Route::resource('transparencia', TransparencyController::class)->parameters(['transparencia' => 'transparency']);
+    Route::get('transparencia-categorias', [TransparencyCategoryController::class, 'index'])->name('transparency-categories.index');
+    Route::post('transparencia-categorias', [TransparencyCategoryController::class, 'store'])->name('transparency-categories.store');
+    Route::put('transparencia-categorias/{category}', [TransparencyCategoryController::class, 'update'])->name('transparency-categories.update');
+    Route::delete('transparencia-categorias/{category}', [TransparencyCategoryController::class, 'destroy'])->name('transparency-categories.destroy');
     Route::resource('depoimentos', TestimonialController::class)->parameters(['depoimentos' => 'testimonial']);
     Route::resource('faq', FaqController::class);
     Route::post('depoimentos/{testimonial}/toggle', [TestimonialController::class, 'toggleActive'])->name('testimonials.toggle');

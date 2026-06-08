@@ -15,14 +15,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                        <select name="category" required class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500">
+                        <select name="category_id" required class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500">
                             <option value="">Selecione...</option>
-                            <option value="Financeiro" {{ old("category") == "Financeiro" ? "selected" : "" }}>Financeiro</option>
-                            <option value="Administrativo" {{ old("category") == "Administrativo" ? "selected" : "" }}>Administrativo</option>
-                            <option value="Atas" {{ old("category") == "Atas" ? "selected" : "" }}>Atas</option>
-                            <option value="Relatórios" {{ old("category") == "Relatórios" ? "selected" : "" }}>Relatórios</option>
-                            <option value="Estatuto" {{ old("category") == "Estatuto" ? "selected" : "" }}>Estatuto</option>
+                            @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ old("category_id") == $cat->id ? "selected" : "" }}>{{ $cat->name }}</option>
+                            @endforeach
                         </select>
+                        @error("category_id")<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Ano Referência</label>
