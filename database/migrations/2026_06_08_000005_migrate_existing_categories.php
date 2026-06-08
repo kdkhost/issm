@@ -8,13 +8,29 @@ return new class extends Migration
 {
     public function up(): void
     {
+        $order = 0;
+
+        // Categorias padrao do sistema (historico do select fixo)
+        $defaultCategories = ['Financeiro', 'Administrativo', 'Atas', 'Relatorios', 'Estatuto'];
+
+        foreach ($defaultCategories as $catName) {
+            $existing = TransparencyCategory::where('name', $catName)->first();
+            if (! $existing) {
+                TransparencyCategory::create([
+                    'name' => $catName,
+                    'sort_order' => $order,
+                    'active' => true,
+                ]);
+            }
+            $order++;
+        }
+
         // Coletar categorias unicas dos documentos existentes
         $categories = TransparencyDocument::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct('category')
             ->pluck('category');
 
-        $order = 0;
         foreach ($categories as $catName) {
             $existing = TransparencyCategory::where('name', $catName)->first();
             if (! $existing) {
