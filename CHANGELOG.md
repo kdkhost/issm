@@ -37,6 +37,12 @@
 
 - Corrigido card de instrucoes do Google Drive para respeitar o tema dark/light do sistema. Removidos estilos inline hardcoded e adicionadas regras CSS `[data-theme="dark"]` consistentes com o restante do painel administrativo
 
+## [1.1.2] - 2026-06-08 (correcao dependencia)
+
+### Corrigido
+
+- Adicionada dependencia `google/apiclient` ao `composer.json` que estava faltando. Sem ela, a integracao com Google Drive falhava com erro `Class "Google\Client" not found` no servidor
+
 ## [1.1.2] - 2026-06-08 (melhoria docs)
 
 ### Atualizado
