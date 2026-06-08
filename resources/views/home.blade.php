@@ -413,12 +413,19 @@ $cmsPage = cms_page('home');
     {!! $cmsPage->custom_html !!}
 @else
 
+@php
+$bg1 = cms('home', 'hero', 'gradient_start', '#14532d');
+$bg2 = cms('home', 'hero', 'gradient_mid', '#15803d');
+$bg3 = cms('home', 'hero', 'gradient_end', '#059669');
+@endphp
+
 @if($banners->count() > 0)
 <section class="relative overflow-hidden">
     <div id="banner-slider">
         @foreach($banners as $index => $banner)
-        <div class="banner-slide {{ $index > 0 ? "hidden" : "" }} relative min-h-[500px] lg:min-h-[600px] flex items-center {{ !$banner->image ? "hero-gradient" : "" }}"
-             @if($banner->image) style="background-image:url({{ asset("media/".$banner->image) }});background-size:cover;background-position:center;" @endif>
+        <div class="banner-slide {{ $index > 0 ? "hidden" : "" }} relative min-h-[500px] lg:min-h-[600px] flex items-center"
+             @if($banner->image) style="background-image:url({{ asset("media/".$banner->image) }});background-size:cover;background-position:center;"
+             @else style="background:linear-gradient(135deg, {{ $bg1 }} 0%, {{ $bg2 }} 50%, {{ $bg3 }} 100%);" @endif>
             @if($banner->image)<div class="absolute inset-0 bg-black/50"></div>@endif
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                 <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-4">{{ $banner->title }}</h1>
