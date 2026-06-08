@@ -74,20 +74,10 @@ class CmsPublicPage extends Model
             try {
                 return route($this->route_name);
             } catch (\Throwable) {
-                // Fallback para rotas dinâmicas como /pagina/{slug}
+                return $this->route_uri ? url($this->route_uri) : null;
             }
         }
 
-        if ($this->route_uri) {
-            $uri = $this->route_uri;
-
-            if (str_contains($uri, '{slug}') && !empty($this->page_key)) {
-                $uri = str_replace('{slug}', $this->page_key, $uri);
-            }
-
-            return url($uri);
-        }
-
-        return null;
+        return $this->route_uri ? url($this->route_uri) : null;
     }
 }

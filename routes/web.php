@@ -73,12 +73,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('galeria', GalleryController::class)->parameters(['galeria' => 'gallery']);
     Route::resource('contatos', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('paginas', PageController::class)->parameters(['paginas' => 'page']);
-    Route::get('cms-paginas-originais', [CmsPublicPageController::class, 'index'])->name('cms-original-pages.index');
-    Route::get('cms-paginas-originais/{cmsPublicPage}/editar', [CmsPublicPageController::class, 'edit'])->name('cms-original-pages.edit');
-    Route::put('cms-paginas-originais/{cmsPublicPage}', [CmsPublicPageController::class, 'update'])->name('cms-original-pages.update');
-    Route::get('cms-paginas-originais/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'editSeo'])->name('cms-original-pages.seo');
-    Route::put('cms-paginas-originais/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'updateSeo'])->name('cms-original-pages.update-seo');
-    Route::post('cms-paginas-originais/{cmsPublicPage}/limpar-cache', [CmsPublicPageController::class, 'clearCache'])->name('cms-original-pages.clear-cache');
+    Route::get('cms-paginas-publicas', [CmsPublicPageController::class, 'index'])->name('cms-public-pages.index');
+    Route::get('cms-paginas-publicas/{cmsPublicPage}/editar', [CmsPublicPageController::class, 'edit'])->name('cms-public-pages.edit');
+    Route::put('cms-paginas-publicas/{cmsPublicPage}', [CmsPublicPageController::class, 'update'])->name('cms-public-pages.update');
+    Route::get('cms-paginas-publicas/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'editSeo'])->name('cms-public-pages.seo');
+    Route::put('cms-paginas-publicas/{cmsPublicPage}/seo', [CmsPublicPageController::class, 'updateSeo'])->name('cms-public-pages.update-seo');
+    Route::post('cms-paginas-publicas/{cmsPublicPage}/limpar-cache', [CmsPublicPageController::class, 'clearCache'])->name('cms-public-pages.clear-cache');
     Route::resource('ods', OdsController::class)->only(['index', 'edit', 'update']);
     Route::resource('ips-manutencao', MaintenanceIpController::class)->parameters(['ips-manutencao' => 'maintenanceIp']);
     Route::resource('transparencia', TransparencyController::class)->parameters(['transparencia' => 'transparency']);

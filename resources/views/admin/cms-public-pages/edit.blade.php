@@ -5,7 +5,7 @@
 @section("content")
 <div class="mb-6 flex justify-between items-center">
     <div>
-        <a href="{{ route('admin.cms-original-pages.index') }}" class="text-sm text-green-700 hover:text-green-900">&larr; Voltar</a>
+        <a href="{{ route('admin.cms-public-pages.index') }}" class="text-sm text-green-700 hover:text-green-900">&larr; Voltar</a>
         <p class="text-xs text-gray-500 mt-1">View: {{ $page->view_path }} | URL: {{ $page->route_uri }}</p>
     </div>
     @if($page->publicUrl())
@@ -16,7 +16,7 @@
     @endif
 </div>
 
-<form method="POST" action="{{ route('admin.cms-original-pages.update', $page) }}">
+<form method="POST" action="{{ route('admin.cms-public-pages.update', $page) }}">
     @csrf
     @method('PUT')
 
@@ -55,7 +55,7 @@
     @endforeach
 
     <div class="flex justify-end gap-3">
-        <a href="{{ route('admin.cms-original-pages.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancelar</a>
+        <a href="{{ route('admin.cms-public-pages.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancelar</a>
         <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Salvar Conteúdo</button>
     </div>
 </form>

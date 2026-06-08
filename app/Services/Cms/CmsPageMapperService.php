@@ -2,9 +2,9 @@
 
 namespace App\Services\Cms;
 
-use App\Models\CmsOriginalPage;
-use App\Models\CmsOriginalPageField;
-use App\Models\CmsOriginalPageSection;
+use App\Models\CmsPublicPage;
+use App\Models\CmsPublicPageField;
+use App\Models\CmsPublicPageSection;
 use Illuminate\Support\Facades\Route;
 
 class CmsPageMapperService
@@ -21,7 +21,7 @@ class CmsPageMapperService
                 $foundRouteNames[] = $def['route_name'];
             }
 
-            $page = CmsOriginalPage::withTrashed()->where('page_key', $def['page_key'])->first();
+            $page = CmsPublicPage::withTrashed()->where('page_key', $def['page_key'])->first();
 
             $data = [
                 'route_name' => $def['route_name'] ?? null,
@@ -45,7 +45,7 @@ class CmsPageMapperService
                 $page->update($data);
                 $stats['updated']++;
             } else {
-                $page = CmsOriginalPage::create(array_merge($data, ['page_key' => $def['page_key']]));
+                $page = CmsPublicPage::create(array_merge($data, ['page_key' => $def['page_key']]));
                 $stats['created']++;
             }
 
@@ -71,10 +71,10 @@ class CmsPageMapperService
         return Route::has($routeName);
     }
 
-    private function syncSectionsAndFields(CmsOriginalPage $page, array $sections): void
+    private function syncSectionsAndFields(CmsPublicPage $page, array $sections): void
     {
         foreach ($sections as $sectionDef) {
-            CmsOriginalPageSection::updateOrCreate(
+            CmsPublicPageSection::updateOrCreate(
                 ['page_id' => $page->id, 'section_key' => $sectionDef['section_key']],
                 [
                     'section_label' => $sectionDef['section_label'],
@@ -84,7 +84,7 @@ class CmsPageMapperService
             );
 
             foreach ($sectionDef['fields'] ?? [] as $fieldDef) {
-                CmsOriginalPageField::updateOrCreate(
+                CmsPublicPageField::updateOrCreate(
                     [
                         'page_id' => $page->id,
                         'section_key' => $sectionDef['section_key'],
@@ -107,7 +107,7 @@ class CmsPageMapperService
 
     private function markOrphanPagesForReview(array $foundRouteNames): void
     {
-        CmsOriginalPage::whereNotIn('route_name', $foundRouteNames)
+        CmsPublicPage::whereNotIn('route_name', $foundRouteNames)
             ->whereNotNull('route_name')
             ->update(['needs_review' => true]);
     }

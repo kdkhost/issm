@@ -2,8 +2,8 @@
 
 namespace App\Services\Cms;
 
-use App\Models\CmsOriginalPage;
-use App\Models\CmsOriginalPageField;
+use App\Models\CmsPublicPage;
+use App\Models\CmsPublicPageField;
 
 class CmsSyncDefaultsService
 {
@@ -14,14 +14,14 @@ class CmsSyncDefaultsService
         $definitions = CmsPageDefinitions::pages();
 
         foreach ($definitions as $def) {
-            $page = CmsOriginalPage::where('page_key', $def['page_key'])->first();
+            $page = CmsPublicPage::where('page_key', $def['page_key'])->first();
             if (!$page) {
                 continue;
             }
 
             foreach ($def['sections'] ?? [] as $sectionDef) {
                 foreach ($sectionDef['fields'] ?? [] as $fieldDef) {
-                    $field = CmsOriginalPageField::where('page_id', $page->id)
+                    $field = CmsPublicPageField::where('page_id', $page->id)
                         ->where('section_key', $sectionDef['section_key'])
                         ->where('field_key', $fieldDef['field_key'])
                         ->first();

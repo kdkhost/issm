@@ -11,9 +11,7 @@ class CmsMapPublicPages extends Command
 {
     protected $signature = 'cms:map-public-pages';
 
-    protected $aliases = ['cms:map-original-pages'];
-
-    protected $description = 'Mapeia as 8 páginas públicas originais do ISSM e atualiza cms_original_pages';
+    protected $description = 'Mapeia rotas públicas reais e atualiza cms_public_pages';
 
     public function handle(CmsPageMapperService $mapper, GraphifyyReportService $reporter, CmsReportGenerator $cmsReports): int
     {

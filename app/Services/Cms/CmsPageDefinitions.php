@@ -5,8 +5,8 @@ namespace App\Services\Cms;
 class CmsPageDefinitions
 {
     /**
-     * Oito páginas públicas originais do ISSM.
-     * Não inclui páginas inventadas e não adiciona rotas dinâmicas adicionais.
+     * Páginas públicas reais detectadas no sistema ISSM.
+     * Não inclui páginas inventadas — apenas rotas existentes em routes/web.php.
      */
     public static function pages(): array
     {
@@ -106,6 +106,45 @@ class CmsPageDefinitions
                 'admin_label' => 'Transparência',
                 'sort_order' => 8,
                 'sections' => self::transparencySections(),
+            ],
+            [
+                'page_key' => 'pages_dynamic',
+                'route_name' => 'pages.show',
+                'route_uri' => '/pagina/{slug}',
+                'controller' => 'App\\Http\\Controllers\\PublicPageController',
+                'method' => 'show',
+                'view_path' => 'pages/show.blade.php',
+                'title' => 'Páginas Dinâmicas',
+                'admin_label' => 'Páginas Dinâmicas (existente)',
+                'sort_order' => 9,
+                'is_editable' => false,
+                'sections' => [],
+            ],
+            [
+                'page_key' => 'news_detail',
+                'route_name' => 'news.show',
+                'route_uri' => '/noticias/{slug}',
+                'controller' => 'App\\Http\\Controllers\\PublicNewsController',
+                'method' => 'show',
+                'view_path' => 'news/show.blade.php',
+                'title' => 'Detalhe de Notícia',
+                'admin_label' => 'Detalhe Notícia (modelo)',
+                'sort_order' => 10,
+                'is_editable' => false,
+                'sections' => [],
+            ],
+            [
+                'page_key' => 'projects_detail',
+                'route_name' => 'projects.show',
+                'route_uri' => '/projetos/{slug}',
+                'controller' => 'App\\Http\\Controllers\\PublicProjectController',
+                'method' => 'show',
+                'view_path' => 'projects/show.blade.php',
+                'title' => 'Detalhe de Projeto',
+                'admin_label' => 'Detalhe Projeto (modelo)',
+                'sort_order' => 11,
+                'is_editable' => false,
+                'sections' => [],
             ],
         ];
     }

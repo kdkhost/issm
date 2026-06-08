@@ -1,6 +1,6 @@
 @extends("layouts.admin")
-@section("title", "CMS Páginas Originais")
-@section("page-title", "CMS das Páginas Originais")
+@section("title", "CMS Páginas Públicas")
+@section("page-title", "CMS das Páginas Públicas")
 
 @section("content")
 <div class="flex justify-between items-center mb-6">
@@ -58,13 +58,13 @@
                 <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center gap-1 flex-wrap">
                         @if($page->is_editable)
-                        <a href="{{ route('admin.cms-original-pages.edit', $page) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
-                        <a href="{{ route('admin.cms-original-pages.seo', $page) }}" class="text-purple-600 hover:text-purple-800 text-sm font-medium px-1">SEO</a>
+                        <a href="{{ route('admin.cms-public-pages.edit', $page) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
+                        <a href="{{ route('admin.cms-public-pages.seo', $page) }}" class="text-purple-600 hover:text-purple-800 text-sm font-medium px-1">SEO</a>
                         @endif
                         @if($page->publicUrl())
                         <a href="{{ $page->publicUrl() }}" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium px-1">Ver</a>
                         @endif
-                        <form method="POST" action="{{ route('admin.cms-original-pages.clear-cache', $page) }}" class="inline">
+                        <form method="POST" action="{{ route('admin.cms-public-pages.clear-cache', $page) }}" class="inline">
                             @csrf
                             <button type="submit" data-confirm="Limpar cache desta página?" class="text-gray-500 hover:text-gray-700 text-sm font-medium px-1">Cache</button>
                         </form>
@@ -74,7 +74,7 @@
             @empty
             <tr>
                 <td colspan="6" class="px-6 py-10 text-center text-gray-400">
-                    Nenhuma página mapeada. Execute: <code class="bg-gray-100 px-2 py-1 rounded text-sm">php artisan cms:map-original-pages</code>
+                    Nenhuma página mapeada. Execute: <code class="bg-gray-100 px-2 py-1 rounded text-sm">php artisan cms:map-public-pages</code>
                 </td>
             </tr>
             @endforelse

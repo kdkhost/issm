@@ -2,11 +2,11 @@
 
 namespace App\Services\Cms;
 
-use App\Models\CmsOriginalPage;
-use App\Models\CmsOriginalPageAuditLog;
-use App\Models\CmsOriginalPageField;
-use App\Models\CmsOriginalPageSeo;
-use App\Models\CmsOriginalPageVersion;
+use App\Models\CmsPublicPage;
+use App\Models\CmsPublicPageAuditLog;
+use App\Models\CmsPublicPageField;
+use App\Models\CmsPublicPageSeo;
+use App\Models\CmsPublicPageVersion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -15,19 +15,19 @@ class CmsContentService
 {
     public function get(string $pageKey, string $sectionKey, string $fieldKey, mixed $default = ''): string
     {
-        if (!Schema::hasTable('cms_original_page_fields')) {
+        if (!Schema::hasTable('cms_public_page_fields')) {
             return (string) $default;
         }
 
-        $cacheKey = "cms_original_field_{$pageKey}_{$sectionKey}_{$fieldKey}";
+        $cacheKey = "cms_field_{$pageKey}_{$sectionKey}_{$fieldKey}";
 
         return Cache::remember($cacheKey, 600, function () use ($pageKey, $sectionKey, $fieldKey, $default) {
-            $page = CmsOriginalPage::where('page_key', $pageKey)->where('is_active', true)->first();
+            $page = CmsPublicPage::where('page_key', $pageKey)->where('is_active', true)->first();
             if (!$page) {
                 return (string) $default;
             }
 
-            $field = CmsOriginalPageField::where('page_id', $page->id)
+            $field = CmsPublicPageField::where('page_id', $page->id)
                 ->where('section_key', $sectionKey)
                 ->where('field_key', $fieldKey)
                 ->first();
@@ -49,14 +49,14 @@ class CmsContentService
 
     public function getPageFields(string $pageKey): array
     {
-        if (!Schema::hasTable('cms_original_page_fields')) {
+        if (!Schema::hasTable('cms_public_page_fields')) {
             return [];
         }
 
-        $cacheKey = "cms_original_page_fields_{$pageKey}";
+        $cacheKey = "cms_page_fields_{$pageKey}";
 
         return Cache::remember($cacheKey, 600, function () use ($pageKey) {
-            $page = CmsOriginalPage::where('page_key', $pageKey)->first();
+            $page = CmsPublicPage::where('page_key', $pageKey)->first();
             if (!$page) {
                 return [];
             }
@@ -70,34 +70,34 @@ class CmsContentService
         });
     }
 
-    public function getSeo(string $pageKey): ?CmsOriginalPageSeo
+    public function getSeo(string $pageKey): ?CmsPublicPageSeo
     {
-        if (!Schema::hasTable('cms_original_page_seo')) {
+        if (!Schema::hasTable('cms_public_page_seo')) {
             return null;
         }
 
-        $page = CmsOriginalPage::where('page_key', $pageKey)->first();
+        $page = CmsPublicPage::where('page_key', $pageKey)->first();
 
         return $page?->seo;
     }
 
-    public function clearPageCache(CmsOriginalPage $page): void
+    public function clearPageCache(CmsPublicPage $page): void
     {
-        Cache::forget("cms_original_page_fields_{$page->page_key}");
+        Cache::forget("cms_page_fields_{$page->page_key}");
 
         foreach ($page->fields as $field) {
-            Cache::forget("cms_original_field_{$page->page_key}_{$field->section_key}_{$field->field_key}");
+            Cache::forget("cms_field_{$page->page_key}_{$field->section_key}_{$field->field_key}");
         }
 
-        Cache::forget("cms_original_seo_{$page->page_key}");
+        Cache::forget("cms_seo_{$page->page_key}");
     }
 
-    public function updateFields(CmsOriginalPage $page, array $fieldsData): void
+    public function updateFields(CmsPublicPage $page, array $fieldsData): void
     {
         $oldSnapshot = $this->buildSnapshot($page);
 
         foreach ($fieldsData as $fieldId => $value) {
-            $field = CmsOriginalPageField::where('page_id', $page->id)->where('id', $fieldId)->first();
+            $field = CmsPublicPageField::where('page_id', $page->id)->where('id', $fieldId)->first();
             if ($field && $field->is_editable) {
                 $field->update([
                     'field_value' => $field->field_type === 'html'
@@ -112,20 +112,20 @@ class CmsContentService
         $this->clearPageCache($page);
     }
 
-    public function updateSeo(CmsOriginalPage $page, array $seoData): void
+    public function updateSeo(CmsPublicPage $page, array $seoData): void
     {
         $old = $page->seo?->toArray();
 
-        CmsOriginalPageSeo::updateOrCreate(
+        CmsPublicPageSeo::updateOrCreate(
             ['page_id' => $page->id],
             $seoData
         );
 
         $this->audit($page, 'update_seo', 'seo', $page->id, $old, $seoData);
-        Cache::forget("cms_original_seo_{$page->page_key}");
+        Cache::forget("cms_seo_{$page->page_key}");
     }
 
-    public function buildSnapshot(CmsOriginalPage $page): array
+    public function buildSnapshot(CmsPublicPage $page): array
     {
         return [
             'fields' => $page->fields()->get()->map(fn ($f) => [
@@ -138,9 +138,9 @@ class CmsContentService
         ];
     }
 
-    public function createVersion(CmsOriginalPage $page, array $snapshot, string $summary): void
+    public function createVersion(CmsPublicPage $page, array $snapshot, string $summary): void
     {
-        CmsOriginalPageVersion::create([
+        CmsPublicPageVersion::create([
             'page_id' => $page->id,
             'user_id' => Auth::id(),
             'snapshot' => $snapshot,
@@ -149,14 +149,14 @@ class CmsContentService
     }
 
     public function audit(
-        CmsOriginalPage $page,
+        CmsPublicPage $page,
         string $action,
         ?string $entityType,
         ?int $entityId,
         mixed $oldValues,
         mixed $newValues
     ): void {
-        CmsOriginalPageAuditLog::create([
+        CmsPublicPageAuditLog::create([
             'page_id' => $page->id,
             'user_id' => Auth::id(),
             'action' => $action,
