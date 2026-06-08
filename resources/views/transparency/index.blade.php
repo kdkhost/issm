@@ -47,8 +47,12 @@ $subColor = cms('transparency', 'hero', 'subtitle_color', '#bbf7d0');
             $fullTitle = cms('transparency', 'hero', 'title', 'Portal da Transparência');
         @endphp
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
-            @if($titleHighlight && str_contains($fullTitle, $titleHighlight))
-                {!! str_replace($titleHighlight, '<span style="color:'.$titleColor.'">'.$titleHighlight.'</span>', e($fullTitle)) !!}
+            @php
+                $th = trim($titleHighlight);
+                $ft = e($fullTitle);
+            @endphp
+            @if($th && stripos($ft, $th) !== false)
+                {!! str_ireplace($th, '<span style="color:'.$titleColor.'">'.$th.'</span>', $ft) !!}
             @else
                 {{ $fullTitle }}
             @endif
