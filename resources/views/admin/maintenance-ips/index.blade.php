@@ -1,6 +1,6 @@
 @extends("layouts.admin")
-@section("title", "IPs de Manutencao")
-@section("page-title", "IPs Liberados para Manutencao")
+@section("title", "IPs de Manutenção")
+@section("page-title", "IPs Liberados para Manutenção")
 @section("content")
 <div class="flex justify-between items-center mb-6">
     <div class="flex items-center gap-3">
@@ -10,7 +10,7 @@
     <a href="{{ route("admin.ips-manutencao.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Adicionar IP</a>
 </div>
 <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-    <p class="text-blue-800 text-sm"><strong>Seu IP atual:</strong> {{ request()->ip() }} | <strong>Como funciona:</strong> Quando o modo manutencao esta ativo, apenas os IPs listados aqui (e administradores logados) conseguem ver o site.</p>
+    <p class="text-blue-800 text-sm"><strong>Seu IP atual:</strong> {{ request()->ip() }} | <strong>Como funciona:</strong> Quando o modo manutenção está ativo, apenas os IPs listados aqui (e administradores logados) conseguem ver o site.</p>
 </div>
 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
     <div class="overflow-x-auto">

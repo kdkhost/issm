@@ -1,10 +1,10 @@
 @extends("layouts.admin")
-@section("title", "Paginas")
-@section("page-title", "Paginas do Site")
+@section("title", "Páginas")
+@section("page-title", "Páginas do Site")
 @section("content")
 <div class="flex justify-between items-center mb-6">
-    <h2 class="text-xl font-bold text-gray-800">Paginas</h2>
-    <a href="{{ route("admin.paginas.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Nova Pagina</a>
+    <h2 class="text-xl font-bold text-gray-800">Páginas</h2>
+    <a href="{{ route("admin.paginas.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Nova Página</a>
 </div>
 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
     <table class="w-full">
