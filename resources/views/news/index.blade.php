@@ -40,12 +40,14 @@ $subColor = cms('news', 'hero', 'subtitle_color', '#bbf7d0');
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span style="color:#fff;">{{ cms('news', 'hero', 'breadcrumb', 'Notícias') }}</span>
         </div>
+        @php
+            $fullTitle = cms('news', 'hero', 'title', 'Blog & Notícias');
+        @endphp
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            @if($titleHighlight)
-                {{ cms('news', 'hero', 'title', 'Blog &') }}
-                <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+            @if($titleHighlight && str_contains($fullTitle, $titleHighlight))
+                {!! str_replace($titleHighlight, '<span style="color:'.$titleColor.'">'.$titleHighlight.'</span>', e($fullTitle)) !!}
             @else
-                {{ cms('news', 'hero', 'title', 'Blog & Notícias') }}
+                {{ $fullTitle }}
             @endif
         </h1>
         <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">
