@@ -41,7 +41,7 @@
 
 ### Atualizado
 
-- Instrucoes de geracao da chave JSON no `GOOGLE_DRIVE_SETUP.md` e no painel admin detalhadas passo a passo: volta para Credenciais, clica no nome da conta, aba CHAVES, ADICIONAR CHAVE, Criar nova chave, formato JSON, CRIAR
+- Instrucoes de criacao da Conta de Servico e geracao da chave JSON no `GOOGLE_DRIVE_SETUP.md` e no painel admin detalhadas passo a passo: botao **+ CRIAR CREDENCIAIS** (topo direito), escolher **Conta de servico**, depois clicar no nome da conta, aba **CHAVES**, **ADICIONAR CHAVE > Criar nova chave**, formato **JSON**, **CRIAR**
 
 ## [1.1.1] - 2026-06-07
 

@@ -25,13 +25,16 @@ Esta integracao permite que o Portal da Transparencia sincronize documentos auto
 ### 3. Criar Service Account
 
 1. Va em **APIs e Servicos > Credenciais**
-2. Clique em **+ Criar credenciais > Conta de servico**
-3. Preencha:
+2. Clique no botao **+ CRIAR CREDENCIAIS** (no topo direito, azul)
+3. Selecione **Conta de servico**
+4. Preencha:
    - Nome da conta: `portal-transparencia`
    - ID da conta: aceite o sugerido
    - Descricao: opcional
-4. Clique em **Criar e continuar**
-5. Em "Conceder acesso", ignore por enquanto e clique em **Concluir**
+5. Clique em **Criar e continuar**
+6. Em "Conceder acesso", ignore por enquanto e clique em **Concluir**
+
+> Se voce ja criou a conta e nao a ve na lista, verifique se esta na aba **Credenciais** (nao na aba da API). As contas aparecem na secao "Contas de servico" dessa pagina.
 
 ### 4. Gerar chave JSON
 
