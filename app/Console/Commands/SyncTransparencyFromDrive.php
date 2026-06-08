@@ -78,8 +78,8 @@ class SyncTransparencyFromDrive extends Command
                 if (isset($existingDriveIds[$fileId])) {
                     $doc = TransparencyDocument::find($existingDriveIds[$fileId]);
 
-                    // Atualizar apenas se o link mudou (o nome raramente muda no Drive sem mudar o ID)
-                    if ($doc->google_drive_url !== $downloadUrl || $doc->title !== $fileName) {
+                    // Atualizar se o link, nome do arquivo, categoria (pasta) ou ano mudou
+                    if ($doc->google_drive_url !== $downloadUrl || $doc->title !== $fileName || $doc->category !== $category || $doc->year !== $year) {
                         if (! $dryRun) {
                             $doc->update([
                                 'title' => $fileName,

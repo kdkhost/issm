@@ -49,6 +49,12 @@
 
 - Sincronizacao executada com sucesso no servidor de producao. Resultado: 2 pastas (`Atas 2026`, `Estatuto 2025`) e 2 documentos criados automaticamente no Portal da Transparencia. Integracao Google Drive operacional
 
+## [1.1.2] - 2026-06-08 (correcao sync-drive)
+
+### Corrigido
+
+- `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
+
 ## [1.1.2] - 2026-06-08 (Central de Cron)
 
 ### Adicionado
