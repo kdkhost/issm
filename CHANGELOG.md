@@ -59,7 +59,7 @@
 
 ### Corrigido
 
-- Removida duplicidade do menu **Configuracoes** na sidebar do admin. O link estava hardcoded na view e tambem vindo dinamicamente via `AdminMenuSeeder`. Mantido apenas o dinamico do banco
+- Removida duplicidade do menu **Configuracoes** na sidebar do admin. O link do `AdminMenuSeeder` foi removido e mantido apenas o hardcoded na secao Sistema da view. Migration remove a entrada duplicada do banco
 
 ## [1.1.2] - 2026-06-08 (Categorias de Transparencia v2)
 
