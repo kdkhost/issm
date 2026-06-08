@@ -147,13 +147,13 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span style="color:#fff;">{{ cms('gallery', 'hero', 'breadcrumb', 'Galeria') }}</span>
         </div>
+        @php
+            $titlePart = cms('gallery', 'hero', 'title', 'Galeria');
+            $highlightPart = trim($titleHighlight);
+        @endphp
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
-            @php
-                $th = trim($titleHighlight);
-                $ft = e($fullTitle);
-            @endphp
-            @if($th && stripos($ft, $th) !== false)
-                {!! str_ireplace($th, '<span style="color:'.$titleColor.'">'.$th.'</span>', $ft) !!}
+            @if($highlightPart)
+                {{ $titlePart }} <span style="color:{{ $titleColor }};">{{ $highlightPart }}</span>
             @else
                 {{ $fullTitle }}
             @endif

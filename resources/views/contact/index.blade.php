@@ -71,17 +71,14 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
             <span style="color:#fff;">{{ cms('contact', 'hero', 'breadcrumb', 'Contato') }}</span>
         </div>
         @php
-            $fullTitle = cms('contact', 'hero', 'title', 'Fale Conosco');
+            $titlePart = cms('contact', 'hero', 'title', 'Fale');
+            $highlightPart = trim($titleHighlight);
         @endphp
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:8px;{{ $titleUseGradient ? '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,'.$titleGradStart.','.$titleGradEnd.');background-clip:text;' : 'color:#fff;' }}">
-            @php
-                $th = trim($titleHighlight);
-                $ft = e($fullTitle);
-            @endphp
-            @if($th && stripos($ft, $th) !== false)
-                {!! str_ireplace($th, '<span style="color:'.$titleColor.'">'.$th.'</span>', $ft) !!}
+            @if($highlightPart)
+                {{ $titlePart }} <span style="color:{{ $titleColor }};">{{ $highlightPart }}</span>
             @else
-                {{ $fullTitle }}
+                {{ $titlePart }}
             @endif
         </h1>
         <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">
