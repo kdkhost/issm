@@ -150,9 +150,11 @@ $subColor = cms('ods', 'hero', 'subtitle_color', '#bbf7d0');
             <span style="color:#fff;">{{ cms('ods', 'hero', 'breadcrumb', 'ODS 2030') }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            {{ cms('ods', 'hero', 'title', 'Objetivos de') }}
             @if($titleHighlight)
-            <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+                {{ cms('ods', 'hero', 'title', 'Objetivos de') }}
+                <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+            @else
+                {{ cms('ods', 'hero', 'title', 'Objetivos de Desenvolvimento') }}
             @endif
         </h1>
         <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">

@@ -41,9 +41,11 @@ $subColor = cms('transparency', 'hero', 'subtitle_color', '#bbf7d0');
             <span style="color:#fff;">{{ cms('transparency', 'hero', 'breadcrumb', 'Transparência') }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            {{ cms('transparency', 'hero', 'title', 'Portal da') }}
             @if($titleHighlight)
-            <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+                {{ cms('transparency', 'hero', 'title', 'Portal da') }}
+                <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+            @else
+                {{ cms('transparency', 'hero', 'title', 'Portal da Transparência') }}
             @endif
         </h1>
         <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">

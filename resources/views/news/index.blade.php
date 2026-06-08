@@ -41,9 +41,11 @@ $subColor = cms('news', 'hero', 'subtitle_color', '#bbf7d0');
             <span style="color:#fff;">{{ cms('news', 'hero', 'breadcrumb', 'Notícias') }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            {{ cms('news', 'hero', 'title', 'Blog &') }}
             @if($titleHighlight)
-            <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+                {{ cms('news', 'hero', 'title', 'Blog &') }}
+                <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+            @else
+                {{ cms('news', 'hero', 'title', 'Blog & Notícias') }}
             @endif
         </h1>
         <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">
