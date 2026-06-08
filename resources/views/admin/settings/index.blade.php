@@ -409,8 +409,8 @@ $firstGroup = $sorted->keys()->first();
                         <ol>
                             <li><strong>Crie um projeto</strong> no <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a>.</li>
                             <li><strong>Habilite a Google Drive API</strong> em APIs e Servicos > Biblioteca.</li>
-                            <li><strong>Crie uma Conta de Servico</strong> em APIs e Servicos > Credenciais > + Criar credenciais.</li>
-                            <li><strong>Gere uma chave JSON</strong> na aba Chaves da conta de servico e baixe o arquivo.</li>
+                            <li><strong>Crie uma Conta de Servico</strong> em APIs e Servicos > Credenciais > + Criar credenciais > Conta de servico.</li>
+                            <li><strong>Gere a chave JSON:</strong> volte em Credenciais, clique no nome da conta criada, va na aba <strong>CHAVES</strong>, clique <strong>ADICIONAR CHAVE > Criar nova chave</strong>, escolha <strong>JSON</strong> e clique <strong>CRIAR</strong>. O arquivo baixara automaticamente.</li>
                             <li><strong>Envie o JSON aqui</strong> na secao Credenciais abaixo.</li>
                             <li><strong>Compartilhe a pasta do Drive</strong> com o e-mail da Service Account (campo <code>client_email</code> do JSON) como <strong>Leitor</strong>.</li>
                             <li><strong>Copie o ID da pasta raiz</strong> da URL do Drive (ex: <code>/folders/1aBc...</code>) e cole no campo abaixo.</li>

@@ -35,11 +35,14 @@ Esta integracao permite que o Portal da Transparencia sincronize documentos auto
 
 ### 4. Gerar chave JSON
 
-1. Na lista de Contas de Servico, clique na conta criada
-2. Va na aba **Chaves**
-3. Clique em **Adicionar chave > Criar nova chave**
-4. Selecione **JSON** e clique em **Criar**
-5. O arquivo sera baixado automaticamente. **Guarde com seguranca.**
+1. **Volte para a pagina de Credenciais** (APIs e Servicos > Credenciais)
+2. Na secao **Contas de servico**, clique no **nome da conta criada** (ex: `portal-transparencia`)
+3. A pagina de detalhes da conta abrira. Clique na aba **CHAVES** (no topo da pagina, ao lado de "DETALHES")
+4. Clique no botao **ADICIONAR CHAVE** (dropdown) e selecione **Criar nova chave**
+5. Selecione o formato **JSON**
+6. Clique em **CRIAR**
+7. O arquivo sera baixado automaticamente no seu computador (nome algo como `seu-projeto-123456-abcdef.json`)
+8. **Guarde com seguranca.** Nao compartilhe esse arquivo.
 
 ### 5. Fazer upload da chave no painel administrativo
 
