@@ -55,6 +55,12 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (correcao menu admin)
+
+### Corrigido
+
+- Removida duplicidade do menu **Configuracoes** na sidebar do admin. O link estava hardcoded na view e tambem vindo dinamicamente via `AdminMenuSeeder`. Mantido apenas o dinamico do banco
+
 ## [1.1.2] - 2026-06-08 (Categorias de Transparencia v2)
 
 ### Atualizado
