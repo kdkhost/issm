@@ -55,11 +55,15 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
-## [1.1.2] - 2026-06-08 (correcao menu admin)
+## [1.1.2] - 2026-06-08 (correcao menu admin v2)
 
 ### Corrigido
 
-- Removida duplicidade do menu **Configuracoes** na sidebar do admin. O link do `AdminMenuSeeder` foi removido e mantido apenas o hardcoded na secao Sistema da view. Migration remove a entrada duplicada do banco
+- Consolidado menu **Sistema** em um unico dropdown dinamico do banco:
+  - Itens adicionados: Configuracoes, Central de Cron, Pastas do Drive, Categorias de Transparencia
+  - Removida secao fixa "SISTEMA" hardcoded da view `menu.blade.php`
+  - Migration atualiza o children do item "Sistema" no banco e remove qualquer item "Configuracoes" standalone
+  - AdminMenuSeeder atualizado com todos os itens no dropdown Sistema
 
 ## [1.1.2] - 2026-06-08 (Categorias de Transparencia v2)
 

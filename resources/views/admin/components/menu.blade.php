@@ -56,28 +56,6 @@ function adminMenuChildIsActive($routeName) {
 <div class="my-2 border-t border-green-700/50"></div>
 
 <div class="space-y-1">
-    <p class="px-3 text-[10px] font-bold text-green-500 uppercase tracking-wider">Sistema</p>
-    <a href="{{ route("admin.settings.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.settings*") ? "bg-green-700 text-white" : "" }}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span>Configuracoes</span>
-    </a>
-    <a href="{{ route("admin.cron.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.cron*") ? "bg-green-700 text-white" : "" }}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span>Central de Cron</span>
-    </a>
-    <a href="{{ route("admin.drive-folders.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.drive-folders*") ? "bg-green-700 text-white" : "" }}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-        <span>Pastas do Drive</span>
-    </a>
-    <a href="{{ route("admin.transparency-categories.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.transparency-categories*") ? "bg-green-700 text-white" : "" }}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-        <span>Categorias de Transparencia</span>
-    </a>
-</div>
-
-<div class="my-2 border-t border-green-700/50"></div>
-
-<div class="space-y-1">
     <p class="px-3 text-[10px] font-bold text-green-500 uppercase tracking-wider">Personalização</p>
     <a href="{{ route("admin.menu.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.menu*") ? "bg-green-700 text-white" : "" }}">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>

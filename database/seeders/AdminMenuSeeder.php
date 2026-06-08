@@ -63,10 +63,14 @@ class AdminMenuSeeder extends Seeder
                 'is_active' => true,
                 'is_dropdown' => true,
                 'children' => [
+                    ['label' => 'Configuracoes', 'route_name' => 'admin.settings.index'],
                     ['label' => 'FAQ', 'route_name' => 'admin.faq.index'],
                     ['label' => 'Analytics', 'route_name' => 'admin.analytics.index'],
                     ['label' => 'Mensagens', 'route_name' => 'admin.contatos.index'],
-                    ['label' => 'IPs Manutenção', 'route_name' => 'admin.ips-manutencao.index'],
+                    ['label' => 'IPs Manutencao', 'route_name' => 'admin.ips-manutencao.index'],
+                    ['label' => 'Central de Cron', 'route_name' => 'admin.cron.index'],
+                    ['label' => 'Pastas do Drive', 'route_name' => 'admin.drive-folders.index'],
+                    ['label' => 'Categorias de Transparencia', 'route_name' => 'admin.transparency-categories.index'],
                 ],
             ],
         ];
