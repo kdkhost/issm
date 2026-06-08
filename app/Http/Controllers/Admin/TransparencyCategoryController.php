@@ -75,4 +75,18 @@ class TransparencyCategoryController extends Controller
         return redirect()->route('admin.transparency-categories.index')
             ->with('success', 'Categoria removida com sucesso!');
     }
+
+    public function updateOrder(Request $request)
+    {
+        $validated = $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:transparency_categories,id',
+        ]);
+
+        foreach ($validated['order'] as $index => $categoryId) {
+            TransparencyCategory::where('id', $categoryId)->update(['sort_order' => $index]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

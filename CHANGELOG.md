@@ -55,6 +55,19 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (Categorias de Transparencia v2)
+
+### Atualizado
+
+- **Drag-and-drop** para reordenar categorias via SortableJS — arraste os cards para a posicao desejada e clique "Salvar Ordem"
+- **Endpoint** `POST /admin/transparencia-categorias/ordenar` atualiza o `sort_order` de todas as categorias
+- Categorias exibidas como cards arrastaveis com icone de grip e animacao suave
+
+### Adicionado
+
+- **Migracao automatica** de categorias existentes — a migration `migrate_existing_categories` importa todas as categorias unicas do campo `category` de `transparency_documents` para a nova tabela `transparency_categories`, vinculando os documentos automaticamente
+- Botao "Salvar Ordem" aparece apenas apos alguma mudanca de posicao
+
 ## [1.1.2] - 2026-06-08 (Categorias de Transparencia)
 
 ### Adicionado

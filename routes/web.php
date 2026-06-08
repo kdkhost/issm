@@ -81,6 +81,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('transparencia', TransparencyController::class)->parameters(['transparencia' => 'transparency']);
     Route::get('transparencia-categorias', [TransparencyCategoryController::class, 'index'])->name('transparency-categories.index');
     Route::post('transparencia-categorias', [TransparencyCategoryController::class, 'store'])->name('transparency-categories.store');
+    Route::post('transparencia-categorias/ordenar', [TransparencyCategoryController::class, 'updateOrder'])->name('transparency-categories.update-order');
     Route::put('transparencia-categorias/{category}', [TransparencyCategoryController::class, 'update'])->name('transparency-categories.update');
     Route::delete('transparencia-categorias/{category}', [TransparencyCategoryController::class, 'destroy'])->name('transparency-categories.destroy');
     Route::resource('depoimentos', TestimonialController::class)->parameters(['depoimentos' => 'testimonial']);
