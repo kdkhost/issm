@@ -14,7 +14,11 @@
             <span style="color:#fff;">{{ Str::limit($item->title, 30) }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;">
-            {{ $item->title }}
+            @if($item->title_highlight)
+                {{ $item->title }} <span style="color:{{ $item->title_highlight_color ?: '#86efac' }};">{{ $item->title_highlight }}</span>
+            @else
+                {{ $item->title }}
+            @endif
         </h1>
         <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
             @if($item->category)

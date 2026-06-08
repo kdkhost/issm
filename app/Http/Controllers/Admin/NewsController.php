@@ -25,6 +25,8 @@ class NewsController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'title_highlight' => 'nullable|string|max:255',
+            'title_highlight_color' => 'nullable|string|max:20',
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),
@@ -57,6 +59,8 @@ class NewsController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'title_highlight' => 'nullable|string|max:255',
+            'title_highlight_color' => 'nullable|string|max:20',
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),

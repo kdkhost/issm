@@ -9,6 +9,10 @@
             <div class="lg:col-span-2 space-y-5">
                 <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Titulo *</label><input type="text" name="title" value="{{ old("title", $news->title) }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Palavra em Destaque <small class="text-gray-400 font-normal">(opcional)</small></label><input type="text" name="title_highlight" value="{{ old("title_highlight", $news->title_highlight) }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Sustentável"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Cor do Destaque</label><div class="flex items-center gap-2"><input type="color" name="title_highlight_color" value="{{ old("title_highlight_color", $news->title_highlight_color ?? "#86efac") }}" class="w-10 h-10 rounded cursor-pointer border-0 p-0"><input type="text" name="title_highlight_color" value="{{ old("title_highlight_color", $news->title_highlight_color ?? "#86efac") }}" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="#86efac"></div></div>
+                    </div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Resumo</label><textarea name="excerpt" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">{{ old("excerpt", $news->excerpt) }}</textarea></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Conteudo *</label><textarea name="content" rows="12" required class="wysiwyg w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">{{ old("content", $news->content) }}</textarea></div>
                 </div>
@@ -27,4 +31,17 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+document.querySelectorAll('input[type="color"]').forEach(colorInput => {
+    const name = colorInput.name;
+    const textInput = document.querySelector('input[type="text"][name="' + name + '"');
+    if (textInput) {
+        colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+        textInput.addEventListener('input', () => colorInput.value = textInput.value);
+    }
+});
+</script>
+@endpush
 @endsection
