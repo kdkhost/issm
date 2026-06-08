@@ -78,6 +78,8 @@ class CmsPublicPageController extends Controller
             }
         }
 
+        $cms->clearPageCache($cmsPublicPage);
+
         return redirect()
             ->route('admin.cms-public-pages.edit', $cmsPublicPage)
             ->with('success', 'Conteúdo da página atualizado com sucesso!');

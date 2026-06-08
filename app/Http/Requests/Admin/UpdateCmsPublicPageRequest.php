@@ -16,6 +16,8 @@ class UpdateCmsPublicPageRequest extends FormRequest
         return [
             'fields' => 'nullable|array',
             'fields.*' => 'nullable|string|max:65535',
+            'hero' => 'nullable|array',
+            'hero.*' => 'nullable|string|max:65535',
         ];
     }
 }
