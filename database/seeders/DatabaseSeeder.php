@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             OdsSeeder::class,
             AdminMenuSeeder::class,
+            FrontendMenuSeeder::class,
         ]);
     }
 }

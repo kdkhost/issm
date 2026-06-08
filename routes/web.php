@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\FrontendMenuController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MaintenanceIpController;
 use App\Http\Controllers\Admin\MenuController;
@@ -86,9 +87,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Analytics
     Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
-    // Menu Editor
+    // Menu Editor (Admin sidebar)
     Route::get('menu', [MenuController::class, 'index'])->name('menu.index');
     Route::post('menu/ordenar', [MenuController::class, 'updateOrder'])->name('menu.update-order');
+
+    // Frontend Menu Editor
+    Route::get('menu-site', [FrontendMenuController::class, 'index'])->name('frontend-menu.index');
+    Route::post('menu-site/ordenar', [FrontendMenuController::class, 'updateOrder'])->name('frontend-menu.update-order');
 
     // CMS Routes
 });

@@ -261,14 +261,13 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden lg:flex items-center gap-8">
-                    <a href="{{ route('home') }}" class="font-medium transition-colors {{ request()->routeIs('home') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Início</a>
-                    <a href="{{ route('about.index') }}" class="font-medium transition-colors {{ request()->routeIs('about.index') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Sobre</a>
-                    <a href="{{ route('projects.index') }}" class="font-medium transition-colors {{ request()->routeIs('projects.*') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Projetos</a>
-                    <a href="{{ route('ods.index') }}" class="font-medium transition-colors {{ request()->routeIs('ods.index') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">ODS 2030</a>
-                    <a href="{{ route('news.index') }}" class="font-medium transition-colors {{ request()->routeIs('news.*') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Notícias</a>
-                    <a href="{{ route('gallery.index') }}" class="font-medium transition-colors {{ request()->routeIs('gallery.index') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Galeria</a>
-                    <a href="{{ route('transparency.index') }}" class="font-medium transition-colors {{ request()->routeIs('transparency.index') ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">Transparência</a>
-                    <a href="{{ route('contact.index') }}" class="font-medium transition-colors {{ request()->routeIs('contact.index') ? 'bg-green-800 text-white' : 'bg-green-700 text-white hover:bg-green-800' }} px-5 py-2 rounded-full shadow-md">Contato</a>
+                    @foreach(\App\Models\FrontendMenuItem::getOrdered() as $menuItem)
+                        @if($menuItem->is_button)
+                            <a href="{{ route($menuItem->route_name) }}" class="font-medium transition-colors {{ request()->routeIs($menuItem->route_name) ? 'bg-green-800 text-white' : 'bg-green-700 text-white hover:bg-green-800' }} px-5 py-2 rounded-full shadow-md">{{ $menuItem->label }}</a>
+                        @else
+                            <a href="{{ route($menuItem->route_name) }}" class="font-medium transition-colors {{ request()->routeIs($menuItem->route_name) || request()->routeIs(str_replace('.index', '.*', $menuItem->route_name)) ? 'text-green-700' : 'text-gray-700 hover:text-green-700' }}">{{ $menuItem->label }}</a>
+                        @endif
+                    @endforeach
                 </nav>
 
                 <!-- Hamburger (mobile + tablet, oculto no desktop) -->
@@ -324,74 +323,18 @@
             {{-- Label de grupo --}}
             <p style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;padding:4px 16px 8px;">Navegação</p>
 
-            <a href="{{ route('home') }}" data-nav-path="/" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
+            @foreach(\App\Models\FrontendMenuItem::getOrdered() as $menuItem)
+            <a href="{{ route($menuItem->route_name) }}" data-nav-path="{{ route($menuItem->route_name) }}" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
                 <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#15803d;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <div style="width:40px;height:40px;border-radius:12px;background:{{ $menuItem->icon_bg_color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
+                    {!! $menuItem->icon_svg !!}
                 </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Início</span>
-            </a>
-
-            <a href="{{ route('about.index') }}" data-nav-path="/sobre" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#1d4ed8;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Sobre o ISSM</span>
-            </a>
-
-            <a href="{{ route('projects.index') }}" data-nav-path="/projetos" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#ffedd5;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#c2410c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Projetos</span>
-            </a>
-
-            <a href="{{ route('ods.index') }}" data-nav-path="/ods" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#d1fae5;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#065f46;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">ODS 2030</span>
-            </a>
-
-            <a href="{{ route('news.index') }}" data-nav-path="/noticias" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#ede9fe;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#6d28d9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Notícias</span>
-            </a>
-
-            <a href="{{ route('gallery.index') }}" data-nav-path="/galeria" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#fce7f3;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#be185d;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Galeria</span>
-            </a>
-
-            <a href="{{ route('transparency.index') }}" data-nav-path="/transparencia" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#15803d;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:500;color:#1f2937;position:relative;z-index:1;">Transparência</span>
-            </a>
-
-            {{-- Divisor --}}
-            <div style="height:1px;background:#e5e7eb;margin:8px 16px 12px;"></div>
-
-            {{-- CTA contato --}}
-            <a href="{{ route('contact.index') }}" class="md-nav-item flex items-center gap-4 px-4 py-0" style="height:56px;text-decoration:none;">
-                <div class="md-active-bg"></div>
-                <div style="width:40px;height:40px;border-radius:12px;background:#15803d;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;">
-                    <svg style="width:20px;height:20px;color:#fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <span style="font-size:15px;font-weight:600;color:#15803d;position:relative;z-index:1;">Fale Conosco</span>
+                <span style="font-size:15px;font-weight:{{ $menuItem->is_button ? '600' : '500' }};color:{{ $menuItem->is_button ? '#15803d' : '#1f2937' }};position:relative;z-index:1;">{{ $menuItem->label }}</span>
+                @if($menuItem->is_button)
                 <svg style="width:16px;height:16px;color:#15803d;margin-left:auto;position:relative;z-index:1;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                @endif
             </a>
+            @endforeach
         </nav>
 
         {{-- ── Rodapé do drawer ── --}}
