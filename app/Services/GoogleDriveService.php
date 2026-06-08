@@ -28,7 +28,7 @@ class GoogleDriveService
         try {
             $client = new Client();
             $client->setAuthConfig($credentialsPath);
-            $client->addScope(Drive::DRIVE_READONLY);
+            $client->addScope(Drive::DRIVE);
             $this->service = new Drive($client);
             $this->enabled = true;
         } catch (\Throwable $e) {
@@ -108,6 +108,67 @@ class GoogleDriveService
         } catch (\Throwable $e) {
             Log::error('GoogleDriveService: erro ao listar arquivos: ' . $e->getMessage());
             return [];
+        }
+    }
+
+    /**
+     * Cria uma nova pasta no Google Drive.
+     */
+    public function createFolder(string $name, string $parentFolderId): ?string
+    {
+        if (! $this->enabled) {
+            return null;
+        }
+
+        try {
+            $file = new \Google\Service\Drive\DriveFile([
+                'name' => $name,
+                'mimeType' => 'application/vnd.google-apps.folder',
+                'parents' => [$parentFolderId],
+            ]);
+
+            $created = $this->service->files->create($file, ['fields' => 'id']);
+            return $created->getId();
+        } catch (\Throwable $e) {
+            Log::error('GoogleDriveService: erro ao criar pasta: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Renomeia uma pasta no Google Drive.
+     */
+    public function renameFolder(string $folderId, string $newName): bool
+    {
+        if (! $this->enabled) {
+            return false;
+        }
+
+        try {
+            $file = new \Google\Service\Drive\DriveFile(['name' => $newName]);
+            $this->service->files->update($folderId, $file);
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('GoogleDriveService: erro ao renomear pasta: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Move uma pasta para a lixeira (deletar).
+     */
+    public function deleteFolder(string $folderId): bool
+    {
+        if (! $this->enabled) {
+            return false;
+        }
+
+        try {
+            $this->service->files->delete($folderId);
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('GoogleDriveService: erro ao deletar pasta: ' . $e->getMessage());
+            return false;
         }
     }
 

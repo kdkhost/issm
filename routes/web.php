@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FrontendMenuController;
+use App\Http\Controllers\Admin\GoogleDriveFolderController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MaintenanceIpController;
 use App\Http\Controllers\Admin\MenuController;
@@ -105,6 +106,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('cron/{task}', [CronController::class, 'update'])->name('cron.update');
     Route::post('cron/{task}/toggle', [CronController::class, 'toggle'])->name('cron.toggle');
     Route::post('cron/{task}/run', [CronController::class, 'runNow'])->name('cron.run');
+
+    // Pastas do Google Drive
+    Route::get('drive-pastas', [GoogleDriveFolderController::class, 'index'])->name('drive-folders.index');
+    Route::post('drive-pastas', [GoogleDriveFolderController::class, 'store'])->name('drive-folders.store');
+    Route::put('drive-pastas/{folderId}', [GoogleDriveFolderController::class, 'update'])->name('drive-folders.update');
+    Route::delete('drive-pastas/{folderId}', [GoogleDriveFolderController::class, 'destroy'])->name('drive-folders.destroy');
 
     // CMS Routes
 });

@@ -55,6 +55,19 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (Pastas do Drive)
+
+### Adicionado
+
+- **Gerenciamento de Pastas do Google Drive** diretamente pelo painel administrativo em `/admin/drive-pastas`
+- `GoogleDriveService` com metodos de escrita: `createFolder()`, `renameFolder()`, `deleteFolder()`
+- Scope da API alterado de `DRIVE_READONLY` para `DRIVE` para permitir operacoes de escrita
+- Controller `Admin\GoogleDriveFolderController` com listagem, criacao, renomeacao e exclusao de pastas
+- View `admin/drive-folders/index.blade.php` com aviso sobre permissao de Editor necessaria
+- Link **Pastas do Drive** na sidebar do admin (secao Sistema)
+
+> Aviso: a Service Account precisa ter permissao de **Editor** (nao apenas Leitor) na pasta raiz do Google Drive para operacoes de escrita funcionarem.
+
 ## [1.1.2] - 2026-06-08 (Central de Cron v2)
 
 ### Atualizado

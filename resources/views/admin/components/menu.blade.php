@@ -65,6 +65,10 @@ function adminMenuChildIsActive($routeName) {
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span>Central de Cron</span>
     </a>
+    <a href="{{ route("admin.drive-folders.index") }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-green-300 hover:bg-green-700 hover:text-white transition-colors text-sm {{ request()->routeIs("admin.drive-folders*") ? "bg-green-700 text-white" : "" }}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+        <span>Pastas do Drive</span>
+    </a>
 </div>
 
 <div class="my-2 border-t border-green-700/50"></div>
