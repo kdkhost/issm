@@ -444,13 +444,19 @@ $cmsPage = cms_page('home');
     $heroOpacity = (int) (\App\Models\Setting::get('hero_overlay_opacity') ?: 70);
     $heroOpacity = max(0, min(100, $heroOpacity));
     $heroAlpha = round($heroOpacity / 100, 2);
+    $hg1 = cms('home', 'hero', 'gradient_start', '#14532d');
+    $hg2 = cms('home', 'hero', 'gradient_mid', '#15803d');
+    $hg3 = cms('home', 'hero', 'gradient_end', '#059669');
+    $tl1c = cms('home', 'hero', 'title_line1_color', '#ffffff');
+    $tl2c = cms('home', 'hero', 'title_line2_color', '#86efac');
+    $subc = cms('home', 'hero', 'subtitle_color', '#d1fae5');
 @endphp
 <section
     style="position:relative;min-height:500px;display:flex;align-items:center;overflow:hidden;
     @if($heroBg)
         background-image:url({{ asset('media/'.$heroBg) }});background-size:cover;background-position:center;
     @else
-        background:linear-gradient(135deg, #14532d 0%, #15803d 50%, #059669 100%);
+        background:linear-gradient(135deg, {{ $hg1 }} 0%, {{ $hg2 }} 50%, {{ $hg3 }} 100%);
     @endif
     ">
     {{-- Degrade overlay (sempre presente quando tem imagem) --}}
@@ -461,8 +467,8 @@ $cmsPage = cms_page('home');
         rgba(5,150,105,{{ $heroAlpha * 0.75 }}));z-index:1;"></div>
     @endif
     <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:5rem 1rem;text-align:center;width:100%;">
-        <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-4">{{ cms('home', 'hero', 'title_line1', 'Instituto Socioambiental') }}<br>{{ cms('home', 'hero', 'title_line2', 'Serra do Mendanha') }}</h1>
-        <p class="text-xl text-green-100 mb-8">{{ cms('home', 'hero', 'subtitle', 'Comprometidos com a preservacao ambiental e o desenvolvimento sustentavel') }}</p>
+        <h1 class="text-4xl lg:text-6xl font-black leading-tight mb-4"><span style="color:{{ $tl1c }}">{{ cms('home', 'hero', 'title_line1', 'Instituto Socioambiental') }}</span><br><span style="color:{{ $tl2c }}">{{ cms('home', 'hero', 'title_line2', 'Serra do Mendanha') }}</span></h1>
+        <p class="text-xl mb-8" style="color:{{ $subc }}">{{ cms('home', 'hero', 'subtitle', 'Comprometidos com a preservacao ambiental e o desenvolvimento sustentavel') }}</p>
         <a href="{{ cms('home', 'hero', 'cta_url', '/sobre') }}" class="inline-block bg-white text-green-800 font-bold px-8 py-3 rounded-full hover:bg-green-50 shadow-lg">{{ cms('home', 'hero', 'cta_text', 'Conheca o ISSM') }}</a>
     </div>
 </section>

@@ -22,18 +22,31 @@ $cmsPage = cms_page('news');
     {!! $cmsPage->custom_html !!}
 @else
 
+@php
+$g1 = cms('news', 'hero', 'gradient_start', '#166534');
+$g2 = cms('news', 'hero', 'gradient_mid', '#15803d');
+$g3 = cms('news', 'hero', 'gradient_end', '#059669');
+$bcColor = cms('news', 'hero', 'breadcrumb_color', '#86efac');
+$titleHighlight = cms('news', 'hero', 'title_highlight', 'Notícias');
+$titleColor = cms('news', 'hero', 'title_highlight_color', '#86efac');
+$subColor = cms('news', 'hero', 'subtitle_color', '#bbf7d0');
+@endphp
+
 {{-- Hero Banner Premium --}}
-<div style="background:linear-gradient(135deg,#166534 0%,#15803d 50%,#059669 100%);padding:56px 0 40px;">
+<div style="background:linear-gradient(135deg,{{ $g1 }} 0%,{{ $g2 }} 50%,{{ $g3 }} 100%);padding:56px 0 40px;">
     <div style="max-width:1280px;margin:0 auto;padding:0 16px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;margin-bottom:16px;">
-            <a href="{{ route('home') }}" style="color:#86efac;text-decoration:none;transition:color .2s;">Início</a>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:{{ $bcColor }};margin-bottom:16px;">
+            <a href="{{ route('home') }}" style="color:{{ $bcColor }};text-decoration:none;transition:color .2s;">Início</a>
             <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span style="color:#fff;">{{ cms('news', 'hero', 'breadcrumb', 'Notícias') }}</span>
         </div>
         <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;">
-            {{ cms('news', 'hero', 'title', 'Blog & Notícias') }}
+            {{ cms('news', 'hero', 'title', 'Blog &') }}
+            @if($titleHighlight)
+            <span style="color:{{ $titleColor }};">{{ $titleHighlight }}</span>
+            @endif
         </h1>
-        <p style="font-size:16px;color:#bbf7d0;max-width:600px;margin-bottom:20px;">
+        <p style="font-size:16px;color:{{ $subColor }};max-width:600px;margin-bottom:20px;">
             {{ cms('news', 'hero', 'subtitle', 'Fique por dentro das novidades, eventos e conquistas do Instituto Socioambiental Serra do Mendanha.') }}
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
