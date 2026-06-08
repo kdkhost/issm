@@ -67,6 +67,10 @@
   - Tema dark compativel em todos os elementos
 - Campo `seo_score` na tabela `cms_public_page_seo` via migration
 - Calculo automatico de pontuacao no `CmsContentService` ao salvar SEO
+- **Paginas Dinamicas** agora tambem tem SEO completo:
+  - Campos `og_title`, `og_description`, `og_image`, `canonical_url`, `robots_meta`, `seo_score` na tabela `pages`
+  - Preview em tempo real e pontuacao nas telas de criar e editar pagina
+  - Calculo de `seo_score` automatico no `PageController`
 
 ## [1.1.2] - 2026-06-08 (correcao menu admin v2)
 

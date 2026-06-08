@@ -28,6 +28,11 @@ class PageController extends Controller
             'content' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
+            'og_image' => 'nullable|string|max:255',
+            'canonical_url' => 'nullable|url|max:255',
+            'robots_meta' => 'nullable|string|max:100',
             'image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),
             'active' => 'nullable|boolean',
             'show_in_menu' => 'nullable|boolean',
@@ -41,6 +46,7 @@ class PageController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated['active'] = $request->boolean('active');
         $validated['show_in_menu'] = $request->boolean('show_in_menu');
+        $validated['seo_score'] = $this->calculateSeoScore($validated);
         Page::create($validated);
 
         return redirect()->route('admin.paginas.index')->with('success', 'Pagina criada com sucesso!');
@@ -58,6 +64,11 @@ class PageController extends Controller
             'content' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
+            'og_image' => 'nullable|string|max:255',
+            'canonical_url' => 'nullable|url|max:255',
+            'robots_meta' => 'nullable|string|max:100',
             'image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),
             'active' => 'nullable|boolean',
             'show_in_menu' => 'nullable|boolean',
@@ -70,9 +81,36 @@ class PageController extends Controller
 
         $validated['active'] = $request->boolean('active');
         $validated['show_in_menu'] = $request->boolean('show_in_menu');
+        $validated['seo_score'] = $this->calculateSeoScore($validated);
         $page->update($validated);
 
         return redirect()->route('admin.paginas.index')->with('success', 'Pagina atualizada com sucesso!');
+    }
+
+    private function calculateSeoScore(array $data): int
+    {
+        $score = 0;
+        $mt = $data['meta_title'] ?? '';
+        $md = $data['meta_description'] ?? '';
+        $ot = $data['og_title'] ?? '';
+        $od = $data['og_description'] ?? '';
+        $oi = $data['og_image'] ?? '';
+        $mk = $data['meta_keywords'] ?? '';
+        $cu = $data['canonical_url'] ?? '';
+        $rm = $data['robots_meta'] ?? '';
+
+        if (trim($mt)) { $score += 15; }
+        if (mb_strlen($mt) >= 50 && mb_strlen($mt) <= 60) { $score += 10; }
+        if (trim($md)) { $score += 15; }
+        if (mb_strlen($md) >= 120 && mb_strlen($md) <= 160) { $score += 10; }
+        if (trim($ot)) { $score += 10; }
+        if (trim($od)) { $score += 10; }
+        if (trim($oi)) { $score += 15; }
+        if (trim($mk)) { $score += 5; }
+        if (trim($cu)) { $score += 5; }
+        if (trim($rm)) { $score += 5; }
+
+        return min($score, 100);
     }
 
     public function destroy(Page $page)
