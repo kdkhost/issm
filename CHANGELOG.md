@@ -55,6 +55,20 @@
 
 - `SyncTransparencyFromDrive` agora detecta alteracao de **categoria** (nome da pasta no Drive) e **ano** ao sincronizar. Antes, so atualizava se o nome do arquivo ou o link mudassem, ignorando renomeacao de pastas
 
+## [1.1.2] - 2026-06-08 (Central de Cron v2)
+
+### Atualizado
+
+- **Central de Cron** aprimorada com interface tipo cPanel:
+  - Presets de frequencia: a cada minuto, 5 min, 15 min, 30 min, hora, dia, semana, mes
+  - Modo **Personalizado** com campos individuais: Minuto, Hora, Dia, Mes, Dia da Semana
+  - Expressao cron calculada e exibida em tempo real (ex: `*/5 * * * *`)
+  - **Ultima execucao** e **proxima execucao** calculadas e exibidas para cada tarefa
+  - Suporte a expressoes cron complexas via biblioteca `dragonmantank/cron-expression`
+- Migration `add_cron_fields_to_scheduled_tasks` adiciona campos: `minute`, `hour`, `day_of_month`, `month`, `day_of_week`, `expression`
+- Model `ScheduledTask` com metodos `buildExpression()` e `nextRunAt()`
+- `Kernel.php` usa `$schedule->command()->cron($expression)` para agendamento preciso
+
 ## [1.1.2] - 2026-06-08 (Central de Cron)
 
 ### Adicionado

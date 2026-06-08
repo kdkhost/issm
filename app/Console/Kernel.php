@@ -30,17 +30,14 @@ class Kernel extends ConsoleKernel
         try {
             $tasks = ScheduledTask::where('active', true)->get();
             foreach ($tasks as $task) {
-                $event = match ($task->frequency) {
-                    'everyMinute' => $schedule->command($task->command)->everyMinute(),
-                    'hourly'      => $schedule->command($task->command)->hourly(),
-                    'daily'       => $schedule->command($task->command)->daily(),
-                    'weekly'      => $schedule->command($task->command)->weekly(),
-                    'monthly'     => $schedule->command($task->command)->monthly(),
-                    default       => $schedule->command($task->command)->daily(),
-                };
+                $expression = $task->buildExpression();
+                $event = $schedule->command($task->command)->cron($expression);
 
                 $event->onSuccess(function () use ($task) {
-                    $task->update(['last_run_at' => now()]);
+                    $task->update([
+                        'last_run_at' => now(),
+                        'next_run_at' => $task->nextRunAt(),
+                    ]);
                 });
             }
         } catch (\Throwable $e) {
