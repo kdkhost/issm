@@ -90,10 +90,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Menu Editor (Admin sidebar)
     Route::get('menu', [MenuController::class, 'index'])->name('menu.index');
     Route::post('menu/ordenar', [MenuController::class, 'updateOrder'])->name('menu.update-order');
+    Route::get('menu/render', [MenuController::class, 'renderMenu'])->name('menu.render');
 
     // Frontend Menu Editor
     Route::get('menu-site', [FrontendMenuController::class, 'index'])->name('frontend-menu.index');
     Route::post('menu-site/ordenar', [FrontendMenuController::class, 'updateOrder'])->name('frontend-menu.update-order');
+    Route::get('menu-site/render', [FrontendMenuController::class, 'renderMenu'])->name('frontend-menu.render');
 
     // CMS Routes
 });

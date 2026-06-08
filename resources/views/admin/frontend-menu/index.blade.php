@@ -3,7 +3,8 @@
 @section("page-title", "Editor de Menu do Site")
 
 @section("content")
-<div class="max-w-3xl mx-auto">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+    {{-- Editor --}}
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-700">
@@ -44,6 +45,22 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 <span id="save-status-text">Pronto</span>
             </span>
+        </div>
+    </div>
+
+    {{-- Preview do site --}}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">Preview do Menu</h2>
+                <p class="text-sm text-gray-500">Atualiza automaticamente ao reordenar.</p>
+            </div>
+        </div>
+        <div class="flex-1 border border-gray-200 rounded-lg overflow-hidden" style="min-height:400px;">
+            <iframe id="site-preview" src="{{ route('home') }}" class="w-full h-full" style="min-height:400px;border:none;" loading="lazy"></iframe>
         </div>
     </div>
 </div>
@@ -93,6 +110,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     Toastify({ text: data.message, duration: 2500, gravity: 'top', position: 'right', style: { background: '#16a34a' } }).showToast();
                 }
                 setTimeout(function () { setStatus('idle', 'Pronto'); }, 2000);
+                // Recarrega preview do site sem refresh da página
+                const preview = document.getElementById('site-preview');
+                if (preview) {
+                    preview.src = preview.src;
+                }
             } else {
                 setStatus('idle', 'Erro');
                 alert('Erro ao salvar ordem.');

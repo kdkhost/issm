@@ -354,7 +354,7 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <nav id="admin-sidebar-nav" class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
             @include("admin.components.menu")
         </nav>
 

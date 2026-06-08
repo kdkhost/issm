@@ -28,4 +28,10 @@ class FrontendMenuController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Ordem atualizada com sucesso!']);
     }
+
+    public function renderMenu()
+    {
+        $items = FrontendMenuItem::getOrdered();
+        return view('components.frontend-menu', compact('items'))->render();
+    }
 }

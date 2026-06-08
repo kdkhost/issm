@@ -90,6 +90,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     Toastify({ text: data.message, duration: 2500, gravity: 'top', position: 'right', style: { background: '#16a34a' } }).showToast();
                 }
                 setTimeout(function () { setStatus('idle', 'Pronto'); }, 2000);
+                // Atualiza sidebar em tempo real sem refresh
+                fetch('{{ route("admin.menu.render") }}')
+                    .then(r => r.text())
+                    .then(html => {
+                        const nav = document.getElementById('admin-sidebar-nav');
+                        if (nav) nav.innerHTML = html;
+                    })
+                    .catch(console.error);
             } else {
                 setStatus('idle', 'Erro');
                 alert('Erro ao salvar ordem.');

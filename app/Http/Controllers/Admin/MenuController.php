@@ -28,4 +28,9 @@ class MenuController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Ordem atualizada com sucesso!']);
     }
+
+    public function renderMenu()
+    {
+        return view('admin.components.menu')->render();
+    }
 }
