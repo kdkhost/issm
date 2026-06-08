@@ -39,8 +39,7 @@
 
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch">
-            <div class="lg:col-span-2">
+        <div>
                 <span class="text-green-600 font-semibold text-sm uppercase tracking-wider">{{ cms('about', 'identity', 'eyebrow', 'Nossa Identidade') }}</span>
                 <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6">{{ cms('about', 'identity', 'title', 'Preservação e Sustentabilidade') }}</h2>
                 <div class="prose prose-green max-w-none text-gray-600 leading-relaxed mb-10">
@@ -70,25 +69,6 @@
                         <p class="text-gray-600 text-sm leading-relaxed">{{ $settings["values"] }}</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="h-full">
-                <div class="bg-green-800 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden h-full flex flex-col justify-center">
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-                    <h3 class="text-xl font-black mb-4 relative z-10">
-                        {{ $settings['about_ods_title'] ?: 'ODS 2030' }}
-                    </h3>
-                    <p class="text-green-100 text-sm leading-relaxed mb-8 relative z-10">
-                        {!! nl2br(e($settings['about_ods_description'] ?: 'Nossas ações são norteadas pelos Objetivos de Desenvolvimento Sustentável da ONU para garantir um futuro viável.')) !!}
-                    </p>
-                    <div class="relative z-10">
-                        <a href="{{ route('ods.index') }}" class="inline-flex items-center gap-2 bg-white text-green-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-green-50 transition-colors">
-                            {{ $settings['about_ods_button_text'] ?: 'Ver nossos ODS' }}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
