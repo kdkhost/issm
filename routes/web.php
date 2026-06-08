@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MaintenanceIpController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OdsController;
 use App\Http\Controllers\Admin\PageController;
@@ -84,6 +85,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Analytics
     Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
+    // Menu Editor
+    Route::get('menu', [MenuController::class, 'index'])->name('menu.index');
+    Route::post('menu/ordenar', [MenuController::class, 'updateOrder'])->name('menu.update-order');
 
     // CMS Routes
 });
