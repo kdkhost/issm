@@ -31,6 +31,12 @@
 
 - Adicionado card de instrucoes passo a passo diretamente na aba **Google Drive** do painel de configuracoes, facilitando a descoberta do processo de setup
 
+## [1.1.2] - 2026-06-08 (correcao)
+
+### Corrigido
+
+- Corrigido card de instrucoes do Google Drive para respeitar o tema dark/light do sistema. Removidos estilos inline hardcoded e adicionadas regras CSS `[data-theme="dark"]` consistentes com o restante do painel administrativo
+
 ## [1.1.1] - 2026-06-07
 
 ### Atualizado - CMS de Páginas Públicas Reais

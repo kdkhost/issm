@@ -229,6 +229,15 @@
 [data-theme="dark"] .cfg-toast-close{color:#6b7280}
 [data-theme="dark"] .cfg-toast-close:hover{color:#d1d5db}
 [data-theme="dark"] .cfg-save-bottom{border-color:#374151}
+
+/* ---------- google drive instructions card ---------- */
+[data-theme="dark"] .cfg-card-instructions{background:#1a2535;border-color:#374151;color:#d1d5db}
+[data-theme="dark"] .cfg-card-instructions ol{color:#d1d5db}
+[data-theme="dark"] .cfg-card-instructions li{color:#d1d5db}
+[data-theme="dark"] .cfg-card-instructions a{color:#60a5fa}
+[data-theme="dark"] .cfg-card-instructions a:hover{color:#93c5fd}
+[data-theme="dark"] .cfg-card-instructions code{background:#374151;color:#f9fafb;border:1px solid #4b5563}
+[data-theme="dark"] .cfg-card-instructions .cfg-card-instructions-hint{color:#9ca3af}
 </style>
 
 @php
@@ -391,14 +400,14 @@ $firstGroup = $sorted->keys()->first();
 
                 @if($group === 'google_drive')
                 {{-- Instrucoes de configuracao --}}
-                <div class="cfg-card" style="border-left:4px solid #ea580c">
+                <div class="cfg-card cfg-card-instructions" style="border-left:4px solid #ea580c">
                     <div class="cfg-card-head">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <p>Como configurar o Google Drive</p>
                     </div>
-                    <div class="cfg-card-body" style="font-size:.8125rem;color:#374151;line-height:1.6">
-                        <ol style="margin:0;padding-left:1.25rem">
-                            <li><strong>Crie um projeto</strong> no <a href="https://console.cloud.google.com" target="_blank" style="color:#2563eb;text-decoration:underline">Google Cloud Console</a>.</li>
+                    <div class="cfg-card-body" style="font-size:.8125rem;line-height:1.6">
+                        <ol>
+                            <li><strong>Crie um projeto</strong> no <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a>.</li>
                             <li><strong>Habilite a Google Drive API</strong> em APIs e Servicos > Biblioteca.</li>
                             <li><strong>Crie uma Conta de Servico</strong> em APIs e Servicos > Credenciais > + Criar credenciais.</li>
                             <li><strong>Gere uma chave JSON</strong> na aba Chaves da conta de servico e baixe o arquivo.</li>
@@ -407,7 +416,7 @@ $firstGroup = $sorted->keys()->first();
                             <li><strong>Copie o ID da pasta raiz</strong> da URL do Drive (ex: <code>/folders/1aBc...</code>) e cole no campo abaixo.</li>
                             <li><strong>Ative a integracao</strong>, salve e execute <code>php artisan transparency:sync-drive</code> no servidor.</li>
                         </ol>
-                        <p style="margin:.75rem 0 0;color:#6b7280;font-size:.75rem">Mais detalhes no arquivo <code>GOOGLE_DRIVE_SETUP.md</code> do projeto.</p>
+                        <p class="cfg-card-instructions-hint">Mais detalhes no arquivo <code>GOOGLE_DRIVE_SETUP.md</code> do projeto.</p>
                     </div>
                 </div>
 
