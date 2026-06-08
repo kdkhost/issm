@@ -10,148 +10,152 @@
 <form id="pageForm" method="POST" action="{{ route('admin.paginas.store') }}" enctype="multipart/form-data">
     @csrf
 
-    <div class="grid grid-cols-1 xl:grid-cols-5 gap-5">
+    <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
 
         {{-- Formulario --}}
-        <div class="xl:col-span-3 space-y-4">
+        <div class="xl:col-span-3 space-y-0">
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 space-y-4 border border-gray-100 dark:border-gray-700">
-                <h3 class="font-bold text-gray-800 dark:text-gray-100 text-sm">Conteudo da Pagina</h3>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Titulo *</label>
-                    <input id="ptitle" type="text" name="title" value="{{ old('title') }}" required class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+            <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                    <h3 class="font-bold text-gray-800">Conteudo da Pagina</h3>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Conteudo *</label>
-                    <textarea name="content" rows="10" required class="wysiwyg w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">{{ old('content') }}</textarea>
-                </div>
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2"><input type="checkbox" name="active" value="1" id="active" checked class="w-4 h-4 text-green-600 rounded"><label for="active" class="text-sm font-medium text-gray-700 dark:text-gray-300">Ativo</label></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" name="show_in_menu" value="1" id="show_in_menu" class="w-4 h-4 text-green-600 rounded"><label for="show_in_menu" class="text-sm font-medium text-gray-700 dark:text-gray-300">Exibir no Menu</label></div>
+                <div class="p-6 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Titulo *</label>
+                        <input id="ptitle" type="text" name="title" value="{{ old('title') }}" required placeholder="Titulo da pagina">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Conteudo *</label>
+                        <textarea name="content" rows="10" required class="wysiwyg">{{ old('content') }}</textarea>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2"><input type="checkbox" name="active" value="1" id="active" checked class="w-4 h-4 text-green-600 rounded"><label for="active" class="text-sm font-medium text-gray-700">Ativo</label></div>
+                        <div class="flex items-center gap-2"><input type="checkbox" name="show_in_menu" value="1" id="show_in_menu" class="w-4 h-4 text-green-600 rounded"><label for="show_in_menu" class="text-sm font-medium text-gray-700">Exibir no Menu</label></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 space-y-4 border border-gray-100 dark:border-gray-700">
-                <h3 class="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2 text-sm">
-                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    Meta Tags (Google)
-                </h3>
-                <div>
-                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><span>Meta Title</span><span id="ct" class="text-xs">0 / 60</span></label>
-                    <input id="mt" type="text" name="meta_title" value="{{ old('meta_title') }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+            <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                    <h3 class="font-bold text-gray-800">Meta Tags (Google)</h3>
                 </div>
-                <div>
-                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><span>Meta Description</span><span id="cd" class="text-xs">0 / 160</span></label>
-                    <textarea id="md" name="meta_description" rows="3" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 resize-none">{{ old('meta_description') }}</textarea>
-                </div>
-                <div>
-                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        <span>SEO Tags Persistentes</span>
-                        <span id="cst" class="text-xs">0 tags</span>
-                    </label>
-                    <input id="st" name="seo_tags" type="text" value="{{ old('seo_tags') }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500" placeholder="#issm, #meioambiente, #sustentabilidade, #ods2030, #floresta, #preservacao">
-                    <p class="text-xs text-gray-500 mt-1">Adicione hashtags separadas por virgula. Essas tags sao combinadas com as keywords para melhorar a indexacao do Google.</p>
+                <div class="p-6 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex justify-between"><span>Meta Title</span><span id="ct" style="color:#9ca3af;font-weight:400">0 / 60</span></label>
+                        <input id="mt" type="text" name="meta_title" value="{{ old('meta_title') }}" placeholder="Titulo para SEO (max. 60 caracteres)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex justify-between"><span>Meta Description</span><span id="cd" style="color:#9ca3af;font-weight:400">0 / 160</span></label>
+                        <textarea id="md" name="meta_description" rows="3" placeholder="Descricao para SEO (max. 160 caracteres)">{{ old('meta_description') }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex justify-between"><span>SEO Tags Persistentes</span><span id="cst" style="color:#9ca3af;font-weight:400">0 tags</span></label>
+                        <input id="st" name="seo_tags" type="text" value="{{ old('seo_tags') }}" placeholder="#issm, #meioambiente, #sustentabilidade, #ods2030, #floresta, #preservacao">
+                        <p class="text-xs text-gray-500 mt-1">Adicione hashtags separadas por virgula. Essas tags sao combinadas com as keywords para melhorar a indexacao do Google.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 space-y-4 border border-gray-100 dark:border-gray-700">
-                <h3 class="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2 text-sm">
-                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                    Open Graph (Redes Sociais)
-                </h3>
-                <div>
-                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><span>OG Title</span><span id="cot" class="text-xs">0 / 60</span></label>
-                    <input id="ot" type="text" name="og_title" value="{{ old('og_title') }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+            <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                    <h3 class="font-bold text-gray-800">Open Graph (Redes Sociais)</h3>
                 </div>
-                <div>
-                    <label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><span>OG Description</span><span id="cod" class="text-xs">0 / 200</span></label>
-                    <textarea id="od" name="og_description" rows="2" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 resize-none">{{ old('og_description') }}</textarea>
-                </div>
-                <div>
-                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">OG Image</label>
-                    <input id="oi" type="text" name="og_image" value="{{ old('og_image') }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500" placeholder="media/banners/imagem.jpg">
-                    <p class="text-xs text-gray-500 mt-1">Dimensao ideal: 1200 x 630px</p>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 space-y-4 border border-gray-100 dark:border-gray-700">
-                <h3 class="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2 text-sm">
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    Configuracoes Avancadas
-                </h3>
-                <div>
-                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">URL Canonica</label>
-                    <input id="cu" type="url" name="canonical_url" value="{{ old('canonical_url') }}" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
-                </div>
-                <div>
-                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">Robots Meta</label>
-                    <select id="rm" name="robots_meta" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
-                        <option value="index, follow" {{ old('robots_meta', 'index, follow') == 'index, follow' ? 'selected' : '' }}>index, follow</option>
-                        <option value="index, nofollow" {{ old('robots_meta', '') == 'index, nofollow' ? 'selected' : '' }}>index, nofollow</option>
-                        <option value="noindex, follow" {{ old('robots_meta', '') == 'noindex, follow' ? 'selected' : '' }}>noindex, follow</option>
-                        <option value="noindex, nofollow" {{ old('robots_meta', '') == 'noindex, nofollow' ? 'selected' : '' }}>noindex, nofollow</option>
-                    </select>
+                <div class="p-6 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex justify-between"><span>OG Title</span><span id="cot" style="color:#9ca3af;font-weight:400">0 / 60</span></label>
+                        <input id="ot" type="text" name="og_title" value="{{ old('og_title') }}" placeholder="Ex: og titulo">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex justify-between"><span>OG Description</span><span id="cod" style="color:#9ca3af;font-weight:400">0 / 200</span></label>
+                        <textarea id="od" name="og_description" rows="2" placeholder="Ex: og descricao">{{ old('og_description') }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">OG Image</label>
+                        <input id="oi" type="text" name="og_image" value="{{ old('og_image') }}" placeholder="media/banners/imagem.jpg">
+                        <p class="text-xs text-gray-500 mt-1">Dimensao ideal: 1200 x 630px</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.paginas.index') }}" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">Cancelar</a>
-                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium text-sm transition-colors">Criar</button>
+            <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                    <h3 class="font-bold text-gray-800">Configuracoes Avancadas</h3>
+                </div>
+                <div class="p-6 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">URL Canonica</label>
+                        <input id="cu" type="url" name="canonical_url" value="{{ old('canonical_url') }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Robots Meta</label>
+                        <select id="rm" name="robots_meta">
+                            <option value="index, follow" {{ old('robots_meta', 'index, follow') == 'index, follow' ? 'selected' : '' }}>index, follow</option>
+                            <option value="index, nofollow" {{ old('robots_meta', '') == 'index, nofollow' ? 'selected' : '' }}>index, nofollow</option>
+                            <option value="noindex, follow" {{ old('robots_meta', '') == 'noindex, follow' ? 'selected' : '' }}>noindex, follow</option>
+                            <option value="noindex, nofollow" {{ old('robots_meta', '') == 'noindex, nofollow' ? 'selected' : '' }}>noindex, nofollow</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mb-6">
+                <a href="{{ route('admin.paginas.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm">Cancelar</a>
+                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium text-sm">Criar</button>
             </div>
         </div>
 
         {{-- Preview + Score --}}
         <div class="xl:col-span-2 space-y-4">
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border border-gray-100 dark:border-gray-700 sticky top-4">
-                <h3 class="font-bold text-gray-800 dark:text-gray-100 mb-3 text-sm flex items-center gap-2">
+            <div class="bg-white rounded-xl shadow-sm p-5 sticky top-4">
+                <h3 class="font-bold text-gray-800 mb-3 text-sm flex items-center gap-2">
                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                     Pontuacao SEO
                 </h3>
                 <div class="flex items-center gap-4 mb-3">
                     <div class="relative w-16 h-16 flex items-center justify-center">
                         <svg class="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
-                            <path class="text-gray-200 dark:text-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
+                            <path class="text-gray-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
                             <path id="ring" class="text-gray-300" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
                         </svg>
                         <span id="sv" class="absolute text-xl font-bold text-gray-400">0</span>
                     </div>
                     <div>
-                        <p id="sl" class="text-sm font-medium text-gray-700 dark:text-gray-300">Preencha os campos SEO</p>
+                        <p id="sl" class="text-sm font-medium text-gray-700">Preencha os campos SEO</p>
                         <p class="text-xs text-gray-500">de 100 pontos</p>
                     </div>
                 </div>
                 <div id="tips" class="space-y-1 text-xs"></div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-100 dark:border-gray-700">
-                <h4 class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Google</h4>
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Google</h4>
                 <div class="font-sans">
-                    <div id="pgt" class="text-[#1a0dab] dark:text-[#8ab4f8] text-base leading-tight truncate hover:underline cursor-pointer">Titulo da Pagina</div>
-                    <div id="pgu" class="text-xs text-[#006621] dark:text-[#34a853] mt-0.5">{{ url('/') }}/pagina/slug</div>
-                    <p id="pgd" class="text-sm text-[#4d5156] dark:text-[#bdc1c6] leading-snug mt-1 line-clamp-2">Descricao...</p>
+                    <div id="pgt" class="text-[#1a0dab] text-base leading-tight truncate hover:underline cursor-pointer">Titulo da Pagina</div>
+                    <div id="pgu" class="text-xs text-[#006621] mt-0.5">{{ url('/') }}/pagina/slug</div>
+                    <p id="pgd" class="text-sm text-[#4d5156] leading-snug mt-1 line-clamp-2">Descricao...</p>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-100 dark:border-gray-700">
-                <h4 class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Facebook / LinkedIn</h4>
-                <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                    <div id="pfi" class="bg-gray-200 dark:bg-gray-700 h-28 bg-cover bg-center" style="background-image: url('{{ asset('media/' . \App\Models\Setting::get('og_image', 'logo.png')) }}')"></div>
-                    <div class="p-3 bg-white dark:bg-gray-900">
-                        <p id="pfu" class="text-[10px] text-gray-500 dark:text-gray-400 uppercase truncate">{{ strtoupper(parse_url(url('/'), PHP_URL_HOST)) }}</p>
-                        <h5 id="pft" class="text-sm font-bold text-gray-900 dark:text-gray-100 truncate mt-0.5">Titulo da Pagina</h5>
-                        <p id="pfd" class="text-xs text-gray-500 dark:text-gray-400 leading-snug mt-0.5 line-clamp-2">Descricao...</p>
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Facebook / LinkedIn</h4>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div id="pfi" class="bg-gray-200 h-28 bg-cover bg-center" style="background-image: url('{{ asset('media/' . \App\Models\Setting::get('og_image', 'logo.png')) }}')"></div>
+                    <div class="p-3 bg-white">
+                        <p id="pfu" class="text-[10px] text-gray-500 uppercase truncate">{{ strtoupper(parse_url(url('/'), PHP_URL_HOST)) }}</p>
+                        <h5 id="pft" class="text-sm font-bold text-gray-900 truncate mt-0.5">Titulo da Pagina</h5>
+                        <p id="pfd" class="text-xs text-gray-500 leading-snug mt-0.5 line-clamp-2">Descricao...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-100 dark:border-gray-700">
-                <h4 class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">WhatsApp / Telegram</h4>
-                <div class="flex gap-3 bg-[#e1ffc7] dark:bg-[#1a2e1a] p-3 rounded-lg rounded-tl-none">
-                    <div id="pwi" class="w-12 h-12 rounded bg-gray-300 dark:bg-gray-600 bg-cover bg-center shrink-0" style="background-image: url('{{ asset('media/' . \App\Models\Setting::get('og_image', 'logo.png')) }}')"></div>
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp / Telegram</h4>
+                <div class="flex gap-3 bg-[#e1ffc7] p-3 rounded-lg rounded-tl-none">
+                    <div id="pwi" class="w-12 h-12 rounded bg-gray-300 bg-cover bg-center shrink-0" style="background-image: url('{{ asset('media/' . \App\Models\Setting::get('og_image', 'logo.png')) }}')"></div>
                     <div class="min-w-0">
-                        <p id="pwt" class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Titulo da Pagina</p>
-                        <p id="pwd" class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">Descricao...</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{{ url('/') }}</p>
+                        <p id="pwt" class="text-sm font-medium text-gray-900 truncate">Titulo da Pagina</p>
+                        <p id="pwd" class="text-xs text-gray-600 line-clamp-2">Descricao...</p>
+                        <p class="text-xs text-gray-500 truncate mt-0.5">{{ url('/') }}</p>
                     </div>
                 </div>
             </div>
