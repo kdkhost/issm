@@ -207,6 +207,96 @@
             opacity:0; pointer-events:none;
         }
         .md-nav-item:active::after { width:300px; height:300px; opacity:1; }
+        /* ── Footer (estilo padrão M3) ── */
+        .footer-heading {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            position: relative;
+            color: #fff;
+        }
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #52b788;
+            border-radius: 2px;
+        }
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links li {
+            margin-bottom: 0.6rem;
+        }
+        .footer-links a {
+            color: #bbf7d0;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .footer-links a:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+        .footer-social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: #bbf7d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .footer-social-icon:hover {
+            background-color: #52b788;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+        .footer-contact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #bbf7d0;
+            line-height: 1.5;
+        }
+        .footer-contact-icon {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+            color: #52b788;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        @media (max-width: 639px) {
+            .footer-heading::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-links a:hover {
+                transform: none;
+            }
+            .footer-social-icon:hover {
+                transform: none;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -361,8 +451,9 @@
     <!-- Footer -->
     <footer class="bg-green-900 text-white" id="main-footer" style="border:none;outline:none;margin:0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="md:col-span-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+                <!-- Coluna 1: Marca + Descrição + Redes Sociais -->
+                <div class="footer-brand">
                     <div class="flex items-center gap-3 mb-4">
                         @if($siteLogo ?? \App\Models\Setting::get('site_logo'))
                         <img src="{{ asset('media/' . ($siteLogo ?? \App\Models\Setting::get('site_logo'))) }}" alt="ISSM" class="h-12 w-auto object-contain">
@@ -376,41 +467,68 @@
                             <p class="text-green-300 text-sm">Serra do Mendanha</p>
                         </div>
                     </div>
-                    <p class="text-green-200 text-sm leading-relaxed mb-4">
+                    <p class="text-green-200 text-sm leading-relaxed mb-6">
                         Comprometidos com a preservação ambiental e o desenvolvimento sustentável, alinhados com os 17 Objetivos de Desenvolvimento Sustentável da ONU para 2030.
                     </p>
-                    <div class="flex gap-3">
+                    <div class="flex gap-2 footer-social">
                         @php $facebook = \App\Models\Setting::get('social_facebook'); $instagram = \App\Models\Setting::get('social_instagram'); $youtube = \App\Models\Setting::get('social_youtube'); @endphp
-                        @if($facebook)<a href="{{ $facebook }}" target="_blank" class="w-9 h-9 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors" title="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>@endif
-                        @if($instagram)<a href="{{ $instagram }}" target="_blank" class="w-9 h-9 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors" title="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>@endif
-                        @if($youtube)<a href="{{ $youtube }}" target="_blank" class="w-9 h-9 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors" title="YouTube"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>@endif
+                        @if($facebook)<a href="{{ $facebook }}" target="_blank" class="footer-social-icon" title="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>@endif
+                        @if($instagram)<a href="{{ $instagram }}" target="_blank" class="footer-social-icon" title="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>@endif
+                        @if($youtube)<a href="{{ $youtube }}" target="_blank" class="footer-social-icon" title="YouTube"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>@endif
                     </div>
                 </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Links Rápidos</h4>
-                    <ul class="space-y-2 text-green-200 text-sm">
-                        <li><a href="{{ route('about.index') }}" class="hover:text-white transition-colors">Sobre o ISSM</a></li>
-                        <li><a href="{{ route('projects.index') }}" class="hover:text-white transition-colors">Nossos Projetos</a></li>
-                        <li><a href="{{ route('ods.index') }}" class="hover:text-white transition-colors">ODS 2030</a></li>
-                        <li><a href="{{ route('news.index') }}" class="hover:text-white transition-colors">Notícias</a></li>
-                        <li><a href="{{ route('gallery.index') }}" class="hover:text-white transition-colors">Galeria</a></li>
-                        <li><a href="{{ route('transparency.index') }}" class="hover:text-white transition-colors">Transparência</a></li>
-                        <li><a href="{{ route('about.index') }}" class="hover:text-white transition-colors">Nossa Equipe</a></li>
-                        <li><a href="{{ route('contact.index') }}" class="hover:text-white transition-colors">Contato</a></li>
+                <!-- Coluna 2: Links Rápidos -->
+                <div class="footer-links">
+                    <h3 class="footer-heading">Links Rápidos</h3>
+                    <ul>
+                        <li><a href="{{ route('about.index') }}">Sobre o ISSM</a></li>
+                        <li><a href="{{ route('projects.index') }}">Nossos Projetos</a></li>
+                        <li><a href="{{ route('ods.index') }}">ODS 2030</a></li>
+                        <li><a href="{{ route('news.index') }}">Notícias</a></li>
+                        <li><a href="{{ route('gallery.index') }}">Galeria</a></li>
+                        <li><a href="{{ route('transparency.index') }}">Transparência</a></li>
+                        <li><a href="{{ route('contact.index') }}">Contato</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Contato</h4>
-                    <ul class="space-y-2 text-green-200 text-sm">
+                <!-- Coluna 3: Nossas Áreas -->
+                <div class="footer-links">
+                    <h3 class="footer-heading">Nossas Áreas</h3>
+                    <ul>
+                        <li><a href="{{ route('projects.index') }}">Projetos Socioambientais</a></li>
+                        <li><a href="{{ route('projects.index') }}">Educação Ambiental</a></li>
+                        <li><a href="{{ route('projects.index') }}">Conservação da Biodiversidade</a></li>
+                        <li><a href="{{ route('ods.index') }}">ODS & Sustentabilidade</a></li>
+                        <li><a href="{{ route('about.index') }}">Mobilização Comunitária</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna 4: Contato -->
+                <div class="footer-contact">
+                    <h3 class="footer-heading">Contato</h3>
+                    <ul class="footer-contact-list">
                         @php $email = \App\Models\Setting::get('contact_email'); $phone = \App\Models\Setting::get('contact_phone'); $address = \App\Models\Setting::get('contact_address'); @endphp
-                        @if($email)<li class="flex items-center gap-2"><svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>{{ $email }}</li>@endif
-                        @if($phone)<li class="flex items-center gap-2"><svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>{{ $phone }}</li>@endif
-                        @if($address)<li class="flex items-start gap-2"><svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>{{ $address }}</li>@endif
+                        @if($address)
+                        <li class="footer-contact-item">
+                            <svg class="footer-contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span class="footer-contact-text">{{ $address }}</span>
+                        </li>
+                        @endif
+                        @if($phone)
+                        <li class="footer-contact-item">
+                            <svg class="footer-contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span class="footer-contact-text">{{ $phone }}</span>
+                        </li>
+                        @endif
+                        @if($email)
+                        <li class="footer-contact-item">
+                            <svg class="footer-contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="footer-contact-text">{{ $email }}</span>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="border-t border-green-800">
+        <div class="footer-bottom">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <p class="text-green-300 text-sm">&copy; {{ date('Y') }} ISSM - Instituto Socioambiental Serra do Mendanha. Todos os direitos reservados.</p>
                 @auth
