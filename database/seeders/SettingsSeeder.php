@@ -52,6 +52,9 @@ class SettingsSeeder extends Seeder
             ['key' => 'twitter_image', 'value' => '', 'type' => 'image', 'group' => 'seo', 'label' => 'Twitter Image (1200x600px)'],
             ['key' => 'twitter_handle', 'value' => '', 'type' => 'text', 'group' => 'seo', 'label' => 'Twitter @handle'],
 
+                ['key' => 'turnstile_site_key', 'value' => '', 'type' => 'text', 'group' => 'security', 'label' => 'Turnstile Site Key (Cloudflare)'],
+            ['key' => 'turnstile_secret_key', 'value' => '', 'type' => 'password', 'group' => 'security', 'label' => 'Turnstile Secret Key (Cloudflare)'],
+
             // ── Verificação e Analytics ──
             ['key' => 'google_analytics', 'value' => '', 'type' => 'text', 'group' => 'seo', 'label' => 'Google Analytics ID'],
             ['key' => 'google_tag_manager', 'value' => '', 'type' => 'text', 'group' => 'seo', 'label' => 'Google Tag Manager ID'],

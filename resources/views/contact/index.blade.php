@@ -144,6 +144,16 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
                             <label class="block text-sm font-bold text-gray-700 mb-2">Mensagem</label>
                             <textarea name="message" rows="5" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 focus:bg-white transition-all resize-none"></textarea>
                         </div>
+                        @php
+                            $turnstileKey = \App\Models\Setting::get('turnstile_site_key');
+                            $recaptchaKey = \App\Models\Setting::get('recaptcha_site_key');
+                            $captchaProvider = $turnstileKey ? 'turnstile' : ($recaptchaKey ? 'recaptcha' : null);
+                        @endphp
+
+                        @if($captchaProvider === 'turnstile')
+                        <div class="cf-turnstile" data-sitekey="{{ $turnstileKey }}" data-theme="light"></div>
+                        @endif
+
                         <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-black py-4 rounded-xl shadow-lg shadow-green-900/20 transition-all flex items-center justify-center gap-2">
                             <span>{{ cms('contact', 'form', 'submit_text', 'Enviar agora') }}</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -176,9 +186,19 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
 </section>
 
 @push('scripts')
-@php $recaptchaKey = \App\Models\Setting::get('recaptcha_site_key'); @endphp
-@if($recaptchaKey)
-<script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaKey }}"></script>
+@php
+    $turnstileSiteKey = \App\Models\Setting::get('turnstile_site_key');
+    $recaptchaSiteKey = \App\Models\Setting::get('recaptcha_site_key');
+@endphp
+
+{{-- Cloudflare Turnstile --}}
+@if($turnstileSiteKey)
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+@endif
+
+{{-- Google reCAPTCHA v3 (only if Turnstile not configured) --}}
+@if(!$turnstileSiteKey && $recaptchaSiteKey)
+<script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const contactForm = document.getElementById('contact-form-page');
@@ -191,12 +211,11 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
             
             if (submitBtn) {
                 submitBtn.disabled = true;
-                const originalText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<span>Enviando...</span>';
             }
 
             grecaptcha.ready(function() {
-                grecaptcha.execute('{{ $recaptchaKey }}', {action: 'contact'}).then(function(token) {
+                grecaptcha.execute('{{ $recaptchaSiteKey }}', {action: 'contact'}).then(function(token) {
                     let input = form.querySelector('input[name="g-recaptcha-response"]');
                     if (!input) {
                         input = document.createElement('input');

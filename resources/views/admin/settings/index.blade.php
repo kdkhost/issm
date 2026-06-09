@@ -308,6 +308,8 @@ $placeholders = [
     'google_drive_folder_id' => 'Ex: 1aBcD2eFgHiJkLmN3oPqRsTuVwXyZ4',
     'recaptcha_site_key'    => 'Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
     'recaptcha_secret_key'  => 'Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
+    'turnstile_site_key'    => 'Ex: 0x4AAAAAAABbZgF8N3xBzN8z',
+    'turnstile_secret_key'  => 'Ex: 0x4AAAAAAABbZgF8N3xBzN8z_secret',
     'mail_host'             => 'Ex: mail.issm.org.br',
     'mail_port'             => 'Ex: 465',
     'mail_username'         => 'Ex: contato@issm.org.br',
@@ -397,6 +399,37 @@ $firstGroup = $sorted->keys()->first();
                         <p>{{ $items->count() }} configuração{{ $items->count()!=1?'ões':'' }}</p>
                     </div>
                 </div>
+
+                @if($group === 'security')
+                {{-- Instrucoes de configuracao do CAPTCHA --}}
+                <div class="cfg-card cfg-card-instructions" style="border-left:4px solid #dc2626">
+                    <div class="cfg-card-head">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p>Como configurar o CAPTCHA do formulário de contato</p>
+                    </div>
+                    <div class="cfg-card-body" style="font-size:.8125rem;line-height:1.6">
+                        <p style="font-weight:700;margin-bottom:.5rem">Opção 1 — Cloudflare Turnstil (recomendado)</p>
+                        <ol>
+                            <li>Acesse <a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">Cloudflare Dashboard > Turnstile</a>.</li>
+                            <li>Clique em <strong>"Add a site"</strong>, defina um nome (ex: "ISSM Contact").</li>
+                            <li>Em <strong>Domain</strong>, insira <code>issm.org.br</code>.</li>
+                            <li>Escolha <strong>"Invisible"</strong> ou <strong>"Non-interactive"</strong> como widget mode.</li>
+                            <li>Copie a <strong>Site Key</strong> e a <strong>Secret Key</strong> e cole nos campos abaixo.</li>
+                            <li>Pronto — o Turnstile aparecerá automaticamente no formulário de contato.</li>
+                        </ol>
+                        <hr style="border:none;border-top:1px solid #e5e7eb;margin:1rem 0">
+                        <p style="font-weight:700;margin-bottom:.5rem">Opção 2 — Google reCAPTCHA v3</p>
+                        <ol>
+                            <li>Acesse <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a>.</li>
+                            <li>Cadastre um novo site, selecione <strong>reCAPTCHA v3</strong>.</li>
+                            <li>Em <strong>Domínios</strong>, insira <code>issm.org.br</code>.</li>
+                            <li>Copie a <strong>Chave do site (Site Key)</strong> e a <strong>Chave secreta (Secret Key)</strong> e cole nos campos abaixo.</li>
+                            <li>Pronto — o reCAPTCHA v3 será usado como fallback se o Turnstile não estiver configurado.</li>
+                        </ol>
+                        <p class="cfg-card-instructions-hint" style="margin-top:.75rem;font-size:.75rem;color:#9ca3af">A prioridade é do Turnstile. Se ambas as chaves de Turnstile estiverem preenchidas, o reCAPTCHA será ignorado.</p>
+                    </div>
+                </div>
+                @endif
 
                 @if($group === 'google_drive')
                 {{-- Instrucoes de configuracao --}}

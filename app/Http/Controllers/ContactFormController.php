@@ -19,23 +19,42 @@ class ContactFormController extends Controller
             'message' => 'required|string|min:10',
         ];
 
-        // Validação reCAPTCHA se a chave estiver configurada
-        $secretKey = Setting::get('recaptcha_secret_key');
-        if ($secretKey) {
+        // Valida o CAPTCHA configurado: Cloudflare Turnstile ou Google reCAPTCHA
+        $turnstileSecret = Setting::get('turnstile_secret_key');
+        $recaptchaSecret = Setting::get('recaptcha_secret_key');
+
+        if ($turnstileSecret) {
+            $rules['cf-turnstile-response'] = 'required';
+        } elseif ($recaptchaSecret) {
             $rules['g-recaptcha-response'] = 'required';
         }
 
         $validated = $request->validate($rules);
 
-        // Verificação da resposta reCAPTCHA v3 junto ao Google
-        if ($secretKey && $request->filled('g-recaptcha-response')) {
+        // Cloudflare Turnstile verification
+        if ($turnstileSecret && $request->filled('cf-turnstile-response')) {
+            $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'secret'   => $turnstileSecret,
+                'response' => $request->input('cf-turnstile-response'),
+            ]);
+            $result = $response->json();
+
+            if (empty($result['success'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Verificação de segurança falhou. Tente novamente.',
+                ], 422);
+            }
+        }
+
+        // Google reCAPTCHA v3 verification (fallback)
+        if (!$turnstileSecret && $recaptchaSecret && $request->filled('g-recaptcha-response')) {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret'   => $secretKey,
+                'secret'   => $recaptchaSecret,
                 'response' => $request->input('g-recaptcha-response'),
             ]);
             $result = $response->json();
-            
-            // Para reCAPTCHA v3, verificamos se success é true e o score é > 0.5
+
             if (empty($result['success']) || ($result['score'] ?? 0) < 0.5) {
                 return response()->json([
                     'success' => false,
