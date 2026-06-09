@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## [1.2.0] - 2026-06-09
+
+### Adicionado - Cloudflare Turnstile + Google reCAPTCHA no formulário de contato
+
+- Suporte a **Cloudflare Turnstile** (recomendado, widget não-interativo) e **Google reCAPTCHA v3** (fallback automático)
+- Dois novos campos de configuração: `turnstile_site_key` e `turnstile_secret_key` (grupo Segurança)
+- Card de instruções passo-a-passo no admin (`/admin/configuracoes` > Segurança) explicando como obter chaves de ambos os provedores
+- Prioridade: Turnstile se configurado, senão reCAPTCHA v3
+
+### Adicionado - Preview de Compartilhamento em tempo real nas telas de SEO
+
+- Card "Preview de Compartilhamento" na segunda coluna dos formulários de criar/editar notícias e projetos
+- Simulações visuais de **Google (SERP)**, **Facebook/Meta** e **WhatsApp** atualizadas em tempo real enquanto o usuário digita os campos de SEO
+- Pré-visualização de imagem via FileReader ao selecionar arquivo
+
+### Alterado - Layout dos formulários admin de notícias e projetos
+
+- Card **SEO** movido da coluna lateral para a coluna principal, abaixo do card de conteúdo
+- Coluna lateral agora exibe card de "Preview de Compartilhamento" com simuladores de Google, Facebook e WhatsApp
+
+### Corrigido - Acentuação em todo o sistema
+
+- Corrigidos erros de acentuação em controllers, seeders, migrations e views administrativas
+- Arquivos afetados: controllers admin, `SettingsSeeder`, `OdsSeeder`, `AdminMenuSeeder`, migrations de menu e configurações, views admin de notícias e projetos
+
 ## [1.1.2] - 2026-06-08
 
 ### Adicionado - Integracao Google Drive para Portal da Transparencia
