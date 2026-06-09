@@ -12,7 +12,7 @@ class News extends Model
 
     protected $table = 'news';
 
-    protected $fillable = ['title', 'title_highlight', 'title_highlight_color', 'slug', 'excerpt', 'content', 'image', 'category', 'featured', 'active', 'published_at', 'user_id'];
+    protected $fillable = ['title', 'title_highlight', 'title_highlight_color', 'slug', 'excerpt', 'content', 'image', 'category', 'featured', 'active', 'published_at', 'user_id', 'meta_title', 'meta_description', 'meta_keywords', 'og_image', 'og_title', 'og_description'];
 
     protected $casts = [
         'featured' => 'boolean',

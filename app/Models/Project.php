@@ -10,7 +10,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'excerpt', 'content', 'image', 'category', 'ods_goals', 'status', 'start_date', 'end_date', 'location', 'featured', 'active', 'order'];
+    protected $fillable = ['title', 'slug', 'excerpt', 'content', 'image', 'category', 'ods_goals', 'status', 'start_date', 'end_date', 'location', 'featured', 'active', 'order', 'meta_title', 'meta_description', 'meta_keywords', 'og_image', 'og_title', 'og_description'];
 
     protected $casts = [
         'ods_goals' => 'array',

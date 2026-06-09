@@ -41,10 +41,13 @@
 
     <title>@yield('title', $seoTitle)</title>
     <meta name="description" content="@yield('meta_description', $seoDesc)">
-    @if($seoKeywords)<meta name="keywords" content="{{ $seoKeywords }}">@endif
+    <meta name="keywords" content="@yield('meta_keywords', $seoKeywords)">
     @if($seoAuthor)<meta name="author" content="{{ $seoAuthor }}">@endif
     @if($seoRobots)<meta name="robots" content="{{ $seoRobots }}">@endif
     @if($seoCanonical)<link rel="canonical" href="{{ $seoCanonical }}">@endif
+
+    @php $pageOgImage = trim($__env->yieldContent('og_image')); @endphp
+    @php $resolvedOgImage = $pageOgImage ?: $ogImage; @endphp
 
     {{-- ═══ Open Graph (Facebook / WhatsApp / LinkedIn) ═══ --}}
     <meta property="og:type" content="{{ $ogType }}">
@@ -53,11 +56,11 @@
     <meta property="og:title" content="@yield('og_title', $ogTitle)">
     <meta property="og:description" content="@yield('og_description', $ogDesc)">
     <meta property="og:url" content="{{ $seoCanonical ?: url()->current() }}">
-    @if($ogImage)
-    <meta property="og:image" content="{{ asset('media/' . $ogImage) }}">
+    @if($resolvedOgImage)
+    <meta property="og:image" content="{{ $resolvedOgImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:type" content="image/{{ pathinfo($ogImage, PATHINFO_EXTENSION) === 'png' ? 'png' : 'jpeg' }}">
+    <meta property="og:image:type" content="image/@if(preg_match('/\.png$/i', $resolvedOgImage))png @else jpeg @endif">
     @endif
 
     {{-- ═══ Twitter Card ═══ --}}
@@ -67,8 +70,8 @@
     @if($twHandle)<meta name="twitter:site" content="{{ str_starts_with($twHandle, '@') ? $twHandle : '@'.$twHandle }}">@endif
     @if($twImage)
     <meta name="twitter:image" content="{{ asset('media/' . $twImage) }}">
-    @elseif($ogImage)
-    <meta name="twitter:image" content="{{ asset('media/' . $ogImage) }}">
+    @elseif($resolvedOgImage)
+    <meta name="twitter:image" content="{{ $resolvedOgImage }}">
     @endif
 
     {{-- ═══ Verificação de Mecanismos de Busca ═══ --}}

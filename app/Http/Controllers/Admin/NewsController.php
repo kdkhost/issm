@@ -34,10 +34,20 @@ class NewsController extends Controller
             'featured' => 'nullable|boolean',
             'active' => 'nullable|boolean',
             'published_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string|max:500',
+            'og_image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('news', 'public');
+        }
+
+        if ($request->hasFile('og_image')) {
+            $validated['og_image'] = $request->file('og_image')->store('news/og', 'public');
         }
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -68,10 +78,20 @@ class NewsController extends Controller
             'featured' => 'nullable|boolean',
             'active' => 'nullable|boolean',
             'published_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string|max:500',
+            'og_image' => 'nullable|image|max:' . Setting::uploadLimitKb('image'),
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('news', 'public');
+        }
+
+        if ($request->hasFile('og_image')) {
+            $validated['og_image'] = $request->file('og_image')->store('news/og', 'public');
         }
 
         $validated['featured'] = $request->boolean('featured');

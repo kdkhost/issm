@@ -1,6 +1,10 @@
 @extends("layouts.app")
-@section("title", $project->title . " - ISSM")
-@section("content")
+@section("title", ($project->meta_title ?? $project->title) . " - ISSM")
+@section("meta_description", $project->meta_description ?? strip_tags($project->excerpt ?? $project->title))
+@section("meta_keywords", $project->meta_keywords ?? "")
+@section("og_title", $project->og_title ?? ($project->meta_title ?? $project->title))
+@section("og_description", $project->og_description ?? ($project->meta_description ?? strip_tags($project->excerpt ?? $project->title)))
+@section("og_image", $project->og_image ? asset("media/" . $project->og_image) : ($project->image ? asset("media/" . $project->image) : ""))
 @section("content")
 
 {{-- Hero Banner Premium --}}
