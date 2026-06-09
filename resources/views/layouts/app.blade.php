@@ -531,10 +531,18 @@
         <div class="footer-bottom">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <p class="text-green-300 text-sm">&copy; {{ date('Y') }} ISSM - Instituto Socioambiental Serra do Mendanha. Todos os direitos reservados.</p>
-                @auth
-                <a href="{{ route('admin.dashboard') }}" class="text-green-400 hover:text-white text-sm transition-colors">Painel Admin</a>
-                @endauth
+                <div class="flex items-center gap-2 text-xs text-green-400">
+                    <span>Desenvolvido por</span>
+                    <a href="https://ethestrategias.com.br" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-white transition-colors">ETH Estratégias</a>
+                    <span class="text-green-600">e</span>
+                    <a href="https://kdkhost.com.br" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-white transition-colors">KDKHost Soluções</a>
+                </div>
             </div>
+            @auth
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 -mt-1 text-right">
+                <a href="{{ route('admin.dashboard') }}" class="text-green-500 hover:text-white text-xs transition-colors">Painel Admin</a>
+            </div>
+            @endauth
         </div>
     </footer>
 
