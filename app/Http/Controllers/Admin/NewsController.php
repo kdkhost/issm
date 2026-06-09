@@ -57,7 +57,7 @@ class NewsController extends Controller
 
         News::create($validated);
 
-        return redirect()->route('admin.noticias.index')->with('success', 'Noticia criada com sucesso!');
+        return redirect()->route('admin.noticias.index')->with('success', 'Notícia criada com sucesso!');
     }
 
     public function edit(News $news)
@@ -99,12 +99,12 @@ class NewsController extends Controller
 
         $news->update($validated);
 
-        return redirect()->route('admin.noticias.index')->with('success', 'Noticia atualizada com sucesso!');
+        return redirect()->route('admin.noticias.index')->with('success', 'Notícia atualizada com sucesso!');
     }
 
     public function destroy(News $news)
     {
         $news->delete();
-        return redirect()->route('admin.noticias.index')->with('success', 'Noticia excluida com sucesso!');
+        return redirect()->route('admin.noticias.index')->with('success', 'Notícia excluida com sucesso!');
     }
 }

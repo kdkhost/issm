@@ -82,6 +82,6 @@ class TeamController extends Controller
     public function destroy(TeamMember $team)
     {
         $team->delete();
-        return redirect()->route('admin.equipe.index')->with('success', 'Membro excluido com sucesso!');
+        return redirect()->route('admin.equipe.index')->with('success', 'Membro excluído com sucesso!');
     }
 }

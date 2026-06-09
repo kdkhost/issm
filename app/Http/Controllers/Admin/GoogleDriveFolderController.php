@@ -13,14 +13,14 @@ class GoogleDriveFolderController extends Controller
     {
         if (! $drive->isEnabled()) {
             return redirect()->route('admin.settings.index')
-                ->with('error', 'Google Drive nao esta configurado. Va em Configuracoes > Google Drive.');
+                ->with('error', 'Google Drive não está configurado. Va em Configurações > Google Drive.');
         }
 
         $rootFolderId = Setting::get('google_drive_folder_id');
 
         if (! $rootFolderId) {
             return redirect()->route('admin.settings.index')
-                ->with('error', 'ID da pasta raiz do Google Drive nao esta configurado.');
+                ->with('error', 'ID da pasta raiz do Google Drive não está configurado.');
         }
 
         $folders = $drive->listFolders($rootFolderId);

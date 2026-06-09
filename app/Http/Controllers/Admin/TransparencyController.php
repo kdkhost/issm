@@ -98,6 +98,6 @@ class TransparencyController extends Controller
             Storage::disk('public')->delete($transparency->file_path);
         }
         $transparency->delete();
-        return redirect()->route('admin.transparencia.index')->with('success', 'Documento excluido com sucesso!');
+        return redirect()->route('admin.transparencia.index')->with('success', 'Documento excluído com sucesso!');
     }
 }

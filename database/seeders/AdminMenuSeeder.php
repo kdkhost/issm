@@ -63,7 +63,7 @@ class AdminMenuSeeder extends Seeder
                 'is_active' => true,
                 'is_dropdown' => true,
                 'children' => [
-                    ['label' => 'Configuracoes', 'route_name' => 'admin.settings.index'],
+                    ['label' => 'Configurações', 'route_name' => 'admin.settings.index'],
                     ['label' => 'FAQ', 'route_name' => 'admin.faq.index'],
                     ['label' => 'Analytics', 'route_name' => 'admin.analytics.index'],
                     ['label' => 'Mensagens', 'route_name' => 'admin.contatos.index'],

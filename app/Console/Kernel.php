@@ -13,7 +13,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * Comandos registrados explicitamente para garantir descoberta em producao.
+     * Comandos registrados explicitamente para garantir descoberta em produção.
      */
     protected $commands = [
         CmsMapPublicPages::class,

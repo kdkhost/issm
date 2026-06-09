@@ -42,7 +42,7 @@ class ContactController extends Controller
     public function destroy(Contact $contato)
     {
         $contato->delete();
-        return redirect()->route('admin.contatos.index')->with('success', 'Mensagem excluida!');
+        return redirect()->route('admin.contatos.index')->with('success', 'Mensagem excluída!');
     }
 
     public function create() { return redirect()->route('admin.contatos.index'); }

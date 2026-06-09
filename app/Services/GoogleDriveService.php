@@ -21,7 +21,7 @@ class GoogleDriveService
         $credentialsPath = storage_path('app/google/credentials.json');
 
         if (! file_exists($credentialsPath)) {
-            Log::warning('GoogleDriveService: credenciais nao encontradas em ' . $credentialsPath);
+            Log::warning('GoogleDriveService: credenciais não encontradas em ' . $credentialsPath);
             return;
         }
 

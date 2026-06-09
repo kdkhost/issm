@@ -15,7 +15,7 @@ class AdminMiddleware
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Acesso negado.'], 403);
             }
-            return redirect()->route('login')->with('error', 'Voce precisa ser administrador para acessar esta area.');
+            return redirect()->route('login')->with('error', 'Você precisa ser administrador para acessar esta area.');
         }
 
         return $next($request);

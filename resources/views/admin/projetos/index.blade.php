@@ -10,27 +10,27 @@
     <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Título</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">TÃ­tulo</th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Categoria</th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Destaque</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">AÃ§Ãµes</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
             @forelse($projects as $project)
             <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-4 py-3 font-medium text-gray-900 text-sm">{{ Str::limit($project->title, 50) }}</td>
-                <td class="px-4 py-3 text-gray-600 text-sm hidden sm:table-cell">{{ $project->category ?? "—" }}</td>
+                <td class="px-4 py-3 text-gray-600 text-sm hidden sm:table-cell">{{ $project->category ?? "-" }}</td>
                 <td class="px-4 py-3">
                     <span class="px-2 py-1 rounded-full text-xs font-medium
                         {{ $project->status === "active" ? "bg-green-100 text-green-700" : ($project->status === "completed" ? "bg-blue-100 text-blue-700" : "bg-amber-100 text-amber-700") }}">
-                        {{ $project->status === "active" ? "Ativo" : ($project->status === "completed" ? "Concluído" : "Planejado") }}
+                        {{ $project->status === "active" ? "Ativo" : ($project->status === "completed" ? "ConcluÃ­do" : "Planejado") }}
                     </span>
                 </td>
                 <td class="px-4 py-3 text-center text-sm">
-                    <span title="{{ $project->featured ? "Projeto em destaque" : "Não em destaque" }}">
-                        {{ $project->featured ? "?" : "?" }}
+                    <span title="{{ $project->featured ? "Projeto em destaque" : "NÃ£o em destaque" }}">
+                        {{ $project->featured ? "â˜…" : "â˜†" }}
                     </span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">
@@ -46,10 +46,10 @@
             <tr class="dt-detail hidden">
                 <td colspan="5" class="px-4 py-3 bg-green-50 border-b border-green-100">
                     <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2 text-sm">
-                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Categoria</dt><dd class="text-gray-800 mt-0.5">{{ $project->category ?? "—" }}</dd></div>
-                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Status</dt><dd class="text-gray-800 mt-0.5">{{ $project->status === "active" ? "Ativo" : ($project->status === "completed" ? "Concluído" : "Planejado") }}</dd></div>
-                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Destaque</dt><dd class="text-gray-800 mt-0.5">{{ $project->featured ? "Sim" : "Não" }}</dd></div>
-                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Criado em</dt><dd class="text-gray-800 mt-0.5">{{ optional($project->created_at)->format("d/m/Y") ?? "—" }}</dd></div>
+                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Categoria</dt><dd class="text-gray-800 mt-0.5">{{ $project->category ?? "-" }}</dd></div>
+                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Status</dt><dd class="text-gray-800 mt-0.5">{{ $project->status === "active" ? "Ativo" : ($project->status === "completed" ? "ConcluÃ­do" : "Planejado") }}</dd></div>
+                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Destaque</dt><dd class="text-gray-800 mt-0.5">{{ $project->featured ? "Sim" : "NÃ£o" }}</dd></div>
+                        <div><dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Criado em</dt><dd class="text-gray-800 mt-0.5">{{ optional($project->created_at)->format("d/m/Y") ?? "-" }}</dd></div>
                     </dl>
                 </td>
             </tr>

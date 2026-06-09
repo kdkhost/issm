@@ -57,7 +57,7 @@ class FaqController extends Controller
     public function destroy(Faq $faq)
     {
         $faq->delete();
-        return redirect()->route('admin.faqs.index')->with('success', 'Pergunta excluida com sucesso!');
+        return redirect()->route('admin.faqs.index')->with('success', 'Pergunta excluída com sucesso!');
     }
 
     public function toggleActive(Faq $faq)

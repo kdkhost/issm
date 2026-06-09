@@ -72,7 +72,7 @@ class BannerController extends Controller
     public function destroy(Banner $banner)
     {
         $banner->delete();
-        return redirect()->route('admin.banners.index')->with('success', 'Banner excluido com sucesso!');
+        return redirect()->route('admin.banners.index')->with('success', 'Banner excluído com sucesso!');
     }
 
     public function toggleActive(Banner $banner)

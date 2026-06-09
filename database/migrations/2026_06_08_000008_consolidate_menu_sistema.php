@@ -12,7 +12,7 @@ return new class extends Migration
         if ($sistema) {
             $sistema->update([
                 'children' => [
-                    ['label' => 'Configuracoes', 'route_name' => 'admin.settings.index'],
+                    ['label' => 'Configurações', 'route_name' => 'admin.settings.index'],
                     ['label' => 'FAQ', 'route_name' => 'admin.faq.index'],
                     ['label' => 'Analytics', 'route_name' => 'admin.analytics.index'],
                     ['label' => 'Mensagens', 'route_name' => 'admin.contatos.index'],
@@ -24,8 +24,8 @@ return new class extends Migration
             ]);
         }
 
-        // Remover item standalone "Configuracoes" (duplicidade)
-        AdminMenuItem::where('label', 'Configuracoes')->where('is_dropdown', false)->delete();
+        // Remover item standalone "Configurações" (duplicidade)
+        AdminMenuItem::where('label', 'Configurações')->where('is_dropdown', false)->delete();
     }
 
     public function down(): void

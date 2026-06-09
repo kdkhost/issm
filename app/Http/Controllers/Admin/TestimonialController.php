@@ -70,7 +70,7 @@ class TestimonialController extends Controller
     public function destroy(Testimonial $testimonial)
     {
         $testimonial->delete();
-        return redirect()->route('admin.testimonials.index')->with('success', 'Depoimento excluido com sucesso!');
+        return redirect()->route('admin.testimonials.index')->with('success', 'Depoimento excluído com sucesso!');
     }
 
     public function toggleActive(Testimonial $testimonial)

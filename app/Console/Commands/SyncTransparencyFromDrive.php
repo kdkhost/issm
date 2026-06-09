@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\Log;
 
 class SyncTransparencyFromDrive extends Command
 {
-    protected $signature = 'transparency:sync-drive {--dry-run : Apenas simula, nao altera o banco}';
+    protected $signature = 'transparency:sync-drive {--dry-run : Apenas simula, não altera o banco}';
 
     protected $description = 'Sincroniza documentos do Google Drive com a tabela transparency_documents';
 
     public function handle(GoogleDriveService $drive): int
     {
         if (! Setting::get('google_drive_enabled')) {
-            $this->error('Google Drive nao esta ativado nas configuracoes.');
+            $this->error('Google Drive não está ativado nas configurações.');
             return self::FAILURE;
         }
 
         if (! $drive->isEnabled()) {
-            $this->error('Google Drive nao esta configurado. Verifique o arquivo de credenciais.');
+            $this->error('Google Drive não está configurado. Verifique o arquivo de credenciais.');
             return self::FAILURE;
         }
 
         $rootFolderId = Setting::get('google_drive_folder_id');
 
         if (! $rootFolderId) {
-            $this->error('ID da pasta raiz nao esta configurado nas configuracoes.');
+            $this->error('ID da pasta raiz não está configurado nas configurações.');
             return self::FAILURE;
         }
 

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         $order = 0;
 
-        // Categorias padrao do sistema (historico do select fixo)
+        // Categorias padrão do sistema (historico do select fixo)
         $defaultCategories = ['Financeiro', 'Administrativo', 'Atas', 'Relatorios', 'Estatuto'];
 
         foreach ($defaultCategories as $catName) {

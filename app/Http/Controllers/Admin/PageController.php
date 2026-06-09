@@ -50,7 +50,7 @@ class PageController extends Controller
         $validated['seo_score'] = $this->calculateSeoScore($validated);
         Page::create($validated);
 
-        return redirect()->route('admin.paginas.index')->with('success', 'Pagina criada com sucesso!');
+        return redirect()->route('admin.paginas.index')->with('success', 'Página criada com sucesso!');
     }
 
     public function edit(Page $page)
@@ -86,7 +86,7 @@ class PageController extends Controller
         $validated['seo_score'] = $this->calculateSeoScore($validated);
         $page->update($validated);
 
-        return redirect()->route('admin.paginas.index')->with('success', 'Pagina atualizada com sucesso!');
+        return redirect()->route('admin.paginas.index')->with('success', 'Página atualizada com sucesso!');
     }
 
     private function calculateSeoScore(array $data): int
@@ -119,7 +119,7 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $page->delete();
-        return redirect()->route('admin.paginas.index')->with('success', 'Pagina excluida com sucesso!');
+        return redirect()->route('admin.paginas.index')->with('success', 'Página excluida com sucesso!');
     }
 
     public function show(Page $page) { return $this->edit($page); }

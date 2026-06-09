@@ -1,9 +1,9 @@
 @extends("layouts.admin")
-@section("title", "Noticias")
-@section("page-title", "Noticias")
+@section("title", "Notícias")
+@section("page-title", "Notícias")
 @section("content")
 <div class="flex justify-between items-center mb-6">
-    <h2 class="text-xl font-bold text-gray-800">Noticias</h2>
+    <h2 class="text-xl font-bold text-gray-800">Notícias</h2>
     <a href="{{ route("admin.noticias.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Nova Notícia</a>
 </div>
 <div class="bg-white rounded-xl shadow-sm overflow-hidden">

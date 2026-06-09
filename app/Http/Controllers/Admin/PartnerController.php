@@ -70,7 +70,7 @@ class PartnerController extends Controller
     public function destroy(Partner $partner)
     {
         $partner->delete();
-        return redirect()->route('admin.parceiros.index')->with('success', 'Parceiro excluido com sucesso!');
+        return redirect()->route('admin.parceiros.index')->with('success', 'Parceiro excluído com sucesso!');
     }
 
     public function show(Partner $partner) { return $this->edit($partner); }

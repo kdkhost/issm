@@ -7,7 +7,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        AdminMenuItem::where('label', 'Configuracoes')->delete();
+        AdminMenuItem::where('label', 'Configurações')->delete();
     }
 
     public function down(): void

@@ -1,16 +1,16 @@
 # Graph Report - ISSM  (2026-06-09)
 
 ## Corpus Check
-- 307 files · ~2,651,391 words
+- 309 files · ~2,652,754 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1337 nodes · 1260 edges · 291 communities (224 shown, 67 thin omitted)
+- 1343 nodes · 1264 edges · 297 communities (226 shown, 71 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 142 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1fd72de7`
+- Built from commit: `b718e727`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -143,6 +143,10 @@
 - [[_COMMUNITY_Community 285|Community 285]]
 - [[_COMMUNITY_Community 286|Community 286]]
 - [[_COMMUNITY_Community 287|Community 287]]
+- [[_COMMUNITY_Community 291|Community 291]]
+- [[_COMMUNITY_Community 292|Community 292]]
+- [[_COMMUNITY_Community 293|Community 293]]
+- [[_COMMUNITY_Community 294|Community 294]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Setting` - 48 edges
@@ -168,19 +172,19 @@
 - `up()` --calls--> `TransparencyDocument`  [INFERRED]
   database/migrations/2026_06_08_000005_migrate_existing_categories.php → app/Models/TransparencyDocument.php
 
-## Communities (291 total, 67 thin omitted)
+## Communities (297 total, 71 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.13
 Nodes (3): NewsController, PublicNewsController, News
 
 ### Community 1 - "Community 1"
-Cohesion: 0.08
-Nodes (5): OdsController, ProjectController, PublicOdsController, Ods, OdsSeeder
+Cohesion: 0.17
+Nodes (3): PublicOdsController, Ods, OdsSeeder
 
 ### Community 2 - "Community 2"
-Cohesion: 0.07
-Nodes (7): FaqController, PartnerController, TestimonialController, HomeController, Faq, Partner, Testimonial
+Cohesion: 0.11
+Nodes (4): FaqController, TestimonialController, Faq, Testimonial
 
 ### Community 4 - "Community 4"
 Cohesion: 0.11
@@ -283,12 +287,8 @@ Cohesion: 0.12
 Nodes (16): code:block1 (app/), code:bash (# Clonar repositório), code:env (APP_NAME=ISSM), ⚙️ Configuração, 📁 Estrutura do Projeto, ✨ Funcionalidades, Instalação, 🌿 ISSM - Instituto Socioambiental Serra do Mendanha (+8 more)
 
 ### Community 239 - "Community 239"
-Cohesion: 0.17
-Nodes (3): SettingsController, PublicContactController, Setting
-
-### Community 241 - "Community 241"
-Cohesion: 0.18
-Nodes (3): PublicGalleryController, PublicProjectController, Project
+Cohesion: 0.13
+Nodes (4): SettingsController, PublicContactController, PublicPageController, Setting
 
 ### Community 242 - "Community 242"
 Cohesion: 0.18
@@ -414,20 +414,24 @@ Nodes (3): Canais de Suporte, Horario de Atendimento, Suporte
 Cohesion: 0.67
 Nodes (3): code:php ($config = HTMLPurifier_Config::createDefault();), Pipeline de Sanitização, Sanitização HTML
 
+### Community 291 - "Community 291"
+Cohesion: 0.20
+Nodes (3): HomeController, PublicGalleryController, Gallery
+
 ## Knowledge Gaps
 - **351 isolated node(s):** `name`, `type`, `description`, `keywords`, `license` (+346 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **67 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **71 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Setting` connect `Community 239` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 7`, `Community 8`, `Community 9`, `Community 240`, `Community 241`, `Community 274`, `Community 243`, `Community 22`, `Community 249`, `Community 282`, `Community 29`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
-- **Why does `Ods` connect `Community 1` to `Community 2`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `News` connect `Community 0` to `Community 2`, `Community 243`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `Setting` connect `Community 239` to `Community 0`, `Community 2`, `Community 291`, `Community 3`, `Community 292`, `Community 293`, `Community 7`, `Community 8`, `Community 9`, `Community 294`, `Community 240`, `Community 241`, `Community 274`, `Community 243`, `Community 22`, `Community 249`, `Community 282`, `Community 29`?**
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._
+- **Why does `News` connect `Community 0` to `Community 291`, `Community 243`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `Project` connect `Community 241` to `Community 291`, `Community 293`, `Community 243`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Are the 42 inferred relationships involving `Setting` (e.g. with `.handle()` and `.store()`) actually correct?**
   _`Setting` has 42 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 7 inferred relationships involving `CmsPublicPage` (e.g. with `.index()` and `.get()`) actually correct?**

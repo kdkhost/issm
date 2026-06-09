@@ -318,7 +318,7 @@ class CmsPageDefinitions
                 'section_label' => 'Listagem',
                 'sort_order' => 2,
                 'fields' => [
-                    ['field_key' => 'empty_message', 'field_label' => 'Mensagem vazia', 'field_type' => 'text', 'default_value' => 'Nenhuma noticia publicada ainda.', 'sort_order' => 1],
+                    ['field_key' => 'empty_message', 'field_label' => 'Mensagem vazia', 'field_type' => 'text', 'default_value' => 'Nenhuma notícia publicada ainda.', 'sort_order' => 1],
                     ['field_key' => 'card_cta', 'field_label' => 'Texto do botão', 'field_type' => 'text', 'default_value' => 'Ler mais', 'sort_order' => 2],
                 ],
             ],
