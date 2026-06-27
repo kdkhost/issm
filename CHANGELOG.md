@@ -26,6 +26,7 @@
 - Download e compartilhamento das fotos da galeria passam a usar imagem com marca d'agua do logo do site, opacidade reduzida e cache otimizado
 - Visualizador da galeria passa a exibir a mesma imagem marcada usada no download e no compartilhamento
 - Página de contato passa a listar endereços em linhas separadas e exibir um mapa para cada endereço cadastrado
+- Card de contato recebe anúncio institucional de parcerias para ocupar o espaço abaixo do formulário
 
 ## [1.2.0] - 2026-06-09
 

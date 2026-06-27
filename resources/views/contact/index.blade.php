@@ -78,6 +78,111 @@
     min-height: 280px;
     border: 0;
 }
+.contact-ad {
+    margin-top: 36px;
+    border-radius: 28px;
+    padding: 28px;
+    background: linear-gradient(135deg, #064e3b 0%, #15803d 58%, #16a34a 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    min-height: 245px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 22px 42px rgba(21, 128, 61, .22);
+}
+.contact-ad::before {
+    content: '';
+    position: absolute;
+    right: -70px;
+    top: -80px;
+    width: 220px;
+    height: 220px;
+    border-radius: 999px;
+    border: 34px solid rgba(255,255,255,.11);
+}
+.contact-ad::after {
+    content: '';
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    width: 94px;
+    height: 94px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.1);
+    transform: rotate(12deg);
+}
+.contact-ad-content {
+    position: relative;
+    z-index: 1;
+    max-width: 390px;
+}
+.contact-ad-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    color: #dcfce7;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 18px;
+}
+.contact-ad-title {
+    margin: 0 0 10px;
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    line-height: 1.12;
+    font-weight: 950;
+}
+.contact-ad-text {
+    margin: 0;
+    color: rgba(255,255,255,.86);
+    line-height: 1.6;
+    font-weight: 600;
+}
+.contact-ad-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+}
+.contact-ad-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 11px 16px;
+    background: #fff;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.contact-ad-btn:hover {
+    color: #166534;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,.18);
+}
+.contact-ad-btn.--ghost {
+    background: rgba(255,255,255,.13);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.28);
+}
+.contact-ad-btn.--ghost:hover {
+    color: #fff;
+}
+.contact-ad-btn svg {
+    width: 16px;
+    height: 16px;
+}
 .grecaptcha-badge { visibility: hidden !important; }
 </style>
 @endpush
@@ -209,6 +314,28 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>
                     </form>
+
+                    <div class="contact-ad">
+                        <div class="contact-ad-content">
+                            <span class="contact-ad-kicker">
+                                <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                {{ cms('contact', 'ad', 'kicker', 'Parcerias abertas') }}
+                            </span>
+                            <h3 class="contact-ad-title">{{ cms('contact', 'ad', 'title', 'Transforme presença em impacto socioambiental') }}</h3>
+                            <p class="contact-ad-text">{{ cms('contact', 'ad', 'text', 'Empresas, escolas e lideranças podem apoiar ações, oficinas e projetos do ISSM na Serra do Mendanha.') }}</p>
+                        </div>
+                        <div class="contact-ad-actions">
+                            <a href="{{ route('projects.index') }}" class="contact-ad-btn">
+                                Ver projetos
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                            @if($settings['social_whatsapp'])
+                                <a href="{{ $settings['social_whatsapp'] }}" class="contact-ad-btn --ghost" target="_blank" rel="noopener">
+                                    Falar no WhatsApp
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 

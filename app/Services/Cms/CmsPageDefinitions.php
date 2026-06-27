@@ -383,6 +383,16 @@ class CmsPageDefinitions
                     ['field_key' => 'map_title', 'field_label' => 'Título do mapa', 'field_type' => 'text', 'default_value' => 'Nossa Localização', 'sort_order' => 3],
                 ],
             ],
+            [
+                'section_key' => 'ad',
+                'section_label' => 'Anúncio do contato',
+                'sort_order' => 4,
+                'fields' => [
+                    ['field_key' => 'kicker', 'field_label' => 'Chamada curta', 'field_type' => 'text', 'default_value' => 'Parcerias abertas', 'sort_order' => 1],
+                    ['field_key' => 'title', 'field_label' => 'Título do anúncio', 'field_type' => 'text', 'default_value' => 'Transforme presença em impacto socioambiental', 'sort_order' => 2],
+                    ['field_key' => 'text', 'field_label' => 'Texto do anúncio', 'field_type' => 'textarea', 'default_value' => 'Empresas, escolas e lideranças podem apoiar ações, oficinas e projetos do ISSM na Serra do Mendanha.', 'sort_order' => 3],
+                ],
+            ],
         ];
     }
 
