@@ -92,30 +92,47 @@
         display: grid;
         place-items: center;
     }
-    .gallery-photo-list {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        overflow: hidden;
+    .gallery-photo-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
     }
-    .gallery-photo-row {
+    .gallery-photo-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #374151;
+        padding: 7px 11px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+    .gallery-photo-grid {
         display: grid;
-        grid-template-columns: 108px minmax(0, 1fr);
-        gap: 14px;
-        padding: 14px;
-        background: #fff;
-        border-bottom: 1px solid #e5e7eb;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 16px;
     }
-    .gallery-photo-row:last-child {
-        border-bottom: 0;
+    .gallery-photo-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
+        transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .gallery-photo-card:hover {
+        border-color: #bbf7d0;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, .1);
+        transform: translateY(-1px);
     }
     .gallery-photo-thumb {
         position: relative;
-        width: 108px;
-        height: 78px;
-        border-radius: 10px;
+        height: 150px;
         overflow: hidden;
         background: #f3f4f6;
-        border: 1px solid #e5e7eb;
     }
     .gallery-photo-thumb img {
         width: 100%;
@@ -123,49 +140,87 @@
         object-fit: cover;
         display: block;
     }
+    .gallery-photo-body {
+        padding: 14px;
+    }
+    .gallery-photo-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0 12px;
+    }
+    .gallery-photo-meta span {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: #f9fafb;
+        color: #6b7280;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 700;
+    }
     .gallery-photo-fields {
         display: grid;
-        grid-template-columns: minmax(180px, 1fr) 96px 96px;
-        gap: 12px;
-        align-items: end;
+        grid-template-columns: minmax(0, 1fr) 84px;
+        gap: 10px;
+        align-items: start;
+    }
+    .gallery-photo-active {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        margin-top: 10px;
+        padding: 9px 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #f9fafb;
     }
     .gallery-photo-details {
-        margin-top: 10px;
-        border-top: 1px solid #f3f4f6;
-        padding-top: 10px;
+        margin-top: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #f9fafb;
     }
     .gallery-photo-details summary {
         cursor: pointer;
         color: #15803d;
         font-size: 12px;
         font-weight: 800;
+        padding: 10px 11px;
         text-transform: uppercase;
         letter-spacing: .03em;
+    }
+    .gallery-photo-details-body {
+        padding: 0 11px 11px;
     }
     .gallery-photo-actions {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 8px;
-        margin-top: 10px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #f3f4f6;
     }
     @media(max-width: 768px) {
-        .gallery-photo-row {
-            grid-template-columns: 1fr;
-        }
-        .gallery-photo-thumb {
-            width: 100%;
-            height: 150px;
-        }
         .gallery-photo-fields {
             grid-template-columns: 1fr;
         }
     }
     [data-theme="dark"] .gallery-edit-nav a,
     [data-theme="dark"] .gallery-panel,
-    [data-theme="dark"] .gallery-photo-row {
+    [data-theme="dark"] .gallery-photo-card {
         background: #1f2937;
         border-color: #374151;
+    }
+    [data-theme="dark"] .gallery-photo-pill,
+    [data-theme="dark"] .gallery-photo-meta span,
+    [data-theme="dark"] .gallery-photo-active,
+    [data-theme="dark"] .gallery-photo-details {
+        background: #111827;
+        border-color: #374151;
+        color: #d1d5db;
     }
     [data-theme="dark"] .gallery-edit-nav a {
         color: #d1d5db;
@@ -175,7 +230,7 @@
         color: #4ade80;
     }
     [data-theme="dark"] .gallery-panel-head,
-    [data-theme="dark"] .gallery-photo-details {
+    [data-theme="dark"] .gallery-photo-actions {
         border-color: #374151;
     }
     [data-theme="dark"] .gallery-cover-preview,
@@ -381,20 +436,30 @@
                 @endif
             </p>
         </div>
+        <div class="gallery-photo-toolbar">
+            <span class="gallery-photo-pill">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4-4a2 2 0 012.8 0L16 17m-2-2l1-1a2 2 0 012.8 0L20 16M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                {{ number_format($album->photos_count, 0, ",", ".") }} fotos
+            </span>
+            <span class="gallery-photo-pill">
+                <svg class="w-4 h-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                {{ number_format($album->active_photos_count, 0, ",", ".") }} ativas
+            </span>
+        </div>
     </div>
 
     <div class="gallery-panel-body">
-        <div class="gallery-photo-list">
+        <div class="gallery-photo-grid">
             @forelse($photos as $photo)
-                <div class="gallery-photo-row" data-photo-card="{{ $photo->id }}">
+                <div class="gallery-photo-card" data-photo-card="{{ $photo->id }}">
                     <div class="gallery-photo-thumb">
                         <img src="{{ asset("media/" . $photo->image) }}" alt="{{ $photo->title }}" loading="lazy" decoding="async">
-                        <span data-photo-status="{{ $photo->id }}" class="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold {{ $photo->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
+                        <span data-photo-status="{{ $photo->id }}" class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold {{ $photo->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
                             {{ $photo->active ? "Ativa" : "Inativa" }}
                         </span>
                     </div>
 
-                    <div class="min-w-0">
+                    <div class="gallery-photo-body">
                         <form method="POST" action="{{ route("admin.galeria.photos.update", [$album, $photo]) }}" enctype="multipart/form-data">
                         @csrf
                         @method("PUT")
@@ -408,21 +473,21 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Ordem</label>
                                 <input type="number" name="sort_order" value="{{ old("photos.{$photo->id}.sort_order", $photo->sort_order) }}">
                             </div>
-                            <div class="flex items-center gap-2 pb-2">
-                                <input type="checkbox" name="active" value="1" id="photo-active-{{ $photo->id }}" {{ $photo->active ? "checked" : "" }}>
-                                <label for="photo-active-{{ $photo->id }}" class="text-sm font-medium text-gray-700">Ativa</label>
-                            </div>
                         </div>
-                        <div class="text-xs text-gray-500">
-                            {{ $photo->width && $photo->height ? $photo->width . " x " . $photo->height . " px" : "Dimensão não identificada" }}
+                        <div class="gallery-photo-meta">
+                            <span>{{ $photo->width && $photo->height ? $photo->width . " x " . $photo->height . " px" : "Dimensão não identificada" }}</span>
                             @if($photo->size_kb)
-                                • {{ number_format($photo->size_kb / 1024, 2, ",", ".") }} MB
+                                <span>{{ number_format($photo->size_kb / 1024, 2, ",", ".") }} MB</span>
                             @endif
+                        </div>
+                        <div class="gallery-photo-active">
+                            <input type="checkbox" name="active" value="1" id="photo-active-{{ $photo->id }}" {{ $photo->active ? "checked" : "" }}>
+                            <label for="photo-active-{{ $photo->id }}" class="text-sm font-semibold text-gray-700">Foto ativa no site</label>
                         </div>
 
                         <details class="gallery-photo-details">
                             <summary>Descrição e substituição da imagem</summary>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                            <div class="gallery-photo-details-body grid grid-cols-1 gap-3">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
                                     <textarea name="description" rows="2">{{ old("photos.{$photo->id}.description", $photo->description) }}</textarea>
@@ -445,7 +510,7 @@
                         <form method="POST" action="{{ route("admin.galeria.photos.destroy", [$album, $photo]) }}" class="mt-2">
                             @csrf
                             @method("DELETE")
-                            <button type="submit" data-confirm="Excluir esta foto?" class="text-red-600 hover:text-red-800 text-sm font-medium">Excluir foto</button>
+                            <button type="submit" data-confirm="Excluir esta foto?" class="text-red-600 hover:text-red-800 text-sm font-bold">Excluir foto</button>
                         </form>
                     </div>
                 </div>

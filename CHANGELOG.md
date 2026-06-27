@@ -21,6 +21,7 @@
 - Listagem administrativa da galeria passa a usar o mesmo modelo visual de pastas por album
 - Fotos do album na galeria publica passam a carregar e aparecer gradualmente por rolagem com lazy loading via IntersectionObserver
 - Paginacao visual da galeria publica removida e substituida por carregamento automatico ao rolar
+- Secao de fotos do album no admin reformulada em cards visuais com miniatura, metadados, status e acoes agrupadas
 
 ## [1.2.0] - 2026-06-09
 
