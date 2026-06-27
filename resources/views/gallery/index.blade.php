@@ -69,6 +69,11 @@
 #lb-footer{position:absolute;bottom:0;left:0;right:0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 #lb-caption{color:#d1d5db;font-size:.88rem}
 #lb-counter{color:rgba(255,255,255,.5);font-size:.8rem;font-variant-numeric:tabular-nums}
+.lb-meta{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.lb-action{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:800;text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s}
+.lb-action:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.32);color:#fff;text-decoration:none}
+.lb-action svg{width:15px;height:15px}
 .gal-stat{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);padding:6px 14px;border-radius:24px;font-size:13px;color:#fff;font-weight:500}
 .gal-stat svg{width:16px;height:16px;opacity:.8}
 .gal-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center}
@@ -79,6 +84,10 @@
 @media(prefers-reduced-motion:reduce){
     .gal-card[data-lazy-card]{opacity:1;transform:none;transition:none}
     .gal-card img[data-gallery-lazy-image]{transition:none;filter:none;transform:none}
+}
+@media(max-width:640px){
+    #lb-footer{align-items:flex-start;flex-direction:column;padding:12px 14px}
+    .lb-actions{justify-content:flex-start}
 }
 </style>
 @endpush
@@ -201,6 +210,8 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                                     <div class="gal-card"
                                          data-lazy-card
                                          data-src="{{ asset('media/' . $photo->image) }}"
+                                         data-watermarked-url="{{ route('gallery.photos.watermarked', $photo) }}"
+                                         data-download-url="{{ route('gallery.photos.watermarked', ['photo' => $photo, 'download' => 1]) }}"
                                          data-caption="{{ $photo->title }} - {{ $album->title }}">
                                         <img
                                             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
@@ -318,8 +329,20 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     <button id="lb-next" class="lb-btn" aria-label="Próxima">&#8250;</button>
     <img id="lb-img" src="" alt="">
     <div id="lb-footer">
-        <p id="lb-caption"></p>
-        <span id="lb-counter"></span>
+        <div class="lb-meta">
+            <p id="lb-caption"></p>
+            <span id="lb-counter"></span>
+        </div>
+        <div class="lb-actions">
+            <button type="button" id="lb-share" class="lb-action">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 103.368-1.342 3 3 0 00-3.368 1.342zm0 9.316a3 3 0 103.368 1.342 3 3 0 00-3.368-1.342z"/></svg>
+                Compartilhar
+            </button>
+            <a id="lb-download" class="lb-action" href="#" download>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
+                Baixar
+            </a>
+        </div>
     </div>
 </div>
 
@@ -334,6 +357,8 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     var img = document.getElementById('lb-img');
     var cap = document.getElementById('lb-caption');
     var ctr = document.getElementById('lb-counter');
+    var shareButton = document.getElementById('lb-share');
+    var downloadButton = document.getElementById('lb-download');
     var cur = 0;
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var lazyObserver = null;
@@ -501,6 +526,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         img.src = d.src;
         cap.textContent = d.caption || '';
         ctr.textContent = (idx + 1) + ' / ' + items.length;
+        updateLightboxActions(d);
         lb.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -520,7 +546,24 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
             img.src = d.src;
             cap.textContent = d.caption || '';
             ctr.textContent = (cur + 1) + ' / ' + items.length;
+            updateLightboxActions(d);
         });
+    }
+
+    function updateLightboxActions(data) {
+        if (!downloadButton) return;
+
+        downloadButton.href = data.downloadUrl || data.watermarkedUrl || data.src || '#';
+        downloadButton.setAttribute('download', '');
+    }
+
+    function currentShareData() {
+        var data = items[cur] ? items[cur].dataset : {};
+
+        return {
+            title: data.caption || 'Foto da galeria',
+            url: data.watermarkedUrl || data.src || window.location.href
+        };
     }
 
     galleryGrid.addEventListener('click', function(event) {
@@ -533,6 +576,25 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     document.getElementById('lb-close').addEventListener('click', close);
     document.getElementById('lb-prev').addEventListener('click', function(){ nav(-1); });
     document.getElementById('lb-next').addEventListener('click', function(){ nav(1); });
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            var data = currentShareData();
+
+            if (navigator.share) {
+                navigator.share(data).catch(function(){});
+                return;
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(data.url).then(function() {
+                    shareButton.textContent = 'Link copiado';
+                    setTimeout(function() {
+                        shareButton.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 103.368-1.342 3 3 0 00-3.368 1.342zm0 9.316a3 3 0 103.368 1.342 3 3 0 00-3.368-1.342z"/></svg>Compartilhar';
+                    }, 1800);
+                });
+            }
+        });
+    }
     lb.addEventListener('click', function(e){ if(e.target === lb) close(); });
     document.addEventListener('keydown', function(e){
         if(!lb.classList.contains('open')) return;
