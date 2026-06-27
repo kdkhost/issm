@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryAlbum;
+use App\Models\Project;
 use App\Models\Setting;
 
 class PublicGalleryController extends Controller
@@ -11,16 +12,13 @@ class PublicGalleryController extends Controller
     {
         $filter = request('album') ?: request('filter');
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
+        $albumPageSize = 4;
+        $photoPreviewLimit = 12;
+        $photoPageSize = 24;
 
         $allAlbums = GalleryAlbum::active()
             ->whereHas('activePhotos')
-            ->with([
-                'activePhotos',
-                'projects' => fn ($query) => $query
-                    ->where('projects.active', true)
-                    ->orderBy('projects.order')
-                    ->orderBy('projects.title'),
-            ])
+            ->withCount('activePhotos')
             ->get();
 
         $selectedAlbum = null;
@@ -29,42 +27,70 @@ class PublicGalleryController extends Controller
                 ?: $allAlbums->firstWhere('title', $filter);
         }
 
-        $albums = $selectedAlbum ? collect([$selectedAlbum]) : $allAlbums;
+        $photos = null;
 
-        $allItems = $albums->flatMap(function (GalleryAlbum $album) {
-            return $album->activePhotos->map(function ($photo) use ($album) {
-                return (object) [
-                    'id' => 'g-' . $photo->id,
-                    'title' => $photo->title,
-                    'image' => $photo->image,
-                    'album' => $album->title,
-                    'album_slug' => $album->slug,
-                    'event_date' => $album->event_date,
-                    'event_location' => $album->event_location,
-                    'type' => 'gallery',
-                    'source' => 'Galeria',
-                    'link' => null,
-                ];
+        if ($selectedAlbum) {
+            $selectedAlbum = GalleryAlbum::active()
+                ->whereKey($selectedAlbum->id)
+                ->whereHas('activePhotos')
+                ->withCount('activePhotos')
+                ->with([
+                    'projects' => fn ($query) => $query
+                        ->where('projects.active', true)
+                        ->orderBy('projects.order')
+                        ->orderBy('projects.title')
+                        ->select('projects.id', 'projects.title', 'projects.slug'),
+                ])
+                ->first();
+
+            $albums = collect($selectedAlbum ? [$selectedAlbum] : []);
+            $photos = $selectedAlbum
+                ? $selectedAlbum->activePhotos()->paginate($photoPageSize, ['*'], 'fotos')->withQueryString()
+                : null;
+        } else {
+            $albums = GalleryAlbum::active()
+                ->whereHas('activePhotos')
+                ->withCount('activePhotos')
+                ->with([
+                    'projects' => fn ($query) => $query
+                        ->where('projects.active', true)
+                        ->orderBy('projects.order')
+                        ->orderBy('projects.title')
+                        ->select('projects.id', 'projects.title', 'projects.slug'),
+                ])
+                ->paginate($albumPageSize, ['*'], 'albuns')
+                ->withQueryString();
+
+            $albums->getCollection()->each(function (GalleryAlbum $album) use ($photoPreviewLimit) {
+                $album->setRelation(
+                    'previewPhotos',
+                    $album->activePhotos()->limit($photoPreviewLimit)->get()
+                );
             });
-        })->values();
+        }
 
         $totalAlbums = $allAlbums->count();
-        $totalGallery = $allAlbums->sum(fn (GalleryAlbum $album) => $album->activePhotos->count());
-        $totalProjects = $allAlbums
-            ->flatMap(fn (GalleryAlbum $album) => $album->projects->pluck('id'))
-            ->unique()
+        $totalGallery = $allAlbums->sum('active_photos_count');
+        $totalProjects = Project::where('active', true)
+            ->whereHas('galleryAlbums', function ($query) {
+                $query->where('gallery_albums.active', true)
+                    ->whereHas('activePhotos');
+            })
             ->count();
+        $allItems = collect();
 
         return view('gallery.index', compact(
             'albums',
             'allAlbums',
             'allItems',
+            'photos',
             'filter',
             'selectedAlbum',
             'settings',
             'totalAlbums',
             'totalGallery',
-            'totalProjects'
+            'totalProjects',
+            'photoPreviewLimit'
         ));
     }
 }

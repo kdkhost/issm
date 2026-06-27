@@ -13,6 +13,8 @@
 - Corrigido hover e alinhamento dos checkboxes de projetos vinculados no tema dark
 - Dropzone de fotos iniciais do album agora permite selecionar ou arrastar multiplas imagens de uma so vez
 - Listagem administrativa da galeria remodelada com tabela, resumo, detalhes expansíveis e ações padronizadas
+- Fotos do album no admin agora usam cards menores e paginacao para reduzir carregamento
+- Galeria publica reorganizada por album com previa limitada, album completo paginado e imagens com lazy loading
 
 ## [1.2.0] - 2026-06-09
 

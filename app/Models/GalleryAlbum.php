@@ -60,7 +60,19 @@ class GalleryAlbum extends Model
             return $this->cover_image;
         }
 
-        return optional($this->activePhotos->first() ?: $this->photos->first())->image;
+        $activePhoto = $this->relationLoaded('activePhotos')
+            ? $this->activePhotos->first()
+            : $this->activePhotos()->first();
+
+        if ($activePhoto) {
+            return $activePhoto->image;
+        }
+
+        $photo = $this->relationLoaded('photos')
+            ? $this->photos->first()
+            : $this->photos()->first();
+
+        return optional($photo)->image;
     }
 
     protected static function booted(): void

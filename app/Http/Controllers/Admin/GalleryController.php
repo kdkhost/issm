@@ -76,15 +76,19 @@ class GalleryController extends Controller
     public function edit(GalleryAlbum $gallery)
     {
         $gallery->load([
-            'photos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
             'projects',
         ]);
+        $gallery->loadCount(['photos', 'activePhotos']);
 
         $projects = Project::active()->get();
         $uploadLimitMb = Setting::uploadLimitMb('image');
+        $photos = $gallery->photos()
+            ->paginate(12, ['*'], 'fotos')
+            ->withQueryString();
 
         return view('admin.galeria.edit', [
             'album' => $gallery,
+            'photos' => $photos,
             'projects' => $projects,
             'uploadLimitMb' => $uploadLimitMb,
         ]);
@@ -198,7 +202,7 @@ class GalleryController extends Controller
             'success' => true,
             'message' => 'Foto atualizada com sucesso.',
             'photo' => $this->photoJson($photo->fresh()),
-        ], route('admin.galeria.edit', $gallery));
+        ], url()->previous());
     }
 
     public function destroyPhoto(Request $request, GalleryAlbum $gallery, GalleryPhoto $photo)
@@ -211,7 +215,7 @@ class GalleryController extends Controller
         return $this->jsonOrBack($request, [
             'success' => true,
             'message' => 'Foto excluida com sucesso.',
-        ], route('admin.galeria.edit', $gallery));
+        ], url()->previous());
     }
 
     public function togglePhoto(Request $request, GalleryAlbum $gallery, GalleryPhoto $photo)

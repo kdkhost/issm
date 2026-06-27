@@ -32,6 +32,35 @@
         background: #1f2937;
         border-color: #374151;
     }
+    .gallery-photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 14px;
+    }
+    .gallery-photo-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+    .gallery-photo-media {
+        position: relative;
+        height: 116px;
+        background: #f3f4f6;
+    }
+    .gallery-photo-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    [data-theme="dark"] .gallery-photo-card {
+        background: #1f2937;
+        border-color: #374151;
+    }
+    [data-theme="dark"] .gallery-photo-media {
+        background: #111827;
+    }
 </style>
 @endpush
 
@@ -165,8 +194,8 @@
         <div class="bg-white rounded-xl shadow-sm p-6">
             <h3 class="font-semibold text-gray-800 mb-4">Resumo</h3>
             <dl class="space-y-3 text-sm">
-                <div class="flex justify-between gap-4"><dt class="text-gray-500">Total de fotos</dt><dd class="font-semibold text-gray-900">{{ $album->photos->count() }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-gray-500">Fotos ativas</dt><dd class="font-semibold text-green-700">{{ $album->photos->where("active", true)->count() }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Total de fotos</dt><dd class="font-semibold text-gray-900">{{ number_format($album->photos_count, 0, ",", ".") }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Fotos ativas</dt><dd class="font-semibold text-green-700">{{ number_format($album->active_photos_count, 0, ",", ".") }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Projetos vinculados</dt><dd class="font-semibold text-blue-700">{{ $album->projects->count() }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Evento</dt><dd class="font-semibold text-gray-900">{{ optional($album->event_date)->format("d/m/Y") ?? "-" }}</dd></div>
             </dl>
@@ -187,14 +216,19 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <div>
             <h3 class="font-semibold text-gray-800">Fotos do álbum</h3>
-            <p class="text-sm text-gray-500">Apenas fotos ativas dentro de álbuns ativos aparecem na galeria pública.</p>
+            <p class="text-sm text-gray-500">
+                Apenas fotos ativas dentro de álbuns ativos aparecem na galeria pública.
+                @if($photos->total())
+                    Mostrando {{ number_format($photos->firstItem(), 0, ",", ".") }} a {{ number_format($photos->lastItem(), 0, ",", ".") }} de {{ number_format($photos->total(), 0, ",", ".") }} fotos.
+                @endif
+            </p>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        @forelse($album->photos as $photo)
-            <div class="border border-gray-100 rounded-xl overflow-hidden" data-photo-card="{{ $photo->id }}">
-                <div class="relative h-44 bg-gray-100">
+    <div class="gallery-photo-grid">
+        @forelse($photos as $photo)
+            <div class="gallery-photo-card" data-photo-card="{{ $photo->id }}">
+                <div class="gallery-photo-media">
                     <img src="{{ asset("media/" . $photo->image) }}" alt="{{ $photo->title }}" class="w-full h-full object-cover">
                     <span data-photo-status="{{ $photo->id }}" class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold {{ $photo->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
                         {{ $photo->active ? "Ativa" : "Inativa" }}
@@ -249,9 +283,15 @@
                 </div>
             </div>
         @empty
-            <div class="md:col-span-2 xl:col-span-3 text-center py-12 text-gray-400">Nenhuma foto cadastrada neste álbum.</div>
+            <div class="text-center py-12 text-gray-400" style="grid-column:1/-1;">Nenhuma foto cadastrada neste álbum.</div>
         @endforelse
     </div>
+
+    @if($photos->hasPages())
+        <div class="mt-5 pt-4 border-t border-gray-100">
+            {{ $photos->links() }}
+        </div>
+    @endif
 </div>
 @endsection
 
