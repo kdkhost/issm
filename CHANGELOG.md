@@ -10,6 +10,7 @@
 - Controle de ativar/desativar album e foto individualmente
 - Galeria publica ajustada para exibir somente fotos ativas dentro de albuns ativos, com filtros por evento
 - Telas administrativas da galeria padronizadas com o layout e os campos dos demais CRUDs
+- Corrigido hover e alinhamento dos checkboxes de projetos vinculados no tema dark
 
 ## [1.2.0] - 2026-06-09
 
