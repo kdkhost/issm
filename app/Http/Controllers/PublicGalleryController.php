@@ -162,7 +162,7 @@ class PublicGalleryController extends Controller
     private function cachedWatermarkedPath(GalleryPhoto $photo, string $sourcePath, string $logoPath): string
     {
         $signature = md5(implode('|', [
-            'v2-transparent-watermark',
+            'v3-visible-transparent-watermark',
             $photo->id,
             $photo->updated_at?->timestamp,
             $photo->image,
@@ -178,8 +178,8 @@ class PublicGalleryController extends Controller
         $image = Image::make($sourcePath)->orientate();
         $watermark = Image::make($logoPath)->orientate();
         $shortSide = max(1, min($image->width(), $image->height()));
-        $watermarkWidth = (int) max(70, min(170, round($shortSide * 0.18)));
-        $margin = (int) max(12, round($shortSide * 0.035));
+        $watermarkWidth = (int) max(96, min(230, round($shortSide * 0.26)));
+        $margin = (int) max(8, round($shortSide * 0.02));
 
         $watermark->resize($watermarkWidth, null, function ($constraint) {
             $constraint->aspectRatio();
