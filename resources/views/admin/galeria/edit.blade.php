@@ -62,8 +62,7 @@
 
             <div class="flex items-center justify-between gap-3">
                 <div>
-                    <h3 class="font-bold text-gray-900">Dados do evento</h3>
-                    <p class="text-sm text-gray-500">Essas informações organizam a galeria pública por álbum/evento.</p>
+                    <h3 class="font-semibold text-gray-800">Dados do álbum</h3>
                 </div>
                 <span data-album-status class="px-2 py-1 rounded-full text-xs font-semibold {{ $album->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
                     {{ $album->active ? "Ativo" : "Inativo" }}
@@ -71,7 +70,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nome do álbum / evento *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
                 <input type="text" name="title" value="{{ old("title", $album->title) }}" required>
                 @error("title")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
             </div>
@@ -97,13 +96,10 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Projetos vinculados</label>
-                <select name="project_ids[]" multiple size="7">
-                    @foreach($projects as $project)
-                        <option value="{{ $project->id }}" @selected(in_array((string) $project->id, $selectedProjects, true))>{{ $project->title }}</option>
-                    @endforeach
-                </select>
-                <p class="text-xs text-gray-500 mt-1">Os projetos selecionados aparecem junto ao álbum na galeria pública.</p>
-                @error("project_ids")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                @include("admin.galeria._project-checkboxes", [
+                    "projects" => $projects,
+                    "selectedProjectIds" => $selectedProjects,
+                ])
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -135,14 +131,14 @@
             </div>
 
             <div class="flex justify-end pt-4 border-t border-gray-100">
-                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Salvar alterações</button>
+                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Atualizar</button>
             </div>
         </form>
 
         <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
                 <div>
-                    <h3 class="font-bold text-gray-900">Upload múltiplo de fotos</h3>
+                    <h3 class="font-semibold text-gray-800">Upload múltiplo de fotos</h3>
                     <p class="text-sm text-gray-500">Arraste várias imagens ou selecione arquivos. Até 3 uploads são enviados ao mesmo tempo.</p>
                 </div>
                 <button type="button" id="reload-after-upload" class="hidden px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-sm font-semibold">
@@ -167,7 +163,7 @@
 
     <div class="space-y-6">
         <div class="bg-white rounded-xl shadow-sm p-6">
-            <h3 class="font-bold text-gray-900 mb-4">Resumo</h3>
+            <h3 class="font-semibold text-gray-800 mb-4">Resumo</h3>
             <dl class="space-y-3 text-sm">
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Total de fotos</dt><dd class="font-semibold text-gray-900">{{ $album->photos->count() }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Fotos ativas</dt><dd class="font-semibold text-green-700">{{ $album->photos->where("active", true)->count() }}</dd></div>
@@ -177,7 +173,7 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-sm p-6">
-            <h3 class="font-bold text-gray-900 mb-4">Projetos do evento</h3>
+            <h3 class="font-semibold text-gray-800 mb-4">Projetos do evento</h3>
             @forelse($album->projects as $project)
                 <a href="{{ route("admin.projetos.edit", $project) }}" class="block px-3 py-2 rounded-lg bg-blue-50 text-blue-800 text-sm font-medium mb-2 hover:bg-blue-100">{{ $project->title }}</a>
             @empty
@@ -190,7 +186,7 @@
 <div class="mt-6 bg-white rounded-xl shadow-sm p-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <div>
-            <h3 class="font-bold text-gray-900">Fotos do álbum</h3>
+            <h3 class="font-semibold text-gray-800">Fotos do álbum</h3>
             <p class="text-sm text-gray-500">Apenas fotos ativas dentro de álbuns ativos aparecem na galeria pública.</p>
         </div>
     </div>

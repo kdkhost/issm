@@ -3,11 +3,8 @@
 @section("page-title", "Galeria de Eventos")
 
 @section("content")
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-    <div>
-        <h2 class="text-xl font-bold text-gray-800">Álbuns por evento</h2>
-        <p class="text-sm text-gray-500 mt-1">Organize fotos por álbum, evento e projetos relacionados.</p>
-    </div>
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold text-gray-800">Álbuns por evento</h2>
     <a href="{{ route("admin.galeria.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 inline-flex items-center justify-center gap-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         Novo álbum
@@ -68,7 +65,7 @@
                 @endif
 
                 <div class="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gray-100">
-                    <a href="{{ route("admin.galeria.edit", $album) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Gerenciar</a>
+                    <a href="{{ route("admin.galeria.edit", $album) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Editar</a>
                     <button type="button" class="text-sm font-medium {{ $album->active ? "text-amber-700" : "text-green-700" }}" data-toggle-album data-url="{{ route("admin.galeria.toggle", $album) }}" data-id="{{ $album->id }}">
                         {{ $album->active ? "Desativar" : "Ativar" }}
                     </button>

@@ -9,6 +9,7 @@
 - Upload multiplo simultaneo com arrasta e solta, progresso por arquivo, estimativa de tempo restante e alerta de dimensao ideal
 - Controle de ativar/desativar album e foto individualmente
 - Galeria publica ajustada para exibir somente fotos ativas dentro de albuns ativos, com filtros por evento
+- Telas administrativas da galeria padronizadas com o layout e os campos dos demais CRUDs
 
 ## [1.2.0] - 2026-06-09
 
