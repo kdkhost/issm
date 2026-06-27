@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Faq;
-use App\Models\Gallery;
+use App\Models\GalleryPhoto;
 use App\Models\News;
 use App\Models\Ods;
 use App\Models\Partner;
@@ -23,7 +23,13 @@ class HomeController extends Controller
         $odsList = Setting::get('show_ods', '1') ? Ods::active()->get() : collect();
         $teamMembers = Setting::get('show_team', '1') ? TeamMember::active()->take(8)->get() : collect();
         $partners = Setting::get('show_partners', '1') ? Partner::active()->get() : collect();
-        $galleryItems = Setting::get('show_gallery', '1') ? Gallery::active()->take(8)->get() : collect();
+        $galleryItems = Setting::get('show_gallery', '1')
+            ? GalleryPhoto::active()
+                ->whereHas('album', fn ($query) => $query->where('active', true))
+                ->with('album')
+                ->take(8)
+                ->get()
+            : collect();
         $testimonials = Setting::get('show_testimonials', '1') ? Testimonial::where('active', true)->orderBy('order')->get() : collect();
         $faqs = Setting::get('show_faqs', '1') ? Faq::where('active', true)->orderBy('order')->get() : collect();
         $activeOdsCount = Ods::active()->count();

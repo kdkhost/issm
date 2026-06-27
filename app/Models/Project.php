@@ -30,6 +30,11 @@ class Project extends Model
         return $query->where('featured', true);
     }
 
+    public function galleryAlbums()
+    {
+        return $this->belongsToMany(GalleryAlbum::class, 'gallery_album_project')->withTimestamps();
+    }
+
     protected static function boot()
     {
         parent::boot();

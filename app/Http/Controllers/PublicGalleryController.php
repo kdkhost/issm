@@ -2,69 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Gallery;
-use App\Models\Project;
+use App\Models\GalleryAlbum;
 use App\Models\Setting;
 
 class PublicGalleryController extends Controller
 {
     public function index()
     {
-        $filter = request('filter'); // 'galeria', 'projetos', or album name
+        $filter = request('album') ?: request('filter');
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
 
-        // ── Gallery items ──
-        $galleryItems = Gallery::active()->get()->map(function ($item) {
-            return (object) [
-                'id'       => 'g-'.$item->id,
-                'title'    => $item->title,
-                'image'    => $item->image,
-                'album'    => $item->album ?: 'Galeria',
-                'type'     => 'gallery',
-                'source'   => 'Galeria',
-                'link'     => null,
-            ];
-        });
+        $allAlbums = GalleryAlbum::active()
+            ->whereHas('activePhotos')
+            ->with([
+                'activePhotos',
+                'projects' => fn ($query) => $query
+                    ->where('projects.active', true)
+                    ->orderBy('projects.order')
+                    ->orderBy('projects.title'),
+            ])
+            ->get();
 
-        // ── Project images ──
-        $projectItems = Project::active()
-            ->whereNotNull('image')
-            ->where('image', '!=', '')
-            ->get()
-            ->map(function ($project) {
-                return (object) [
-                    'id'       => 'p-'.$project->id,
-                    'title'    => $project->title,
-                    'image'    => $project->image,
-                    'album'    => 'Projeto: '.$project->title,
-                    'type'     => 'project',
-                    'source'   => 'Projetos',
-                    'link'     => route('projects.show', $project->slug),
-                ];
-            });
-
-        // ── Merge ──
-        $allItems = $galleryItems->concat($projectItems);
-
-        // ── Albums / filters ──
-        $galleryAlbums = Gallery::active()->whereNotNull('album')->where('album', '!=', '')->distinct()->pluck('album')->toArray();
-        $filterOptions = array_merge(['Todos', 'Galeria', 'Projetos'], $galleryAlbums);
-
-        // ── Apply filter ──
-        if ($filter === 'galeria' || $filter === 'Galeria') {
-            $allItems = $allItems->where('type', 'gallery');
-        } elseif ($filter === 'projetos' || $filter === 'Projetos') {
-            $allItems = $allItems->where('type', 'project');
-        } elseif ($filter && $filter !== 'Todos') {
-            $allItems = $allItems->filter(fn($i) => $i->album === $filter);
+        $selectedAlbum = null;
+        if ($filter && ! in_array($filter, ['Todos', 'Galeria', 'Projetos'], true)) {
+            $selectedAlbum = $allAlbums->firstWhere('slug', $filter)
+                ?: $allAlbums->firstWhere('title', $filter);
         }
 
-        $totalGallery  = $galleryItems->count();
-        $totalProjects = $projectItems->count();
+        $albums = $selectedAlbum ? collect([$selectedAlbum]) : $allAlbums;
+
+        $allItems = $albums->flatMap(function (GalleryAlbum $album) {
+            return $album->activePhotos->map(function ($photo) use ($album) {
+                return (object) [
+                    'id' => 'g-' . $photo->id,
+                    'title' => $photo->title,
+                    'image' => $photo->image,
+                    'album' => $album->title,
+                    'album_slug' => $album->slug,
+                    'event_date' => $album->event_date,
+                    'event_location' => $album->event_location,
+                    'type' => 'gallery',
+                    'source' => 'Galeria',
+                    'link' => null,
+                ];
+            });
+        })->values();
+
+        $totalAlbums = $allAlbums->count();
+        $totalGallery = $allAlbums->sum(fn (GalleryAlbum $album) => $album->activePhotos->count());
+        $totalProjects = $allAlbums
+            ->flatMap(fn (GalleryAlbum $album) => $album->projects->pluck('id'))
+            ->unique()
+            ->count();
 
         return view('gallery.index', compact(
-            'allItems', 'filter', 'filterOptions', 'settings',
-            'totalGallery', 'totalProjects'
+            'albums',
+            'allAlbums',
+            'allItems',
+            'filter',
+            'selectedAlbum',
+            'settings',
+            'totalAlbums',
+            'totalGallery',
+            'totalProjects'
         ));
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Contact;
-use App\Models\Gallery;
+use App\Models\GalleryPhoto;
 use App\Models\News;
 use App\Models\Partner;
 use App\Models\Project;
@@ -24,7 +24,7 @@ class DashboardController extends Controller
             'banners' => Banner::count(),
             'team' => TeamMember::count(),
             'partners' => Partner::count(),
-            'gallery' => Gallery::count(),
+            'gallery' => GalleryPhoto::count(),
         ];
 
         $recentContacts = Contact::latest()->take(5)->get();

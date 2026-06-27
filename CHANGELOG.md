@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.3.0] - 2026-06-27
+
+### Adicionado - Galeria por albuns e eventos
+
+- Nova estrutura de galeria com albuns/eventos, fotos vinculadas e migracao dos registros antigos da tabela `gallery`
+- Vinculo de um ou mais projetos por album, exibidos junto ao evento na galeria publica
+- Upload multiplo simultaneo com arrasta e solta, progresso por arquivo, estimativa de tempo restante e alerta de dimensao ideal
+- Controle de ativar/desativar album e foto individualmente
+- Galeria publica ajustada para exibir somente fotos ativas dentro de albuns ativos, com filtros por evento
+
 ## [1.2.0] - 2026-06-09
 
 ### Adicionado - Cloudflare Turnstile + Google reCAPTCHA no formulário de contato
