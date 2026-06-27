@@ -162,7 +162,7 @@ class PublicGalleryController extends Controller
     private function cachedWatermarkedPath(GalleryPhoto $photo, string $sourcePath, string $logoPath): string
     {
         $signature = md5(implode('|', [
-            'v3-visible-transparent-watermark',
+            'v4-visible-transparent-watermark',
             $photo->id,
             $photo->updated_at?->timestamp,
             $photo->image,
@@ -186,7 +186,7 @@ class PublicGalleryController extends Controller
             $constraint->upsize();
         });
 
-        $watermark->opacity(15);
+        $watermark->opacity(32);
         $image->insert($watermark, 'bottom-right', $margin, $margin);
         $image->save($targetPath, 90, $this->extensionFor($sourcePath));
     }
