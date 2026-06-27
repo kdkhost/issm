@@ -212,6 +212,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                                          data-src="{{ asset('media/' . $photo->image) }}"
                                          data-watermarked-url="{{ route('gallery.photos.watermarked', $photo) }}"
                                          data-download-url="{{ route('gallery.photos.watermarked', ['photo' => $photo, 'download' => 1]) }}"
+                                         data-file-name="{{ \Illuminate\Support\Str::slug($photo->title ?: 'foto-galeria') }}.jpg"
                                          data-caption="{{ $photo->title }} - {{ $album->title }}">
                                         <img
                                             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
@@ -523,7 +524,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     function open(idx) {
         cur = idx;
         var d = items[idx].dataset;
-        img.src = d.src;
+        img.src = d.watermarkedUrl || d.src;
         cap.textContent = d.caption || '';
         ctr.textContent = (idx + 1) + ' / ' + items.length;
         updateLightboxActions(d);
@@ -543,7 +544,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         img.style.animation = 'none';
         requestAnimationFrame(function(){
             img.style.animation = '';
-            img.src = d.src;
+            img.src = d.watermarkedUrl || d.src;
             cap.textContent = d.caption || '';
             ctr.textContent = (cur + 1) + ' / ' + items.length;
             updateLightboxActions(d);
@@ -562,8 +563,22 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 
         return {
             title: data.caption || 'Foto da galeria',
-            url: data.watermarkedUrl || data.src || window.location.href
+            url: data.watermarkedUrl || data.src || window.location.href,
+            fileName: data.fileName || 'foto-galeria.jpg'
         };
+    }
+
+    function resetShareButton() {
+        shareButton.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 103.368-1.342 3 3 0 00-3.368 1.342zm0 9.316a3 3 0 103.368 1.342 3 3 0 00-3.368-1.342z"/></svg>Compartilhar';
+    }
+
+    function copyShareLink(url) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function() {
+                shareButton.textContent = 'Link copiado';
+                setTimeout(resetShareButton, 1800);
+            });
+        }
     }
 
     galleryGrid.addEventListener('click', function(event) {
@@ -580,19 +595,33 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         shareButton.addEventListener('click', function() {
             var data = currentShareData();
 
-            if (navigator.share) {
-                navigator.share(data).catch(function(){});
+            if (navigator.share && window.fetch && window.File && navigator.canShare) {
+                fetch(data.url, { credentials: 'same-origin' })
+                    .then(function(response) {
+                        if (!response.ok) throw new Error('Imagem indisponivel.');
+                        return response.blob();
+                    })
+                    .then(function(blob) {
+                        var file = new File([blob], data.fileName, { type: blob.type || 'image/jpeg' });
+
+                        if (navigator.canShare({ files: [file] })) {
+                            return navigator.share({ title: data.title, files: [file] });
+                        }
+
+                        return navigator.share({ title: data.title, url: data.url });
+                    })
+                    .catch(function() {
+                        navigator.share({ title: data.title, url: data.url }).catch(function(){});
+                    });
                 return;
             }
 
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(data.url).then(function() {
-                    shareButton.textContent = 'Link copiado';
-                    setTimeout(function() {
-                        shareButton.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 103.368-1.342 3 3 0 00-3.368 1.342zm0 9.316a3 3 0 103.368 1.342 3 3 0 00-3.368-1.342z"/></svg>Compartilhar';
-                    }, 1800);
-                });
+            if (navigator.share) {
+                navigator.share({ title: data.title, url: data.url }).catch(function(){});
+                return;
             }
+
+            copyShareLink(data.url);
         });
     }
     lb.addEventListener('click', function(e){ if(e.target === lb) close(); });

@@ -24,6 +24,7 @@
 - Secao de fotos do album no admin reformulada em cards visuais com miniatura, metadados, status e acoes agrupadas
 - Preloader publico reformulado com visual premium, marca central, aneis animados e barra de progresso
 - Download e compartilhamento das fotos da galeria passam a usar imagem com marca d'agua do logo do site, opacidade reduzida e cache otimizado
+- Visualizador da galeria passa a exibir a mesma imagem marcada usada no download e no compartilhamento
 
 ## [1.2.0] - 2026-06-09
 

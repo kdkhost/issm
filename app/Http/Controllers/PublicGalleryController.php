@@ -119,12 +119,13 @@ class PublicGalleryController extends Controller
             ]);
         }
 
-        $cachedPath = $this->cachedWatermarkedPath($photo, $sourcePath, $logoPath);
+        $preparedLogoPath = $this->preparedWatermarkLogoPath($logoPath);
+        $cachedPath = $this->cachedWatermarkedPath($photo, $sourcePath, $preparedLogoPath);
         $absoluteCachedPath = Storage::disk('public')->path($cachedPath);
 
         if (! is_file($absoluteCachedPath)) {
             Storage::disk('public')->makeDirectory(dirname($cachedPath));
-            $this->createWatermarkedImage($sourcePath, $logoPath, $absoluteCachedPath);
+            $this->createWatermarkedImage($sourcePath, $preparedLogoPath, $absoluteCachedPath);
         }
 
         return response()->file($absoluteCachedPath, [
@@ -161,6 +162,7 @@ class PublicGalleryController extends Controller
     private function cachedWatermarkedPath(GalleryPhoto $photo, string $sourcePath, string $logoPath): string
     {
         $signature = md5(implode('|', [
+            'v2-transparent-watermark',
             $photo->id,
             $photo->updated_at?->timestamp,
             $photo->image,
@@ -176,7 +178,7 @@ class PublicGalleryController extends Controller
         $image = Image::make($sourcePath)->orientate();
         $watermark = Image::make($logoPath)->orientate();
         $shortSide = max(1, min($image->width(), $image->height()));
-        $watermarkWidth = (int) max(42, min(120, round($shortSide * 0.12)));
+        $watermarkWidth = (int) max(70, min(170, round($shortSide * 0.18)));
         $margin = (int) max(12, round($shortSide * 0.035));
 
         $watermark->resize($watermarkWidth, null, function ($constraint) {
@@ -187,6 +189,63 @@ class PublicGalleryController extends Controller
         $watermark->opacity(15);
         $image->insert($watermark, 'bottom-right', $margin, $margin);
         $image->save($targetPath, 90, $this->extensionFor($sourcePath));
+    }
+
+    private function preparedWatermarkLogoPath(string $logoPath): string
+    {
+        $cachePath = 'gallery/watermarked/logos/'.md5('v1-transparent-logo|'.$logoPath.'|'.(filemtime($logoPath) ?: 0)).'.png';
+        $absoluteCachePath = Storage::disk('public')->path($cachePath);
+
+        if (is_file($absoluteCachePath)) {
+            return $absoluteCachePath;
+        }
+
+        Storage::disk('public')->makeDirectory(dirname($cachePath));
+
+        $logo = @imagecreatefromstring(file_get_contents($logoPath));
+
+        if (! $logo) {
+            return $logoPath;
+        }
+
+        $width = imagesx($logo);
+        $height = imagesy($logo);
+        $transparentLogo = imagecreatetruecolor($width, $height);
+
+        imagealphablending($transparentLogo, false);
+        imagesavealpha($transparentLogo, true);
+
+        $transparent = imagecolorallocatealpha($transparentLogo, 0, 0, 0, 127);
+        imagefill($transparentLogo, 0, 0, $transparent);
+
+        for ($y = 0; $y < $height; $y++) {
+            for ($x = 0; $x < $width; $x++) {
+                $rgba = imagecolorsforindex($logo, imagecolorat($logo, $x, $y));
+                $isBakedCheckerboard = abs($rgba['red'] - $rgba['green']) <= 5
+                    && abs($rgba['green'] - $rgba['blue']) <= 5
+                    && $rgba['red'] >= 175;
+
+                if ($isBakedCheckerboard) {
+                    continue;
+                }
+
+                $color = imagecolorallocatealpha(
+                    $transparentLogo,
+                    $rgba['red'],
+                    $rgba['green'],
+                    $rgba['blue'],
+                    $rgba['alpha'] ?? 0
+                );
+
+                imagesetpixel($transparentLogo, $x, $y, $color);
+            }
+        }
+
+        imagepng($transparentLogo, $absoluteCachePath);
+        imagedestroy($logo);
+        imagedestroy($transparentLogo);
+
+        return $absoluteCachePath;
     }
 
     private function extensionFor(string $path): string
