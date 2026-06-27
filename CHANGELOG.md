@@ -11,6 +11,7 @@
 - Galeria publica ajustada para exibir somente fotos ativas dentro de albuns ativos, com filtros por evento
 - Telas administrativas da galeria padronizadas com o layout e os campos dos demais CRUDs
 - Corrigido hover e alinhamento dos checkboxes de projetos vinculados no tema dark
+- Dropzone de fotos iniciais do album agora permite selecionar ou arrastar multiplas imagens de uma so vez
 
 ## [1.2.0] - 2026-06-09
 
