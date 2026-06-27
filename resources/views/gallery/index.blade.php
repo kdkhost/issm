@@ -19,6 +19,24 @@
 .gal-project-link{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;text-decoration:none}
 .gal-project-link:hover{background:#dbeafe;color:#1e40af}
 .gal-results-note{font-size:.86rem;color:#6b7280;margin:0 0 18px}
+.gal-folder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:1024px){.gal-folder-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.gal-folder-grid{grid-template-columns:1fr;gap:14px}}
+.gal-folder{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 1px 4px rgba(0,0,0,.04);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.gal-folder:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(15,23,42,.12);border-color:#bbf7d0;color:inherit}
+.gal-folder-cover{position:relative;height:190px;background:#e5e7eb;overflow:hidden}
+.gal-folder-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.gal-folder:hover .gal-folder-cover img{transform:scale(1.04)}
+.gal-folder-empty{height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#dcfce7,#f0fdf4);color:#15803d}
+.gal-folder-empty svg{width:58px;height:58px}
+.gal-folder-label{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:7px;background:rgba(17,24,39,.78);color:#fff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:800}
+.gal-folder-count{position:absolute;right:12px;bottom:12px;background:#15803d;color:#fff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:800;box-shadow:0 5px 16px rgba(21,128,61,.24)}
+.gal-folder-body{padding:16px}
+.gal-folder-title{margin:0;color:#111827;font-size:1rem;font-weight:900;line-height:1.25}
+.gal-folder-meta{color:#6b7280;font-size:.82rem;margin-top:6px}
+.gal-folder-projects{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.gal-folder-project{display:inline-flex;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:4px 8px;font-size:11px;font-weight:800}
+.gal-folder-action{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid #e5e7eb;color:#15803d;font-size:13px;font-weight:900}
 .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:1024px){.gal-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.gal-grid{grid-template-columns:repeat(2,1fr);gap:8px}}
@@ -30,9 +48,6 @@
 .gal-overlay-title{color:#fff;font-size:.82rem;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .gal-overlay-album{color:rgba(255,255,255,.75);font-size:.72rem;margin-top:2px}
 .gal-overlay-badge{position:absolute;top:10px;right:10px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;background:rgba(21,128,61,.85)}
-.gal-album-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid #e5e7eb;flex-wrap:wrap}
-.gal-album-more{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:10px;background:#15803d;color:#fff;text-decoration:none;font-size:13px;font-weight:800;transition:background .2s}
-.gal-album-more:hover{background:#166534;color:#fff}
 .gal-pagination{margin-top:22px}
 #lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.93);align-items:center;justify-content:center}
 #lightbox.open{display:flex}
@@ -137,23 +152,89 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                 <p class="gal-results-note">
                     Mostrando {{ number_format($photos->firstItem() ?? 0, 0, ",", ".") }} a {{ number_format($photos->lastItem() ?? 0, 0, ",", ".") }} de {{ number_format($photos->total(), 0, ",", ".") }} fotos do álbum selecionado.
                 </p>
+
+                <div id="gallery-grid">
+                    @foreach($albums as $album)
+                        <article class="gal-album">
+                            <div class="gal-album-head">
+                                <div>
+                                    <h2 class="gal-album-title">{{ $album->title }}</h2>
+                                    <p class="gal-album-meta">
+                                        @if($album->event_date)
+                                            {{ $album->event_date->format('d/m/Y') }}
+                                        @else
+                                            Data do evento não informada
+                                        @endif
+                                        @if($album->event_location)
+                                            • {{ $album->event_location }}
+                                        @endif
+                                        • {{ $album->active_photos_count }} foto{{ $album->active_photos_count != 1 ? 's' : '' }}
+                                    </p>
+                                </div>
+
+                                @if($album->projects->count())
+                                    <div class="gal-projects">
+                                        @foreach($album->projects as $project)
+                                            <a href="{{ route('projects.show', $project->slug) }}" class="gal-project-link">
+                                                <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                {{ $project->title }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="gal-grid">
+                                @foreach($photos as $photo)
+                                    <div class="gal-card"
+                                         data-src="{{ asset('media/' . $photo->image) }}"
+                                         data-caption="{{ $photo->title }} - {{ $album->title }}">
+                                        <img src="{{ asset('media/' . $photo->image) }}" alt="{{ $photo->title }}" loading="lazy" decoding="async" width="{{ $photo->width ?: 800 }}" height="{{ $photo->height ?: 600 }}">
+                                        <div class="gal-overlay">
+                                            <span class="gal-overlay-badge">Evento</span>
+                                            <div>
+                                                <p class="gal-overlay-title">{{ $photo->title }}</p>
+                                                <span class="gal-overlay-album">{{ $album->title }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                @if($photos->hasPages())
+                    <div class="gal-pagination">{{ $photos->links() }}</div>
+                @endif
             @else
                 <p class="gal-results-note">
-                    Exibindo álbuns paginados com prévia de até {{ $photoPreviewLimit }} fotos por álbum. Abra o álbum para ver todas as fotos com paginação.
+                    Pastas de álbuns organizadas por evento. Abra uma pasta para ver as fotos paginadas daquele álbum.
                 </p>
-            @endif
 
-            <div id="gallery-grid">
-                @foreach($albums as $album)
-                    @php
-                        $albumPhotos = $selectedAlbum && $photos ? $photos : $album->previewPhotos;
-                        $visiblePhotos = $albumPhotos->count();
-                    @endphp
-                    <article class="gal-album">
-                        <div class="gal-album-head">
-                            <div>
-                                <h2 class="gal-album-title">{{ $album->title }}</h2>
-                                <p class="gal-album-meta">
+                <div class="gal-folder-grid">
+                    @foreach($albums as $album)
+                        @php
+                            $cover = $album->cover_image ?: $album->cover_photo_image;
+                        @endphp
+                        <a href="{{ route('gallery.index', ['album' => $album->slug]) }}" class="gal-folder">
+                            <div class="gal-folder-cover">
+                                @if($cover)
+                                    <img src="{{ asset('media/' . $cover) }}" alt="{{ $album->title }}" loading="lazy" decoding="async">
+                                @else
+                                    <div class="gal-folder-empty">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                                    </div>
+                                @endif
+                                <span class="gal-folder-label">
+                                    <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                                    Pasta
+                                </span>
+                                <span class="gal-folder-count">{{ $album->active_photos_count }} foto{{ $album->active_photos_count != 1 ? 's' : '' }}</span>
+                            </div>
+                            <div class="gal-folder-body">
+                                <h2 class="gal-folder-title">{{ $album->title }}</h2>
+                                <p class="gal-folder-meta">
                                     @if($album->event_date)
                                         {{ $album->event_date->format('d/m/Y') }}
                                     @else
@@ -162,56 +243,29 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                                     @if($album->event_location)
                                         • {{ $album->event_location }}
                                     @endif
-                                    • {{ $album->active_photos_count }} foto{{ $album->active_photos_count != 1 ? 's' : '' }}
                                 </p>
-                            </div>
-
-                            @if($album->projects->count())
-                                <div class="gal-projects">
-                                    @foreach($album->projects as $project)
-                                        <a href="{{ route('projects.show', $project->slug) }}" class="gal-project-link">
-                                            <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                            {{ $project->title }}
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="gal-grid">
-                            @foreach($albumPhotos as $photo)
-                                <div class="gal-card"
-                                     data-src="{{ asset('media/' . $photo->image) }}"
-                                     data-caption="{{ $photo->title }} - {{ $album->title }}">
-                                    <img src="{{ asset('media/' . $photo->image) }}" alt="{{ $photo->title }}" loading="lazy" decoding="async" width="{{ $photo->width ?: 800 }}" height="{{ $photo->height ?: 600 }}">
-                                    <div class="gal-overlay">
-                                        <span class="gal-overlay-badge">Evento</span>
-                                        <div>
-                                            <p class="gal-overlay-title">{{ $photo->title }}</p>
-                                            <span class="gal-overlay-album">{{ $album->title }}</span>
-                                        </div>
+                                @if($album->projects->count())
+                                    <div class="gal-folder-projects">
+                                        @foreach($album->projects->take(3) as $project)
+                                            <span class="gal-folder-project">{{ $project->title }}</span>
+                                        @endforeach
+                                        @if($album->projects->count() > 3)
+                                            <span class="gal-folder-project">+{{ $album->projects->count() - 3 }}</span>
+                                        @endif
                                     </div>
+                                @endif
+                                <div class="gal-folder-action">
+                                    <span>Abrir pasta do álbum</span>
+                                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </div>
-                            @endforeach
-                        </div>
-
-                        @if(! $selectedAlbum && $album->active_photos_count > $visiblePhotos)
-                            <div class="gal-album-foot">
-                                <span class="gal-results-note" style="margin:0;">Mostrando {{ $visiblePhotos }} de {{ $album->active_photos_count }} fotos deste álbum.</span>
-                                <a href="{{ route('gallery.index', ['album' => $album->slug]) }}" class="gal-album-more">
-                                    Ver álbum completo
-                                    <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
                             </div>
-                        @endif
-                    </article>
-                @endforeach
-            </div>
+                        </a>
+                    @endforeach
+                </div>
 
-            @if($selectedAlbum && $photos && $photos->hasPages())
-                <div class="gal-pagination">{{ $photos->links() }}</div>
-            @elseif(method_exists($albums, "hasPages") && $albums->hasPages())
-                <div class="gal-pagination">{{ $albums->links() }}</div>
+                @if(method_exists($albums, "hasPages") && $albums->hasPages())
+                    <div class="gal-pagination">{{ $albums->links() }}</div>
+                @endif
             @endif
         @else
             <div class="gal-empty">

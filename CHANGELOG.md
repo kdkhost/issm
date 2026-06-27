@@ -15,6 +15,9 @@
 - Listagem administrativa da galeria remodelada com tabela, resumo, detalhes expansíveis e ações padronizadas
 - Fotos do album no admin agora usam cards menores e paginacao para reduzir carregamento
 - Galeria publica reorganizada por album com previa limitada, album completo paginado e imagens com lazy loading
+- Edicao do album no admin reorganizada em secoes de dados, upload, resumo e fotos compactas
+- Galeria publica passa a exibir pastas de albuns na raiz, carregando fotos somente ao abrir um album
+- Capa configurada no album pelo administrativo passa a ser priorizada nas pastas da galeria publica
 
 ## [1.2.0] - 2026-06-09
 

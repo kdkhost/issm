@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryAlbum;
+use App\Models\GalleryPhoto;
 use App\Models\Project;
 use App\Models\Setting;
 
@@ -12,9 +13,15 @@ class PublicGalleryController extends Controller
     {
         $filter = request('album') ?: request('filter');
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        $albumPageSize = 4;
-        $photoPreviewLimit = 12;
+        $albumPageSize = 9;
         $photoPageSize = 24;
+        $coverPhotoSubquery = fn () => GalleryPhoto::query()
+            ->select('image')
+            ->whereColumn('gallery_album_id', 'gallery_albums.id')
+            ->where('active', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->limit(1);
 
         $allAlbums = GalleryAlbum::active()
             ->whereHas('activePhotos')
@@ -33,6 +40,7 @@ class PublicGalleryController extends Controller
             $selectedAlbum = GalleryAlbum::active()
                 ->whereKey($selectedAlbum->id)
                 ->whereHas('activePhotos')
+                ->addSelect(['cover_photo_image' => $coverPhotoSubquery()])
                 ->withCount('activePhotos')
                 ->with([
                     'projects' => fn ($query) => $query
@@ -50,6 +58,7 @@ class PublicGalleryController extends Controller
         } else {
             $albums = GalleryAlbum::active()
                 ->whereHas('activePhotos')
+                ->addSelect(['cover_photo_image' => $coverPhotoSubquery()])
                 ->withCount('activePhotos')
                 ->with([
                     'projects' => fn ($query) => $query
@@ -60,13 +69,6 @@ class PublicGalleryController extends Controller
                 ])
                 ->paginate($albumPageSize, ['*'], 'albuns')
                 ->withQueryString();
-
-            $albums->getCollection()->each(function (GalleryAlbum $album) use ($photoPreviewLimit) {
-                $album->setRelation(
-                    'previewPhotos',
-                    $album->activePhotos()->limit($photoPreviewLimit)->get()
-                );
-            });
         }
 
         $totalAlbums = $allAlbums->count();
@@ -89,8 +91,7 @@ class PublicGalleryController extends Controller
             'settings',
             'totalAlbums',
             'totalGallery',
-            'totalProjects',
-            'photoPreviewLimit'
+            'totalProjects'
         ));
     }
 }

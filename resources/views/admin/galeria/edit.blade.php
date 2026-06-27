@@ -32,34 +32,157 @@
         background: #1f2937;
         border-color: #374151;
     }
-    .gallery-photo-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-        gap: 14px;
+    .gallery-edit-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
     }
-    .gallery-photo-card {
+    .gallery-edit-nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        color: #374151;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: border-color .18s ease, color .18s ease, background .18s ease;
+    }
+    .gallery-edit-nav a:hover {
+        border-color: #16a34a;
+        color: #15803d;
+        background: #f0fdf4;
+    }
+    .gallery-panel {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
+    }
+    .gallery-panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 18px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    .gallery-panel-body {
+        padding: 20px;
+    }
+    .gallery-cover-preview {
+        width: 100%;
+        height: 170px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+    }
+    .gallery-cover-empty {
+        width: 100%;
+        height: 170px;
+        border-radius: 12px;
+        background: #f9fafb;
+        border: 1px dashed #d1d5db;
+        color: #9ca3af;
+        display: grid;
+        place-items: center;
+    }
+    .gallery-photo-list {
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         overflow: hidden;
+    }
+    .gallery-photo-row {
+        display: grid;
+        grid-template-columns: 108px minmax(0, 1fr);
+        gap: 14px;
+        padding: 14px;
         background: #fff;
+        border-bottom: 1px solid #e5e7eb;
     }
-    .gallery-photo-media {
+    .gallery-photo-row:last-child {
+        border-bottom: 0;
+    }
+    .gallery-photo-thumb {
         position: relative;
-        height: 116px;
+        width: 108px;
+        height: 78px;
+        border-radius: 10px;
+        overflow: hidden;
         background: #f3f4f6;
+        border: 1px solid #e5e7eb;
     }
-    .gallery-photo-media img {
+    .gallery-photo-thumb img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         display: block;
     }
-    [data-theme="dark"] .gallery-photo-card {
+    .gallery-photo-fields {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) 96px 96px;
+        gap: 12px;
+        align-items: end;
+    }
+    .gallery-photo-details {
+        margin-top: 10px;
+        border-top: 1px solid #f3f4f6;
+        padding-top: 10px;
+    }
+    .gallery-photo-details summary {
+        cursor: pointer;
+        color: #15803d;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+    .gallery-photo-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    @media(max-width: 768px) {
+        .gallery-photo-row {
+            grid-template-columns: 1fr;
+        }
+        .gallery-photo-thumb {
+            width: 100%;
+            height: 150px;
+        }
+        .gallery-photo-fields {
+            grid-template-columns: 1fr;
+        }
+    }
+    [data-theme="dark"] .gallery-edit-nav a,
+    [data-theme="dark"] .gallery-panel,
+    [data-theme="dark"] .gallery-photo-row {
         background: #1f2937;
         border-color: #374151;
     }
-    [data-theme="dark"] .gallery-photo-media {
+    [data-theme="dark"] .gallery-edit-nav a {
+        color: #d1d5db;
+    }
+    [data-theme="dark"] .gallery-edit-nav a:hover {
+        background: rgba(34, 197, 94, .08);
+        color: #4ade80;
+    }
+    [data-theme="dark"] .gallery-panel-head,
+    [data-theme="dark"] .gallery-photo-details {
+        border-color: #374151;
+    }
+    [data-theme="dark"] .gallery-cover-preview,
+    [data-theme="dark"] .gallery-cover-empty,
+    [data-theme="dark"] .gallery-photo-thumb {
         background: #111827;
+        border-color: #374151;
     }
 </style>
 @endpush
@@ -83,89 +206,104 @@
     </div>
 </div>
 
+<nav class="gallery-edit-nav" aria-label="Navegação do álbum">
+    <a href="#dados-album">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+        Dados
+    </a>
+    <a href="#envio-fotos">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 12v9m0-9l-3 3m3-3l3 3"/></svg>
+        Upload
+    </a>
+    <a href="#fotos-album">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4-4a2 2 0 012.8 0L16 17m-2-2l1-1a2 2 0 012.8 0L20 16M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Fotos
+    </a>
+</nav>
+
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
     <div class="xl:col-span-2 space-y-6">
-        <form method="POST" action="{{ route("admin.galeria.update", $album) }}" enctype="multipart/form-data" class="bg-white rounded-xl shadow-sm p-6 space-y-5">
+        <form method="POST" action="{{ route("admin.galeria.update", $album) }}" enctype="multipart/form-data" class="gallery-panel" id="dados-album">
             @csrf
             @method("PUT")
 
-            <div class="flex items-center justify-between gap-3">
+            <div class="gallery-panel-head">
                 <div>
                     <h3 class="font-semibold text-gray-800">Dados do álbum</h3>
+                    <p class="text-sm text-gray-500 mt-1">Informações do evento, vínculo com projetos, capa e ordem de exibição.</p>
                 </div>
                 <span data-album-status class="px-2 py-1 rounded-full text-xs font-semibold {{ $album->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
                     {{ $album->active ? "Ativo" : "Inativo" }}
                 </span>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-                <input type="text" name="title" value="{{ old("title", $album->title) }}" required>
-                @error("title")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                <textarea name="description" rows="4">{{ old("description", $album->description) }}</textarea>
-                @error("description")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="gallery-panel-body space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Data do evento</label>
-                    <input type="date" name="event_date" value="{{ old("event_date", optional($album->event_date)->format("Y-m-d")) }}">
-                    @error("event_date")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+                    <input type="text" name="title" value="{{ old("title", $album->title) }}" required>
+                    @error("title")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Local do evento</label>
-                    <input type="text" name="event_location" value="{{ old("event_location", $album->event_location) }}">
-                    @error("event_location")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
-                </div>
-            </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Projetos vinculados</label>
-                @include("admin.galeria._project-checkboxes", [
-                    "projects" => $projects,
-                    "selectedProjectIds" => $selectedProjects,
-                ])
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Ordem</label>
-                    <input type="number" name="sort_order" value="{{ old("sort_order", $album->sort_order) }}">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                    <textarea name="description" rows="4">{{ old("description", $album->description) }}</textarea>
+                    @error("description")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Largura ideal</label>
-                    <input type="number" name="ideal_image_width" value="{{ old("ideal_image_width", $album->ideal_image_width) }}" min="320" max="8000" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Altura ideal</label>
-                    <input type="number" name="ideal_image_height" value="{{ old("ideal_image_height", $album->ideal_image_height) }}" min="240" max="8000" required>
-                </div>
-                <div class="flex items-center gap-3 md:pt-7">
-                    <input type="checkbox" name="active" value="1" id="active" {{ old("active", $album->active) ? "checked" : "" }}>
-                    <label for="active" class="text-sm font-medium text-gray-700">Álbum ativo</label>
-                </div>
-            </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Imagem de capa</label>
-                @if($cover)
-                    <img src="{{ asset("media/" . $cover) }}" alt="{{ $album->title }}" class="w-full max-w-sm h-36 object-cover rounded-lg mb-3">
-                @endif
-                <input type="file" name="cover_image" accept="image/*">
-                <p class="text-xs text-gray-500 mt-1">Se nenhuma capa for enviada, a primeira foto ativa será usada como capa.</p>
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data do evento</label>
+                        <input type="date" name="event_date" value="{{ old("event_date", optional($album->event_date)->format("Y-m-d")) }}">
+                        @error("event_date")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Local do evento</label>
+                        <input type="text" name="event_location" value="{{ old("event_location", $album->event_location) }}">
+                        @error("event_location")<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                    </div>
+                </div>
 
-            <div class="flex justify-end pt-4 border-t border-gray-100">
-                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Atualizar</button>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Projetos vinculados</label>
+                    @include("admin.galeria._project-checkboxes", [
+                        "projects" => $projects,
+                        "selectedProjectIds" => $selectedProjects,
+                    ])
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ordem</label>
+                        <input type="number" name="sort_order" value="{{ old("sort_order", $album->sort_order) }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Largura ideal</label>
+                        <input type="number" name="ideal_image_width" value="{{ old("ideal_image_width", $album->ideal_image_width) }}" min="320" max="8000" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Altura ideal</label>
+                        <input type="number" name="ideal_image_height" value="{{ old("ideal_image_height", $album->ideal_image_height) }}" min="240" max="8000" required>
+                    </div>
+                    <div class="flex items-center gap-3 md:pt-7">
+                        <input type="checkbox" name="active" value="1" id="active" {{ old("active", $album->active) ? "checked" : "" }}>
+                        <label for="active" class="text-sm font-medium text-gray-700">Álbum ativo</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Imagem de capa</label>
+                    <input type="file" name="cover_image" accept="image/*">
+                    <p class="text-xs text-gray-500 mt-1">Se nenhuma capa for enviada, a primeira foto ativa será usada como capa.</p>
+                </div>
+
+                <div class="flex justify-end pt-4 border-t border-gray-100">
+                    <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium">Atualizar dados do álbum</button>
+                </div>
             </div>
         </form>
 
-        <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+        <div class="gallery-panel" id="envio-fotos">
+            <div class="gallery-panel-head">
                 <div>
                     <h3 class="font-semibold text-gray-800">Upload múltiplo de fotos</h3>
                     <p class="text-sm text-gray-500">Arraste várias imagens ou selecione arquivos. Até 3 uploads são enviados ao mesmo tempo.</p>
@@ -175,23 +313,40 @@
                 </button>
             </div>
 
-            <div id="gallery-upload-zone" class="gallery-upload-zone">
-                <input type="file" id="gallery-upload-input" accept="image/*" multiple data-no-dropzone class="hidden">
-                <div class="flex flex-col items-center gap-3">
-                    <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 12v9m0-9l-3 3m3-3l3 3"/></svg>
-                    <div>
-                        <p class="font-semibold text-gray-800">Solte as imagens aqui</p>
-                        <p class="text-sm text-gray-500">Dimensão ideal: {{ number_format($album->ideal_image_width, 0, ",", ".") }} x {{ number_format($album->ideal_image_height, 0, ",", ".") }} px. Limite: {{ $uploadLimitMb }} MB por imagem.</p>
+            <div class="gallery-panel-body">
+                <div id="gallery-upload-zone" class="gallery-upload-zone">
+                    <input type="file" id="gallery-upload-input" accept="image/*" multiple data-no-dropzone class="hidden">
+                    <div class="flex flex-col items-center gap-3">
+                        <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 12v9m0-9l-3 3m3-3l3 3"/></svg>
+                        <div>
+                            <p class="font-semibold text-gray-800">Solte as imagens aqui</p>
+                            <p class="text-sm text-gray-500">Dimensão ideal: {{ number_format($album->ideal_image_width, 0, ",", ".") }} x {{ number_format($album->ideal_image_height, 0, ",", ".") }} px. Limite: {{ $uploadLimitMb }} MB por imagem.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="upload-queue" class="space-y-3 mt-5"></div>
+                <div id="upload-queue" class="space-y-3 mt-5"></div>
+            </div>
         </div>
     </div>
 
     <div class="space-y-6">
-        <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="gallery-panel">
+            <div class="gallery-panel-body">
+                <h3 class="font-semibold text-gray-800 mb-4">Capa atual</h3>
+                @if($cover)
+                    <img src="{{ asset("media/" . $cover) }}" alt="{{ $album->title }}" class="gallery-cover-preview" loading="lazy" decoding="async">
+                @else
+                    <div class="gallery-cover-empty">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                    </div>
+                @endif
+                <p class="text-xs text-gray-500 mt-3">Esta é a imagem usada como referência da pasta do álbum no site.</p>
+            </div>
+        </div>
+
+        <div class="gallery-panel">
+            <div class="gallery-panel-body">
             <h3 class="font-semibold text-gray-800 mb-4">Resumo</h3>
             <dl class="space-y-3 text-sm">
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Total de fotos</dt><dd class="font-semibold text-gray-900">{{ number_format($album->photos_count, 0, ",", ".") }}</dd></div>
@@ -199,21 +354,24 @@
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Projetos vinculados</dt><dd class="font-semibold text-blue-700">{{ $album->projects->count() }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Evento</dt><dd class="font-semibold text-gray-900">{{ optional($album->event_date)->format("d/m/Y") ?? "-" }}</dd></div>
             </dl>
+            </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="gallery-panel">
+            <div class="gallery-panel-body">
             <h3 class="font-semibold text-gray-800 mb-4">Projetos do evento</h3>
             @forelse($album->projects as $project)
                 <a href="{{ route("admin.projetos.edit", $project) }}" class="block px-3 py-2 rounded-lg bg-blue-50 text-blue-800 text-sm font-medium mb-2 hover:bg-blue-100">{{ $project->title }}</a>
             @empty
                 <p class="text-sm text-gray-500">Nenhum projeto vinculado.</p>
             @endforelse
+            </div>
         </div>
     </div>
 </div>
 
-<div class="mt-6 bg-white rounded-xl shadow-sm p-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+<div class="mt-6 gallery-panel" id="fotos-album">
+    <div class="gallery-panel-head">
         <div>
             <h3 class="font-semibold text-gray-800">Fotos do álbum</h3>
             <p class="text-sm text-gray-500">
@@ -225,35 +383,32 @@
         </div>
     </div>
 
-    <div class="gallery-photo-grid">
-        @forelse($photos as $photo)
-            <div class="gallery-photo-card" data-photo-card="{{ $photo->id }}">
-                <div class="gallery-photo-media">
-                    <img src="{{ asset("media/" . $photo->image) }}" alt="{{ $photo->title }}" class="w-full h-full object-cover">
-                    <span data-photo-status="{{ $photo->id }}" class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold {{ $photo->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
-                        {{ $photo->active ? "Ativa" : "Inativa" }}
-                    </span>
-                </div>
+    <div class="gallery-panel-body">
+        <div class="gallery-photo-list">
+            @forelse($photos as $photo)
+                <div class="gallery-photo-row" data-photo-card="{{ $photo->id }}">
+                    <div class="gallery-photo-thumb">
+                        <img src="{{ asset("media/" . $photo->image) }}" alt="{{ $photo->title }}" loading="lazy" decoding="async">
+                        <span data-photo-status="{{ $photo->id }}" class="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold {{ $photo->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
+                            {{ $photo->active ? "Ativa" : "Inativa" }}
+                        </span>
+                    </div>
 
-                <div class="p-4">
-                    <form method="POST" action="{{ route("admin.galeria.photos.update", [$album, $photo]) }}" enctype="multipart/form-data" class="space-y-3">
+                    <div class="min-w-0">
+                        <form method="POST" action="{{ route("admin.galeria.photos.update", [$album, $photo]) }}" enctype="multipart/form-data">
                         @csrf
                         @method("PUT")
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-                            <input type="text" name="title" value="{{ old("photos.{$photo->id}.title", $photo->title) }}" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                            <textarea name="description" rows="2">{{ old("photos.{$photo->id}.description", $photo->description) }}</textarea>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="gallery-photo-fields">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                                <input type="text" name="title" value="{{ old("photos.{$photo->id}.title", $photo->title) }}" required>
+                            </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Ordem</label>
                                 <input type="number" name="sort_order" value="{{ old("photos.{$photo->id}.sort_order", $photo->sort_order) }}">
                             </div>
-                            <div class="flex items-center gap-2 pt-7">
+                            <div class="flex items-center gap-2 pb-2">
                                 <input type="checkbox" name="active" value="1" id="photo-active-{{ $photo->id }}" {{ $photo->active ? "checked" : "" }}>
                                 <label for="photo-active-{{ $photo->id }}" class="text-sm font-medium text-gray-700">Ativa</label>
                             </div>
@@ -264,34 +419,47 @@
                                 • {{ number_format($photo->size_kb / 1024, 2, ",", ".") }} MB
                             @endif
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Substituir imagem</label>
-                            <input type="file" name="image" accept="image/*" data-no-dropzone>
-                        </div>
-                        <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+
+                        <details class="gallery-photo-details">
+                            <summary>Descrição e substituição da imagem</summary>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                                    <textarea name="description" rows="2">{{ old("photos.{$photo->id}.description", $photo->description) }}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Substituir imagem</label>
+                                    <input type="file" name="image" accept="image/*" data-no-dropzone>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="gallery-photo-actions">
                             <button type="submit" class="px-3 py-2 rounded-lg bg-green-700 text-white hover:bg-green-800 text-sm font-semibold">Salvar foto</button>
                             <button type="button" data-toggle-photo data-url="{{ route("admin.galeria.photos.toggle", [$album, $photo]) }}" data-id="{{ $photo->id }}" class="px-3 py-2 rounded-lg text-sm font-semibold {{ $photo->active ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800" }}">
                                 {{ $photo->active ? "Desativar" : "Ativar" }}
                             </button>
                         </div>
-                    </form>
-                    <form method="POST" action="{{ route("admin.galeria.photos.destroy", [$album, $photo]) }}" class="mt-2">
-                        @csrf
-                        @method("DELETE")
-                        <button type="submit" data-confirm="Excluir esta foto?" class="text-red-600 hover:text-red-800 text-sm font-medium">Excluir foto</button>
-                    </form>
-                </div>
-            </div>
-        @empty
-            <div class="text-center py-12 text-gray-400" style="grid-column:1/-1;">Nenhuma foto cadastrada neste álbum.</div>
-        @endforelse
-    </div>
+                        </form>
 
-    @if($photos->hasPages())
-        <div class="mt-5 pt-4 border-t border-gray-100">
-            {{ $photos->links() }}
+                        <form method="POST" action="{{ route("admin.galeria.photos.destroy", [$album, $photo]) }}" class="mt-2">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" data-confirm="Excluir esta foto?" class="text-red-600 hover:text-red-800 text-sm font-medium">Excluir foto</button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-12 text-gray-400">Nenhuma foto cadastrada neste álbum.</div>
+            @endforelse
         </div>
-    @endif
+
+        @if($photos->hasPages())
+            <div class="mt-5 pt-4 border-t border-gray-100">
+                {{ $photos->links() }}
+            </div>
+        @endif
+    </div>
 </div>
 @endsection
 
