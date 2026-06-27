@@ -267,9 +267,9 @@ $placeholders = [
     'values'                => 'Valores: Sustentabilidade, Inovação...',
     'contact_email'         => 'Ex: contato@issm.org.br',
     'contact_phone'         => 'Ex: (21) 99999-9999',
-    'contact_address'       => 'Ex: Serra do Mendanha, RJ',
+    'contact_address'       => "Digite um endereco por linha. Ex:\nRua Lopo Saraiva, 179 - Tanque - Rio de Janeiro - RJ\nPolo de atividades - Estr. do Guandu, 250 - Campo Grande - Rio de Janeiro - RJ",
     'contact_cep'           => 'Ex: 00000-000',
-    'contact_map_embed'     => 'Cole aqui o embed do Google Maps...',
+    'contact_map_embed'     => "Cole um embed ou link do Google Maps por linha. Se deixar vazio, o site gera o mapa pelo endereco.",
     'social_facebook'       => 'Ex: https://facebook.com/issm',
     'social_instagram'      => 'Ex: https://instagram.com/issm',
     'social_twitter'        => 'Ex: https://x.com/issm',
@@ -600,7 +600,8 @@ $firstGroup = $sorted->keys()->first();
                         <div class="cfg-grid">
                             @foreach($others as $s)
                             @php
-                                $wide    = in_array($s->type,['textarea','image']);
+                                $isMultilineContact = in_array($s->key, ['contact_address', 'contact_map_embed']);
+                                $wide    = in_array($s->type,['textarea','image']) || $isMultilineContact;
                                 $fLabel  = $s->label ?? str_replace('_',' ',ucwords($s->key,'_'));
                                 $ph      = $placeholders[$s->key] ?? '';
                                 $isUrl   = str_contains($s->key,'url')||str_contains($s->key,'link')||in_array($s->key,['social_facebook','social_instagram','social_youtube','social_linkedin','social_twitter','social_whatsapp']);
@@ -612,8 +613,8 @@ $firstGroup = $sorted->keys()->first();
                                 <label class="cfg-label">{{ $fLabel }}</label>
 
                                 {{-- TEXTAREA --}}
-                                @if($s->type==='textarea')
-                                <textarea name="{{ $s->key }}" rows="4" class="cfg-textarea wysiwyg" data-height="150" placeholder="{{ $ph }}">{{ $s->value }}</textarea>
+                                @if($s->type==='textarea' || $isMultilineContact)
+                                <textarea name="{{ $s->key }}" rows="{{ $s->key === 'contact_map_embed' ? 6 : 4 }}" class="cfg-textarea {{ $isMultilineContact ? '' : 'wysiwyg' }}" data-height="150" placeholder="{{ $ph }}">{{ $s->value }}</textarea>
 
                                 {{-- IMAGE --}}
                                 @elseif($s->type==='image')

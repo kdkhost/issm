@@ -35,6 +35,49 @@
     box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     border: 8px solid #fff;
 }
+.contact-address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+}
+.contact-address-item {
+    display: block;
+    color: #6b7280;
+    line-height: 1.55;
+}
+.contact-address-item + .contact-address-item {
+    padding-top: 10px;
+    border-top: 1px solid #e5e7eb;
+}
+.contact-map-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+.contact-map-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 10px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+.contact-map-title svg {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    color: #15803d;
+    flex-shrink: 0;
+}
+.contact-map-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    border: 0;
+}
 .grecaptcha-badge { visibility: hidden !important; }
 </style>
 @endpush
@@ -96,7 +139,14 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ cms('contact', 'info', 'visit_title', 'Visite-nos') }}</h3>
-                <p class="text-gray-500 leading-relaxed">{{ $settings['contact_address'] ?: 'Serra do Mendanha, Rio de Janeiro - RJ' }}</p>
+                @php
+                    $contactAddresses = $settings['contact_addresses'] ?: ['Serra do Mendanha, Rio de Janeiro - RJ'];
+                @endphp
+                <p class="contact-address-list">
+                    @foreach($contactAddresses as $address)
+                        <span class="contact-address-item">{{ $address }}</span>
+                    @endforeach
+                </p>
             </div>
 
             {{-- Email --}}
@@ -166,11 +216,24 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
             <div class="bg-white rounded-[32px] p-8 lg:p-12 shadow-xl border border-gray-100 flex flex-col">
                 <h2 class="text-3xl font-black text-gray-900 mb-8">{{ cms('contact', 'form', 'map_title', 'Nossa Localização') }}</h2>
                 
-                @if($settings['contact_map_embed'])
-                <div class="map-container mb-8 flex-grow">
-                    <div style="height: 100%; min-height: 350px;">
-                        {!! html_entity_decode($settings['contact_map_embed']) !!}
-                    </div>
+                @if(! empty($settings['contact_maps']))
+                <div class="contact-map-list mb-8 flex-grow">
+                    @foreach($settings['contact_maps'] as $map)
+                        <div>
+                            <p class="contact-map-title">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>{{ $map['address'] }}</span>
+                            </p>
+                            <div class="map-container">
+                                <iframe
+                                    class="contact-map-frame"
+                                    src="{{ $map['src'] }}"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 @endif
                 
