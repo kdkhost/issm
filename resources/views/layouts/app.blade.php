@@ -310,24 +310,170 @@
     @endif
 
     <!-- Preloader de transição de página -->
-    <div id="page-preloader" style="position:fixed;inset:0;background:#166534;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.35s ease;opacity:0;pointer-events:none;" aria-hidden="true">
+    <div id="page-preloader" aria-hidden="true">
         @php $siteLogo = \App\Models\Setting::get('site_logo'); @endphp
-        @if($siteLogo)
-        <img src="{{ asset('media/' . $siteLogo) }}" alt="ISSM" style="height:70px;width:auto;object-fit:contain;animation:pulse 1.2s ease-in-out infinite alternate;">
-        @else
-        <div style="width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pulse 1.2s ease-in-out infinite alternate;">
-            <span style="color:white;font-weight:900;font-size:18px;">ISSM</span>
-        </div>
-        @endif
-        <div style="margin-top:20px;display:flex;gap:8px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.7);animation:bounce 1.2s ease-in-out infinite;"></div>
-            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.7);animation:bounce 1.2s ease-in-out 0.2s infinite;"></div>
-            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.7);animation:bounce 1.2s ease-in-out 0.4s infinite;"></div>
+        <div class="preloader-shell">
+            <div class="preloader-mark" aria-hidden="true">
+                <span class="preloader-ring"></span>
+                <span class="preloader-ring preloader-ring-2"></span>
+                <span class="preloader-logo">
+                    @if($siteLogo)
+                        <img src="{{ asset('media/' . $siteLogo) }}" alt="ISSM">
+                    @else
+                        <strong>ISSM</strong>
+                    @endif
+                </span>
+            </div>
+            <div class="preloader-copy">
+                <span>Instituto Socioambiental Serra do Mendanha</span>
+                <strong>Carregando experiência</strong>
+            </div>
+            <div class="preloader-progress" aria-hidden="true">
+                <span></span>
+            </div>
         </div>
     </div>
     <style>
-        @@keyframes pulse { from { opacity:0.6; transform:scale(0.97); } to { opacity:1; transform:scale(1.03); } }
-        @@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+        #page-preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 38%, rgba(187, 247, 208, .3), transparent 30%),
+                linear-gradient(135deg, #064e3b 0%, #166534 48%, #0f766e 100%);
+            transition: opacity .35s ease;
+        }
+        #page-preloader::before,
+        #page-preloader::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+        #page-preloader::before {
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            animation: preloaderFloat 6s ease-in-out infinite;
+        }
+        #page-preloader::after {
+            width: 680px;
+            height: 680px;
+            background: radial-gradient(circle, rgba(255,255,255,.08), transparent 64%);
+            animation: preloaderPulse 2.6s ease-in-out infinite;
+        }
+        .preloader-shell {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: min(88vw, 360px);
+            padding: 28px 26px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, .1);
+            box-shadow: 0 24px 80px rgba(6, 78, 59, .42);
+            backdrop-filter: blur(14px);
+        }
+        .preloader-mark {
+            position: relative;
+            width: 116px;
+            height: 116px;
+            display: grid;
+            place-items: center;
+        }
+        .preloader-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, .18);
+            border-top-color: #bbf7d0;
+            border-right-color: #86efac;
+            animation: preloaderSpin 1.25s linear infinite;
+        }
+        .preloader-ring-2 {
+            inset: 12px;
+            border-top-color: transparent;
+            border-left-color: rgba(255,255,255,.55);
+            animation-duration: 1.9s;
+            animation-direction: reverse;
+        }
+        .preloader-logo {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 76px;
+            height: 76px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .94);
+            box-shadow: 0 12px 26px rgba(5, 46, 22, .25);
+            overflow: hidden;
+        }
+        .preloader-logo img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .preloader-logo strong {
+            color: #166534;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: .04em;
+        }
+        .preloader-copy {
+            margin-top: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        .preloader-copy span {
+            display: block;
+            color: rgba(255,255,255,.72);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .preloader-copy strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 18px;
+            font-weight: 900;
+        }
+        .preloader-progress {
+            width: 100%;
+            height: 5px;
+            margin-top: 22px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .18);
+            overflow: hidden;
+        }
+        .preloader-progress span {
+            display: block;
+            width: 48%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #bbf7d0, #fff, #86efac);
+            animation: preloaderProgress 1.15s ease-in-out infinite;
+        }
+        @@keyframes preloaderSpin { to { transform: rotate(360deg); } }
+        @@keyframes preloaderProgress { 0% { transform: translateX(-110%); } 100% { transform: translateX(230%); } }
+        @@keyframes preloaderPulse { 0%,100% { opacity:.58; transform:scale(.96); } 50% { opacity:1; transform:scale(1.04); } }
+        @@keyframes preloaderFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
+        @media (prefers-reduced-motion: reduce) {
+            .preloader-ring,
+            .preloader-progress span,
+            #page-preloader::before,
+            #page-preloader::after {
+                animation: none;
+            }
+        }
         #back-to-top { display:none; }
         #back-to-top.show { display:flex; }
     </style>

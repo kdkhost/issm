@@ -22,6 +22,7 @@
 - Fotos do album na galeria publica passam a carregar e aparecer gradualmente por rolagem com lazy loading via IntersectionObserver
 - Paginacao visual da galeria publica removida e substituida por carregamento automatico ao rolar
 - Secao de fotos do album no admin reformulada em cards visuais com miniatura, metadados, status e acoes agrupadas
+- Preloader publico reformulado com visual premium, marca central, aneis animados e barra de progresso
 
 ## [1.2.0] - 2026-06-09
 
