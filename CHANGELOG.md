@@ -12,6 +12,7 @@
 - Telas administrativas da galeria padronizadas com o layout e os campos dos demais CRUDs
 - Corrigido hover e alinhamento dos checkboxes de projetos vinculados no tema dark
 - Dropzone de fotos iniciais do album agora permite selecionar ou arrastar multiplas imagens de uma so vez
+- Listagem administrativa da galeria remodelada com tabela, resumo, detalhes expansíveis e ações padronizadas
 
 ## [1.2.0] - 2026-06-09
 

@@ -17,12 +17,23 @@ class GalleryController extends Controller
     public function index()
     {
         $albums = GalleryAlbum::withCount(['photos', 'activePhotos', 'projects'])
-            ->with(['photos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')])
+            ->with([
+                'photos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+                'activePhotos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+                'projects:id,title',
+            ])
             ->orderBy('sort_order')
             ->orderByDesc('event_date')
             ->paginate(12);
 
-        return view('admin.galeria.index', compact('albums'));
+        $stats = [
+            'albums' => GalleryAlbum::count(),
+            'active_albums' => GalleryAlbum::where('active', true)->count(),
+            'photos' => GalleryPhoto::count(),
+            'active_photos' => GalleryPhoto::where('active', true)->count(),
+        ];
+
+        return view('admin.galeria.index', compact('albums', 'stats'));
     }
 
     public function create()
