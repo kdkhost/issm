@@ -40,8 +40,12 @@
 .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:1024px){.gal-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.gal-grid{grid-template-columns:repeat(2,1fr);gap:8px}}
-.gal-card{position:relative;overflow:hidden;border-radius:12px;background:#f3f4f6;aspect-ratio:4/3;cursor:zoom-in;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.gal-card{position:relative;overflow:hidden;border-radius:12px;background:#f3f4f6;aspect-ratio:4/3;cursor:zoom-in;box-shadow:0 1px 4px rgba(0,0,0,.06);content-visibility:auto;contain-intrinsic-size:220px 165px}
+.gal-card[data-lazy-card]{opacity:0;transform:translateY(18px);transition:opacity .42s ease,transform .42s ease;transition-delay:var(--reveal-delay,0ms);will-change:opacity,transform}
+.gal-card[data-lazy-card].is-visible{opacity:1;transform:translateY(0)}
 .gal-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.gal-card img[data-gallery-lazy-image]{opacity:0;filter:blur(8px);transform:scale(1.02);transition:opacity .35s ease,filter .35s ease,transform .35s ease}
+.gal-card img[data-gallery-lazy-image].is-loaded{opacity:1;filter:blur(0);transform:scale(1)}
 .gal-card:hover img{transform:scale(1.08)}
 .gal-card .gal-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 12px}
 .gal-card:hover .gal-overlay{opacity:1}
@@ -68,6 +72,10 @@
 .gal-empty-icon svg{width:40px;height:40px;color:#9ca3af}
 .gal-empty h3{font-size:18px;font-weight:700;color:#9ca3af;margin-bottom:4px}
 .gal-empty p{font-size:14px;color:#9ca3af}
+@media(prefers-reduced-motion:reduce){
+    .gal-card[data-lazy-card]{opacity:1;transform:none;transition:none}
+    .gal-card img[data-gallery-lazy-image]{transition:none;filter:none;transform:none}
+}
 </style>
 @endpush
 
@@ -187,9 +195,18 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                             <div class="gal-grid">
                                 @foreach($photos as $photo)
                                     <div class="gal-card"
+                                         data-lazy-card
                                          data-src="{{ asset('media/' . $photo->image) }}"
                                          data-caption="{{ $photo->title }} - {{ $album->title }}">
-                                        <img src="{{ asset('media/' . $photo->image) }}" alt="{{ $photo->title }}" loading="lazy" decoding="async" width="{{ $photo->width ?: 800 }}" height="{{ $photo->height ?: 600 }}">
+                                        <img
+                                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                                            data-src="{{ asset('media/' . $photo->image) }}"
+                                            data-gallery-lazy-image
+                                            alt="{{ $photo->title }}"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="{{ $photo->width ?: 800 }}"
+                                            height="{{ $photo->height ?: 600 }}">
                                         <div class="gal-overlay">
                                             <span class="gal-overlay-badge">Evento</span>
                                             <div>
@@ -293,12 +310,72 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 @push("scripts")
 <script>
 (function(){
+    var lazyCards = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-lazy-card]'));
     var items = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-src]'));
     var lb = document.getElementById('lightbox');
     var img = document.getElementById('lb-img');
     var cap = document.getElementById('lb-caption');
     var ctr = document.getElementById('lb-counter');
     var cur = 0;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function loadCardImage(card) {
+        var image = card.querySelector('[data-gallery-lazy-image]');
+        if (!image || image.dataset.loaded === '1') return;
+
+        var source = image.dataset.src;
+        if (!source) return;
+
+        image.addEventListener('load', function() {
+            image.classList.add('is-loaded');
+        }, { once: true });
+
+        image.src = source;
+        image.dataset.loaded = '1';
+
+        if (image.complete) {
+            image.classList.add('is-loaded');
+        }
+    }
+
+    function revealCard(card) {
+        loadCardImage(card);
+        card.classList.add('is-visible');
+    }
+
+    function resetReveal(card) {
+        if (!reduceMotion) {
+            card.classList.remove('is-visible');
+        }
+    }
+
+    if (lazyCards.length) {
+        lazyCards.forEach(function(card, index) {
+            card.style.setProperty('--reveal-delay', ((index % 8) * 45) + 'ms');
+        });
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        revealCard(entry.target);
+                    } else {
+                        resetReveal(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '140px 0px 80px 0px',
+                threshold: 0.12
+            });
+
+            lazyCards.forEach(function(card) {
+                observer.observe(card);
+            });
+        } else {
+            lazyCards.forEach(revealCard);
+        }
+    }
 
     if (!items.length || !lb || !img) return;
 

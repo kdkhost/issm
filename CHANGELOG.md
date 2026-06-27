@@ -19,6 +19,7 @@
 - Galeria publica passa a exibir pastas de albuns na raiz, carregando fotos somente ao abrir um album
 - Capa configurada no album pelo administrativo passa a ser priorizada nas pastas da galeria publica
 - Listagem administrativa da galeria passa a usar o mesmo modelo visual de pastas por album
+- Fotos do album na galeria publica passam a carregar e aparecer gradualmente por rolagem com lazy loading via IntersectionObserver
 
 ## [1.2.0] - 2026-06-09
 
