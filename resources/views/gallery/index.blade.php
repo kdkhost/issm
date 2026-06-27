@@ -52,7 +52,11 @@
 .gal-overlay-title{color:#fff;font-size:.82rem;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .gal-overlay-album{color:rgba(255,255,255,.75);font-size:.72rem;margin-top:2px}
 .gal-overlay-badge{position:absolute;top:10px;right:10px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;background:rgba(21,128,61,.85)}
-.gal-pagination{margin-top:22px}
+.gal-auto-loader{min-height:54px;margin-top:22px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px;font-weight:700}
+.gal-auto-loader::before{content:'';width:18px;height:18px;border-radius:999px;border:2px solid #d1d5db;border-top-color:#15803d;margin-right:9px;animation:galSpin .8s linear infinite}
+.gal-auto-loader.is-idle{opacity:0;pointer-events:none}
+.gal-auto-loader.is-complete{display:none}
+@@keyframes galSpin{to{transform:rotate(360deg)}}
 #lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.93);align-items:center;justify-content:center}
 #lightbox.open{display:flex}
 #lightbox img#lb-img{max-width:90vw;max-height:85vh;border-radius:10px;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.7);animation:lbIn .2s ease}
@@ -221,8 +225,14 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                     @endforeach
                 </div>
 
-                @if($photos->hasPages())
-                    <div class="gal-pagination">{{ $photos->links() }}</div>
+                @if($photos->hasMorePages())
+                    <div class="gal-auto-loader is-idle"
+                         data-gallery-autoload
+                         data-autoload-type="photos"
+                         data-next-url="{{ $photos->nextPageUrl() }}"
+                         aria-live="polite">
+                        Carregando mais fotos...
+                    </div>
                 @endif
             @else
                 <p class="gal-results-note">
@@ -280,8 +290,14 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                     @endforeach
                 </div>
 
-                @if(method_exists($albums, "hasPages") && $albums->hasPages())
-                    <div class="gal-pagination">{{ $albums->links() }}</div>
+                @if(method_exists($albums, "hasMorePages") && $albums->hasMorePages())
+                    <div class="gal-auto-loader is-idle"
+                         data-gallery-autoload
+                         data-autoload-type="folders"
+                         data-next-url="{{ $albums->nextPageUrl() }}"
+                         aria-live="polite">
+                        Carregando mais álbuns...
+                    </div>
                 @endif
             @endif
         @else
@@ -310,14 +326,23 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 @push("scripts")
 <script>
 (function(){
-    var lazyCards = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-lazy-card]'));
-    var items = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-src]'));
+    var galleryGrid = document.getElementById('gallery-grid');
+    var folderGrid = document.querySelector('.gal-folder-grid');
+    var loader = document.querySelector('[data-gallery-autoload]');
+    var items = [];
     var lb = document.getElementById('lightbox');
     var img = document.getElementById('lb-img');
     var cap = document.getElementById('lb-caption');
     var ctr = document.getElementById('lb-counter');
     var cur = 0;
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var lazyObserver = null;
+    var autoObserver = null;
+    var loadingNext = false;
+
+    function refreshItems() {
+        items = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-src]'));
+    }
 
     function loadCardImage(card) {
         var image = card.querySelector('[data-gallery-lazy-image]');
@@ -349,13 +374,9 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         }
     }
 
-    if (lazyCards.length) {
-        lazyCards.forEach(function(card, index) {
-            card.style.setProperty('--reveal-delay', ((index % 8) * 45) + 'ms');
-        });
-
-        if ('IntersectionObserver' in window) {
-            var observer = new IntersectionObserver(function(entries) {
+    function ensureLazyObserver() {
+        if (lazyObserver || !('IntersectionObserver' in window)) return;
+        lazyObserver = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
                         revealCard(entry.target);
@@ -368,16 +389,111 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                 rootMargin: '140px 0px 80px 0px',
                 threshold: 0.12
             });
+    }
 
-            lazyCards.forEach(function(card) {
-                observer.observe(card);
-            });
+    function observeLazyCard(card, index) {
+        if (!card || card.dataset.lazyObserved === '1') return;
+        card.dataset.lazyObserved = '1';
+        card.style.setProperty('--reveal-delay', ((index % 8) * 45) + 'ms');
+
+        ensureLazyObserver();
+        if (lazyObserver) {
+            lazyObserver.observe(card);
         } else {
-            lazyCards.forEach(revealCard);
+            revealCard(card);
         }
     }
 
-    if (!items.length || !lb || !img) return;
+    function observeLazyCards(container) {
+        Array.from((container || document).querySelectorAll('#gallery-grid .gal-card[data-lazy-card], .gal-card[data-lazy-card]'))
+            .forEach(function(card, index) {
+                observeLazyCard(card, items.length + index);
+            });
+    }
+
+    function loadNextBatch() {
+        if (!loader || loadingNext || !loader.dataset.nextUrl) return;
+
+        loadingNext = true;
+        loader.classList.remove('is-idle');
+
+        fetch(loader.dataset.nextUrl, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin'
+        })
+        .then(function(response) {
+            if (!response.ok) throw new Error('Não foi possível carregar mais itens.');
+            return response.text();
+        })
+        .then(function(html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var type = loader.dataset.autoloadType;
+
+            if (type === 'photos') {
+                var targetGrid = document.querySelector('#gallery-grid .gal-grid');
+                var newCards = Array.from(doc.querySelectorAll('#gallery-grid .gal-card[data-src]'));
+                newCards.forEach(function(card) {
+                    targetGrid && targetGrid.appendChild(card);
+                });
+                refreshItems();
+                newCards.forEach(function(card, index) {
+                    observeLazyCard(card, items.length + index);
+                });
+            } else if (type === 'folders') {
+                var newFolders = Array.from(doc.querySelectorAll('.gal-folder-grid .gal-folder'));
+                newFolders.forEach(function(folder) {
+                    folderGrid && folderGrid.appendChild(folder);
+                });
+            }
+
+            var nextLoader = doc.querySelector('[data-gallery-autoload]');
+            if (nextLoader && nextLoader.dataset.nextUrl) {
+                loader.dataset.nextUrl = nextLoader.dataset.nextUrl;
+                loader.classList.add('is-idle');
+            } else {
+                loader.dataset.nextUrl = '';
+                loader.classList.add('is-complete');
+                if (autoObserver) autoObserver.disconnect();
+            }
+        })
+        .catch(function() {
+            loader.classList.add('is-idle');
+        })
+        .finally(function() {
+            loadingNext = false;
+        });
+    }
+
+    refreshItems();
+    observeLazyCards(document);
+
+    if (loader && loader.dataset.nextUrl) {
+        if ('IntersectionObserver' in window) {
+            autoObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        loadNextBatch();
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '700px 0px',
+                threshold: 0
+            });
+            autoObserver.observe(loader);
+        } else {
+            loader.classList.remove('is-idle');
+            var fallbackButton = document.createElement('button');
+            fallbackButton.type = 'button';
+            fallbackButton.className = 'gal-chip';
+            fallbackButton.textContent = 'Carregar mais';
+            fallbackButton.addEventListener('click', loadNextBatch);
+            loader.innerHTML = '';
+            loader.appendChild(fallbackButton);
+        }
+    }
+
+    if (!items.length || !lb || !img || !galleryGrid) return;
 
     function open(idx) {
         cur = idx;
@@ -407,7 +523,13 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         });
     }
 
-    items.forEach(function(el, i){ el.addEventListener('click', function(){ open(i); }); });
+    galleryGrid.addEventListener('click', function(event) {
+        var card = event.target.closest('.gal-card[data-src]');
+        if (!card) return;
+        refreshItems();
+        var index = items.indexOf(card);
+        if (index >= 0) open(index);
+    });
     document.getElementById('lb-close').addEventListener('click', close);
     document.getElementById('lb-prev').addEventListener('click', function(){ nav(-1); });
     document.getElementById('lb-next').addEventListener('click', function(){ nav(1); });
