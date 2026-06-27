@@ -16,10 +16,17 @@ class GalleryController extends Controller
 {
     public function index()
     {
+        $coverPhotoSubquery = GalleryPhoto::query()
+            ->select('image')
+            ->whereColumn('gallery_album_id', 'gallery_albums.id')
+            ->where('active', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->limit(1);
+
         $albums = GalleryAlbum::withCount(['photos', 'activePhotos', 'projects'])
+            ->addSelect(['cover_photo_image' => $coverPhotoSubquery])
             ->with([
-                'photos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
-                'activePhotos' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
                 'projects:id,title',
             ])
             ->orderBy('sort_order')

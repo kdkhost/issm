@@ -12,30 +12,175 @@
         box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
     }
 
-    .gallery-thumb {
-        width: 76px;
-        height: 56px;
-        border-radius: 10px;
-        object-fit: cover;
-        border: 1px solid #e5e7eb;
-        background: #f3f4f6;
+    .gallery-folder-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
     }
 
-    .gallery-thumb-empty {
-        width: 76px;
-        height: 56px;
-        border-radius: 10px;
-        border: 1px dashed #d1d5db;
-        background: #f9fafb;
-        color: #9ca3af;
+    .gallery-folder {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, .05);
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .gallery-folder:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, .12);
+        border-color: #bbf7d0;
+    }
+
+    .gallery-folder-cover {
+        position: relative;
+        height: 190px;
+        background: #e5e7eb;
+        overflow: hidden;
+    }
+
+    .gallery-folder-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .35s ease;
+    }
+
+    .gallery-folder:hover .gallery-folder-cover img {
+        transform: scale(1.04);
+    }
+
+    .gallery-folder-empty {
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+        color: #15803d;
+    }
+
+    .gallery-folder-empty svg {
+        width: 58px;
+        height: 58px;
+    }
+
+    .gallery-folder-label,
+    .gallery-folder-status {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        padding: 6px 11px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .gallery-folder-label {
+        left: 12px;
+        top: 12px;
+        background: rgba(17, 24, 39, .78);
+        color: #fff;
+    }
+
+    .gallery-folder-status {
+        right: 12px;
+        top: 12px;
+    }
+
+    .gallery-folder-count {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background: #15803d;
+        color: #fff;
+        border-radius: 999px;
+        padding: 6px 11px;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 5px 16px rgba(21, 128, 61, .24);
+    }
+
+    .gallery-folder-body {
+        padding: 16px;
+    }
+
+    .gallery-folder-title {
+        margin: 0;
+        color: #111827;
+        font-size: 1rem;
+        font-weight: 900;
+        line-height: 1.25;
+    }
+
+    .gallery-folder-meta {
+        color: #6b7280;
+        font-size: .82rem;
+        margin-top: 6px;
+    }
+
+    .gallery-folder-projects {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 12px;
+        min-height: 24px;
+    }
+
+    .gallery-folder-project {
+        display: inline-flex;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .gallery-folder-info {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .gallery-folder-info-item {
+        border-radius: 10px;
+        background: #f9fafb;
+        padding: 9px;
+    }
+
+    .gallery-folder-info-item span {
+        display: block;
+        color: #6b7280;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .gallery-folder-info-item strong {
+        display: block;
+        color: #111827;
+        font-size: 14px;
+        margin-top: 2px;
+    }
+
+    .gallery-folder-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid #e5e7eb;
     }
 
     .gallery-toggle-btn {
         font-size: 0.875rem;
-        font-weight: 600;
+        font-weight: 700;
         padding: 0 0.25rem;
     }
 
@@ -47,14 +192,43 @@
         color: #15803d;
     }
 
+    @media (max-width: 1180px) {
+        .gallery-folder-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 720px) {
+        .gallery-folder-grid,
+        .gallery-folder-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
     [data-theme="dark"] .gallery-stat-card,
-    [data-theme="dark"] .gallery-thumb-empty {
+    [data-theme="dark"] .gallery-folder,
+    [data-theme="dark"] .gallery-folder-info-item {
         background: #1f2937;
         border-color: #374151;
     }
 
-    [data-theme="dark"] .gallery-thumb {
+    [data-theme="dark"] .gallery-folder-title,
+    [data-theme="dark"] .gallery-folder-info-item strong {
+        color: #f9fafb;
+    }
+
+    [data-theme="dark"] .gallery-folder-meta,
+    [data-theme="dark"] .gallery-folder-info-item span {
+        color: #9ca3af;
+    }
+
+    [data-theme="dark"] .gallery-folder-actions {
         border-color: #374151;
+    }
+
+    [data-theme="dark"] .gallery-folder-empty {
+        background: rgba(34, 197, 94, .08);
+        color: #4ade80;
     }
 
     [data-theme="dark"] .gallery-toggle-btn.is-active {
@@ -74,8 +248,8 @@
 
 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
-        <h2 class="text-xl font-bold text-gray-800">Álbuns da galeria</h2>
-        <p class="text-sm text-gray-500 mt-1">Organize os álbuns por evento, projetos vinculados e fotos exibidas no site.</p>
+        <h2 class="text-xl font-bold text-gray-800">Pastas de álbuns</h2>
+        <p class="text-sm text-gray-500 mt-1">Mesma organização da galeria pública, com controles administrativos por álbum.</p>
     </div>
     <a href="{{ route("admin.galeria.create") }}" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 inline-flex items-center justify-center gap-2 font-semibold text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -102,114 +276,91 @@
     </div>
 </div>
 
-<div class="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div class="overflow-x-auto">
-        <table class="w-full" style="min-width: 920px;">
-            <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Capa</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Álbum / evento</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fotos</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Projetos</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Dimensão ideal</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-                @forelse($albums as $album)
-                    @php
-                        $cover = $album->coverImagePath();
-                        $eventDate = optional($album->event_date)->format("d/m/Y");
-                        $projects = $album->projects->pluck("title");
-                    @endphp
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-4 py-3">
-                            @if($cover)
-                                <img src="{{ asset("media/" . $cover) }}" alt="{{ $album->title }}" class="gallery-thumb">
-                            @else
-                                <div class="gallery-thumb-empty" aria-label="Álbum sem capa">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                </div>
-                            @endif
-                        </td>
-                        <td class="px-4 py-3">
-                            <p class="font-semibold text-gray-900 text-sm">{{ Str::limit($album->title, 62) }}</p>
-                            <p class="text-xs text-gray-500 mt-1">
-                                {{ $eventDate ?: "Data não informada" }}
-                                @if($album->event_location)
-                                    <span class="mx-1">•</span>{{ Str::limit($album->event_location, 42) }}
-                                @endif
-                            </p>
-                        </td>
-                        <td class="px-4 py-3 text-sm">
-                            <p class="font-semibold text-gray-900">{{ $formatNumber($album->photos_count) }}</p>
-                            <p class="text-xs text-green-700">{{ $formatNumber($album->active_photos_count) }} ativas</p>
-                        </td>
-                        <td class="px-4 py-3 text-sm">
-                            <p class="font-semibold text-gray-900">{{ $formatNumber($album->projects_count) }}</p>
-                            <p class="text-xs text-gray-500">{{ $album->projects_count === 1 ? "vinculado" : "vinculados" }}</p>
-                        </td>
-                        <td class="px-4 py-3 text-sm text-gray-600 hidden lg:table-cell">
-                            {{ $formatNumber($album->ideal_image_width) }} x {{ $formatNumber($album->ideal_image_height) }} px
-                        </td>
-                        <td class="px-4 py-3">
-                            <span data-album-status="{{ $album->id }}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $album->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
-                                {{ $album->active ? "Ativo" : "Inativo" }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                            <div class="flex items-center gap-1">
-                                <button type="button" data-dt-toggle class="dt-toggle p-1 rounded text-gray-400 hover:text-green-700 hover:bg-green-50 transition-colors" title="Ver detalhes ocultos">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                                </button>
-                                <a href="{{ route("admin.galeria.edit", $album) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-1">Editar</a>
-                                <button type="button" class="gallery-toggle-btn {{ $album->active ? "is-active" : "is-inactive" }}" data-toggle-album data-url="{{ route("admin.galeria.toggle", $album) }}" data-id="{{ $album->id }}">
-                                    {{ $album->active ? "Desativar" : "Ativar" }}
-                                </button>
-                                <form method="POST" action="{{ route("admin.galeria.destroy", $album) }}" class="inline">
-                                    @csrf
-                                    @method("DELETE")
-                                    <button type="submit" data-confirm="Excluir este álbum e todas as fotos?" class="text-red-600 hover:text-red-800 text-sm font-medium px-1">Excluir</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="dt-detail hidden">
-                        <td colspan="7" class="px-4 py-4 bg-green-50 border-b border-green-100">
-                            <dl class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-3 text-sm">
-                                <div>
-                                    <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Descrição</dt>
-                                    <dd class="text-gray-800 mt-0.5">{{ $album->description ? Str::limit($album->description, 150) : "-" }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Projetos vinculados</dt>
-                                    <dd class="text-gray-800 mt-0.5">{{ $projects->isNotEmpty() ? $projects->join(", ") : "-" }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Ordem</dt>
-                                    <dd class="text-gray-800 mt-0.5">{{ $album->sort_order ?? 0 }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Criado em</dt>
-                                    <dd class="text-gray-800 mt-0.5">{{ optional($album->created_at)->format("d/m/Y H:i") ?? "-" }}</dd>
-                                </div>
-                            </dl>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="px-6 py-12 text-center text-gray-400">
-                            Nenhum álbum cadastrado na galeria.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+@if($albums->count())
+    <div class="gallery-folder-grid">
+        @foreach($albums as $album)
+            @php
+                $cover = $album->cover_image ?: $album->cover_photo_image;
+                $eventDate = optional($album->event_date)->format("d/m/Y");
+                $dimension = $formatNumber($album->ideal_image_width) . " x " . $formatNumber($album->ideal_image_height);
+            @endphp
+            <article class="gallery-folder">
+                <div class="gallery-folder-cover">
+                    @if($cover)
+                        <img src="{{ asset("media/" . $cover) }}" alt="{{ $album->title }}" loading="lazy" decoding="async">
+                    @else
+                        <div class="gallery-folder-empty">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                        </div>
+                    @endif
+                    <span class="gallery-folder-label">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                        Pasta
+                    </span>
+                    <span data-album-status="{{ $album->id }}" class="gallery-folder-status {{ $album->active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600" }}">
+                        {{ $album->active ? "Ativo" : "Inativo" }}
+                    </span>
+                    <span class="gallery-folder-count">{{ $formatNumber($album->active_photos_count) }} ativa{{ $album->active_photos_count != 1 ? "s" : "" }}</span>
+                </div>
+
+                <div class="gallery-folder-body">
+                    <h3 class="gallery-folder-title">{{ $album->title }}</h3>
+                    <p class="gallery-folder-meta">
+                        {{ $eventDate ?: "Data não informada" }}
+                        @if($album->event_location)
+                            <span class="mx-1">•</span>{{ Str::limit($album->event_location, 48) }}
+                        @endif
+                    </p>
+
+                    <div class="gallery-folder-projects">
+                        @forelse($album->projects->take(3) as $project)
+                            <span class="gallery-folder-project">{{ $project->title }}</span>
+                        @empty
+                            <span class="text-xs text-gray-500">Nenhum projeto vinculado</span>
+                        @endforelse
+                        @if($album->projects_count > 3)
+                            <span class="gallery-folder-project">+{{ $album->projects_count - 3 }}</span>
+                        @endif
+                    </div>
+
+                    <div class="gallery-folder-info">
+                        <div class="gallery-folder-info-item">
+                            <span>Fotos</span>
+                            <strong>{{ $formatNumber($album->photos_count) }}</strong>
+                        </div>
+                        <div class="gallery-folder-info-item">
+                            <span>Projetos</span>
+                            <strong>{{ $formatNumber($album->projects_count) }}</strong>
+                        </div>
+                        <div class="gallery-folder-info-item">
+                            <span>Dimensão</span>
+                            <strong>{{ $dimension }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="gallery-folder-actions">
+                        <a href="{{ route("admin.galeria.edit", $album) }}" class="text-blue-600 hover:text-blue-800 text-sm font-bold">Editar</a>
+                        <a href="{{ route("gallery.index", ["album" => $album->slug]) }}" target="_blank" class="text-green-700 hover:text-green-800 text-sm font-bold">Ver no site</a>
+                        <button type="button" class="gallery-toggle-btn {{ $album->active ? "is-active" : "is-inactive" }}" data-toggle-album data-url="{{ route("admin.galeria.toggle", $album) }}" data-id="{{ $album->id }}">
+                            {{ $album->active ? "Desativar" : "Ativar" }}
+                        </button>
+                        <form method="POST" action="{{ route("admin.galeria.destroy", $album) }}" class="inline">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" data-confirm="Excluir este álbum e todas as fotos?" class="text-red-600 hover:text-red-800 text-sm font-bold">Excluir</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        @endforeach
     </div>
 
-    <div class="p-4 border-t border-gray-100">{{ $albums->links() }}</div>
-</div>
+    <div class="mt-6">{{ $albums->links() }}</div>
+@else
+    <div class="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">
+        Nenhum álbum cadastrado na galeria.
+    </div>
+@endif
 @endsection
 
 @push("scripts")
@@ -229,7 +380,7 @@
 
     function applyStatus(status, active) {
         status.textContent = active ? 'Ativo' : 'Inativo';
-        status.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ' + (active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600');
+        status.className = 'gallery-folder-status ' + (active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600');
     }
 
     function applyButton(button, active) {

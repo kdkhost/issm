@@ -18,6 +18,7 @@
 - Edicao do album no admin reorganizada em secoes de dados, upload, resumo e fotos compactas
 - Galeria publica passa a exibir pastas de albuns na raiz, carregando fotos somente ao abrir um album
 - Capa configurada no album pelo administrativo passa a ser priorizada nas pastas da galeria publica
+- Listagem administrativa da galeria passa a usar o mesmo modelo visual de pastas por album
 
 ## [1.2.0] - 2026-06-09
 
