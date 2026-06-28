@@ -212,7 +212,7 @@
         </div>
 
         @forelse($supportRequests as $support)
-            <div class="support-row p-5">
+            <div id="apoio-{{ $support->id }}" class="support-row p-5">
                 <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-2 mb-2">

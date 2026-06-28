@@ -502,11 +502,11 @@
                         Manutenção Ativa
                     </span>
                     @endif
-                    @php $newContactCount = \App\Models\Contact::new()->count(); @endphp
+                    @php $adminNotificationCount = app(\App\Services\Admin\AdminNotificationCenter::class)->unreadCount(); @endphp
                     <div class="admin-bell-wrap" id="admin-contact-bell-wrap">
-                        <button type="button" id="admin-contact-bell-btn" class="admin-bell-btn {{ $newContactCount > 0 ? 'has-new' : '' }}" aria-label="Notificações de contato" data-tooltip="Mensagens de contato" data-tip-pos="left">
+                        <button type="button" id="admin-contact-bell-btn" class="admin-bell-btn {{ $adminNotificationCount > 0 ? 'has-new' : '' }}" aria-label="Notificacoes do painel" data-tooltip="Notificacoes" data-tip-pos="left">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0h6z"/></svg>
-                            <span id="admin-contact-bell-badge" class="admin-bell-badge" style="{{ $newContactCount > 0 ? 'display:block;' : '' }}">{{ $newContactCount > 99 ? '99+' : $newContactCount }}</span>
+                            <span id="admin-contact-bell-badge" class="admin-bell-badge" style="{{ $adminNotificationCount > 0 ? 'display:block;' : '' }}">{{ $adminNotificationCount > 99 ? '99+' : $adminNotificationCount }}</span>
                         </button>
                     </div>
                     <a href="{{ route('home') }}" target="_blank" class="text-sm text-green-700 hover:text-green-900 flex items-center gap-1" data-tooltip="Abrir site em nova aba" data-tip-pos="left">
@@ -559,11 +559,11 @@
 
         <div id="admin-contact-bell-panel" class="admin-bell-panel" aria-live="polite">
             <div class="admin-bell-head">
-                <p class="admin-bell-title">Mensagens de contato</p>
-                <a href="{{ route('admin.contatos.index') }}" class="admin-bell-link">Ver todas</a>
+                <p class="admin-bell-title">Notificacoes do painel</p>
+                <a href="{{ route('admin.dashboard') }}" class="admin-bell-link">Dashboard</a>
             </div>
             <div id="admin-contact-bell-list" class="admin-bell-list">
-                <div class="admin-bell-empty">Carregando mensagens...</div>
+                <div class="admin-bell-empty">Carregando notificacoes...</div>
             </div>
         </div>
 
@@ -786,15 +786,15 @@ function showToast(message, type) {
 
     function renderList(items) {
         if (!items || !items.length) {
-            list.innerHTML = '<div class="admin-bell-empty">Nenhuma mensagem nova.</div>';
+            list.innerHTML = '<div class="admin-bell-empty">Nenhuma notificacao pendente.</div>';
             return;
         }
 
         list.innerHTML = items.map(function(item) {
             return '<a class="admin-bell-item" href="' + item.url + '">' +
-                '<p class="admin-bell-name">' + escapeHtml(item.name) + '</p>' +
+                '<p class="admin-bell-name">' + escapeHtml(item.type) + ' - ' + escapeHtml(item.name) + '</p>' +
                 '<p class="admin-bell-subject">' + escapeHtml(item.subject) + '</p>' +
-                '<div class="admin-bell-time">' + escapeHtml(item.time) + ' · ' + escapeHtml(item.email) + '</div>' +
+                '<div class="admin-bell-time">' + escapeHtml(item.time) + ' - ' + escapeHtml(item.detail) + '</div>' +
             '</a>';
         }).join('');
     }
@@ -830,7 +830,7 @@ function showToast(message, type) {
                 renderList(data.items || []);
 
                 if (allowAlert && count > lastCount) {
-                    showToast('Nova mensagem de contato recebida.', 'info');
+                    showToast('Nova notificacao recebida no painel.', 'info');
                     if (data.sound_enabled) playContactSound();
                 }
 

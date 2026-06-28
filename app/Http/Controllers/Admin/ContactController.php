@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Setting;
+use App\Services\Admin\AdminNotificationCenter;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -14,24 +16,12 @@ class ContactController extends Controller
         return view('admin.contatos.index', compact('contacts'));
     }
 
-    public function notifications()
+    public function notifications(AdminNotificationCenter $notificationCenter)
     {
-        $contacts = Contact::new()
-            ->latest()
-            ->take(5)
-            ->get(['id', 'name', 'email', 'subject', 'created_at']);
-
         return response()->json([
-            'count' => Contact::new()->count(),
-            'sound_enabled' => \App\Models\Setting::get('contact_notification_sound_enabled', '1') === '1',
-            'items' => $contacts->map(fn (Contact $contact) => [
-                'id' => $contact->id,
-                'name' => $contact->name,
-                'subject' => $contact->subject,
-                'email' => $contact->email,
-                'time' => optional($contact->created_at)->format('d/m/Y H:i'),
-                'url' => route('admin.contatos.show', $contact),
-            ])->values(),
+            'count' => $notificationCenter->unreadCount(),
+            'sound_enabled' => Setting::get('contact_notification_sound_enabled', '1') === '1',
+            'items' => $notificationCenter->latest(),
         ]);
     }
 

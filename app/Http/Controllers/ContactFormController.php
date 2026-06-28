@@ -4,25 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Setting;
-use App\Mail\ContactSubmittedMail;
+use App\Services\Admin\AdminNotificationMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class ContactFormController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, AdminNotificationMailer $notificationMailer)
     {
         $rules = [
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
-            'phone'   => 'nullable|string|max:20',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:255',
             'message' => 'required|string|min:10',
         ];
 
-        // Valida o CAPTCHA configurado: Cloudflare Turnstile ou Google reCAPTCHA
         $turnstileSecret = Setting::get('turnstile_secret_key');
         $recaptchaSecret = Setting::get('recaptcha_secret_key');
 
@@ -34,26 +31,23 @@ class ContactFormController extends Controller
 
         $validated = $request->validate($rules);
 
-        // Cloudflare Turnstile verification
         if ($turnstileSecret && $request->filled('cf-turnstile-response')) {
             $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                'secret'   => $turnstileSecret,
+                'secret' => $turnstileSecret,
                 'response' => $request->input('cf-turnstile-response'),
             ]);
-            $result = $response->json();
 
-            if (empty($result['success'])) {
+            if (empty($response->json('success'))) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Verificação de segurança falhou. Tente novamente.',
+                    'message' => 'Verificacao de seguranca falhou. Tente novamente.',
                 ], 422);
             }
         }
 
-        // Google reCAPTCHA v3 verification (fallback)
-        if (!$turnstileSecret && $recaptchaSecret && $request->filled('g-recaptcha-response')) {
+        if (! $turnstileSecret && $recaptchaSecret && $request->filled('g-recaptcha-response')) {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret'   => $recaptchaSecret,
+                'secret' => $recaptchaSecret,
                 'response' => $request->input('g-recaptcha-response'),
             ]);
             $result = $response->json();
@@ -61,65 +55,36 @@ class ContactFormController extends Controller
             if (empty($result['success']) || ($result['score'] ?? 0) < 0.5) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Verificação de segurança falhou. Tente novamente.',
+                    'message' => 'Verificacao de seguranca falhou. Tente novamente.',
                 ], 422);
             }
         }
 
         $contact = Contact::create([
-            'name'    => $validated['name'],
-            'email'   => $validated['email'],
-            'phone'   => $validated['phone'] ?? null,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
             'subject' => $validated['subject'],
             'message' => $validated['message'],
         ]);
 
-        $this->notifyAdministrators($contact);
+        $notificationMailer->send(
+            'Contato',
+            'Nova mensagem de contato',
+            'Uma nova mensagem foi registrada pelo formulario de contato do site.',
+            route('admin.contatos.show', $contact),
+            [
+                'Nome' => $contact->name,
+                'E-mail' => $contact->email,
+                'Telefone' => $contact->phone,
+                'Assunto' => $contact->subject,
+                'Data' => optional($contact->created_at)->format('d/m/Y H:i'),
+            ]
+        );
 
         return response()->json([
             'success' => true,
             'message' => 'Mensagem enviada com sucesso! Entraremos em contato em breve.',
         ], 200);
-    }
-
-    private function notifyAdministrators(Contact $contact): void
-    {
-        if (Setting::get('contact_notification_email_enabled', '1') !== '1') {
-            return;
-        }
-
-        $to = trim((string) Setting::get('contact_notification_to', ''))
-            ?: trim((string) Setting::get('contact_email', ''));
-
-        if (! filter_var($to, FILTER_VALIDATE_EMAIL)) {
-            return;
-        }
-
-        $bcc = $this->emailList(Setting::get('contact_notification_bcc', ''));
-
-        try {
-            $message = Mail::to($to);
-
-            if ($bcc) {
-                $message->bcc($bcc);
-            }
-
-            $message->send(new ContactSubmittedMail($contact));
-        } catch (\Throwable $exception) {
-            Log::warning('Falha ao enviar notificação de contato por e-mail.', [
-                'contact_id' => $contact->id,
-                'error' => $exception->getMessage(),
-            ]);
-        }
-    }
-
-    private function emailList(?string $value): array
-    {
-        return collect(preg_split('/[\s,;]+/', (string) $value))
-            ->map(fn ($email) => trim($email))
-            ->filter(fn ($email) => filter_var($email, FILTER_VALIDATE_EMAIL))
-            ->unique()
-            ->values()
-            ->all();
     }
 }

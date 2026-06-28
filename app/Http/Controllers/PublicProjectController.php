@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectSupportType;
 use App\Models\Setting;
+use App\Services\Admin\AdminNotificationMailer;
 use App\Services\Payments\ProjectDonationGateway;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -32,7 +33,7 @@ class PublicProjectController extends Controller
         return view('projects.show', compact('project', 'related', 'settings', 'supportTypes', 'activeDonationGateway', 'donationPaymentMethods', 'donationMethodLabels'));
     }
 
-    public function support(Request $request, Project $project, ProjectDonationGateway $donationGateway)
+    public function support(Request $request, Project $project, ProjectDonationGateway $donationGateway, AdminNotificationMailer $notificationMailer)
     {
         abort_unless($project->active, 404);
 
@@ -99,6 +100,26 @@ class PublicProjectController extends Controller
             }
             $message = 'Doacao registrada. Conclua o pagamento pelo gateway configurado.';
         }
+
+        $support->refresh();
+
+        $notificationMailer->send(
+            $supportType->category === 'monetario' ? 'Doacao' : 'Apoio',
+            ($supportType->category === 'monetario' ? 'Nova doacao registrada' : 'Novo apoio registrado'),
+            'Uma nova acao foi registrada no site e ja esta vinculada ao projeto no painel administrativo.',
+            route('admin.project-supports.index', ['project' => $project->id]) . '#apoio-' . $support->id,
+            [
+                'Projeto' => $project->title,
+                'Tipo' => $supportType->name,
+                'Nome' => $support->name,
+                'E-mail' => $support->email,
+                'Telefone' => $support->phone,
+                'Valor' => $support->amount ? 'R$ ' . number_format((float) $support->amount, 2, ',', '.') : null,
+                'Gateway' => $support->payment_gateway ? strtoupper($support->payment_gateway) : null,
+                'Status do pagamento' => $support->payment_status,
+                'Data' => optional($support->created_at)->format('d/m/Y H:i'),
+            ]
+        );
 
         if ($request->expectsJson()) {
             return response()->json(['success' => true, 'message' => $message, 'payment' => $payment]);

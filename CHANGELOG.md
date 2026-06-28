@@ -36,6 +36,7 @@
 - Projetos recebem fluxo de apoio configurável com tipos de contribuição, formulário público AJAX e registros administrativos vinculados ao projeto e ao apoiador
 - Painel de projetos passa a exibir contadores, atalhos, filtros e badges de novos apoios para deixar os registros recebidos visíveis no fluxo administrativo
 - Doacoes monetarias dos projetos passam a usar gateway ativo configuravel, com PIX/cartao, retorno automatico, webhook dinamico e rastreio de pagamento no apoio
+- Notificacoes do painel passam a centralizar contatos, apoios, doacoes e pagamentos no sininho administrativo, com envio de e-mail ao administrador configurado
 
 ## [1.2.0] - 2026-06-09
 

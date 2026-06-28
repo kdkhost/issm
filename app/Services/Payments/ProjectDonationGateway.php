@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Models\ProjectSupportRequest;
 use App\Models\Setting;
+use App\Services\Admin\AdminNotificationMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -114,12 +115,33 @@ class ProjectDonationGateway
         $payload['last_webhook'] = $request->all();
         $payload['last_webhook_at'] = now()->toDateTimeString();
 
+        $wasPaid = $support->payment_status === 'paid';
+
         $support->update([
             'payment_status' => $status ?: $support->payment_status,
             'status' => $status === 'paid' ? 'completed' : $support->status,
             'paid_at' => $status === 'paid' && ! $support->paid_at ? now() : $support->paid_at,
             'payment_payload' => $payload,
         ]);
+
+        if ($status === 'paid' && ! $wasPaid) {
+            $support->refresh()->loadMissing('project');
+
+            app(AdminNotificationMailer::class)->send(
+                'Pagamento',
+                'Doacao paga confirmada',
+                'O gateway confirmou automaticamente o pagamento de uma doacao.',
+                route('admin.project-supports.index', ['project' => $support->project_id]) . '#apoio-' . $support->id,
+                [
+                    'Projeto' => optional($support->project)->title,
+                    'Nome' => $support->name,
+                    'Valor' => 'R$ ' . number_format((float) $support->amount, 2, ',', '.'),
+                    'Gateway' => strtoupper((string) $support->payment_gateway),
+                    'Referencia' => $support->payment_reference,
+                    'Data' => optional($support->paid_at)->format('d/m/Y H:i'),
+                ]
+            );
+        }
     }
 
     public function normalizeStatus(string $status): ?string
