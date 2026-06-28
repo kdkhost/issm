@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [1.3.2] - 2026-06-28
+
+### Corrigido - Central de notificações do painel
+
+- Corrigida duplicação na contagem de notificações não lidas
+- Pagamentos recentes com status 'new' não são mais contados duas vezes
+- Lógica de unreadCount ajustada para evitar sobreposição de contadores
+
 ## [1.3.1] - 2026-06-28
 
 ### Melhorado - Aparência da página de apoios aos projetos

@@ -11,7 +11,10 @@ class AdminNotificationCenter
     {
         return Contact::new()->count()
             + ProjectSupportRequest::new()->count()
-            + ProjectSupportRequest::where('payment_status', 'paid')->where('paid_at', '>=', now()->subDay())->count();
+            + ProjectSupportRequest::where('payment_status', 'paid')
+                ->where('paid_at', '>=', now()->subDay())
+                ->where('status', '!=', 'new')
+                ->count();
     }
 
     public function latest(int $limit = 8): array
