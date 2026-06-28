@@ -32,6 +32,7 @@
 - Formulário de contato passa a enviar via AJAX, registrar mensagens no admin, notificar no sino com alerta visual/sonoro e enviar cópias por e-mail configuráveis
 - Galeria passa a registrar analytics completo de visitas, álbuns, fotos, cliques, compartilhamentos, downloads, usuário logado, sessão, IP, origem e detalhes técnicos
 - Galeria corrige troca de fotos no visualizador para evitar impressão de repetição por atraso e bloqueia uploads duplicados por hash da imagem
+- Preloaders da galeria passam a reutilizar o mesmo visual configurado para o site, incluindo logo, aneis animados e barra de progresso
 
 ## [1.2.0] - 2026-06-09
 

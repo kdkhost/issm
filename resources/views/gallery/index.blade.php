@@ -52,23 +52,34 @@
 .gal-overlay-title{color:#fff;font-size:.82rem;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .gal-overlay-album{color:rgba(255,255,255,.75);font-size:.72rem;margin-top:2px}
 .gal-overlay-badge{position:absolute;top:10px;right:10px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;background:rgba(21,128,61,.85)}
-.gal-auto-loader{min-height:54px;margin-top:22px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px;font-weight:700}
-.gal-auto-loader::before{content:'';width:18px;height:18px;border-radius:999px;border:2px solid #d1d5db;border-top-color:#15803d;margin-right:9px;animation:galSpin .8s linear infinite}
+.gal-auto-loader{min-height:128px;margin-top:22px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px;font-weight:700}
 .gal-auto-loader.is-idle{opacity:0;pointer-events:none}
 .gal-auto-loader.is-complete{display:none}
-@@keyframes galSpin{to{transform:rotate(360deg)}}
+.gal-preloader .preloader-shell{width:min(92vw,300px);padding:18px 20px;border-radius:20px;background:linear-gradient(135deg,rgba(6,78,59,.96),rgba(21,128,61,.94));box-shadow:0 18px 50px rgba(6,78,59,.22)}
+.gal-preloader .preloader-mark{width:76px;height:76px}
+.gal-preloader .preloader-ring{border-width:2px}
+.gal-preloader .preloader-ring-2{inset:9px}
+.gal-preloader .preloader-logo{width:48px;height:48px;border-radius:15px}
+.gal-preloader .preloader-logo img{width:42px;height:42px}
+.gal-preloader .preloader-logo strong{font-size:13px}
+.gal-preloader .preloader-copy{margin-top:12px}
+.gal-preloader .preloader-copy span{font-size:9px}
+.gal-preloader .preloader-copy strong{font-size:13px;margin-top:3px}
+.gal-preloader .preloader-progress{height:4px;margin-top:14px}
 #lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.93);align-items:center;justify-content:center}
 #lightbox.open{display:flex}
-#lightbox img#lb-img{max-width:90vw;max-height:85vh;border-radius:10px;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.7);animation:lbIn .2s ease}
+#lightbox img#lb-img{position:relative;z-index:0;max-width:90vw;max-height:85vh;border-radius:10px;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.7);animation:lbIn .2s ease}
 #lightbox.is-loading img#lb-img{opacity:.18;filter:blur(4px)}
-#lightbox.is-loading::after{content:'';position:absolute;width:42px;height:42px;border-radius:999px;border:3px solid rgba(255,255,255,.22);border-top-color:#22c55e;animation:galSpin .75s linear infinite}
+#lightbox .gal-lightbox-preloader{position:absolute;z-index:1;inset:0;display:none;align-items:center;justify-content:center;pointer-events:none}
+#lightbox.is-loading .gal-lightbox-preloader{display:flex}
+#lightbox .gal-lightbox-preloader .preloader-shell{box-shadow:0 24px 80px rgba(0,0,0,.34)}
 @@keyframes lbIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
-.lb-btn{position:absolute;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center}
+.lb-btn{position:absolute;z-index:2;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center}
 .lb-btn:hover{background:rgba(255,255,255,.2)}
 #lb-close{top:16px;right:20px;font-size:32px;width:40px;height:40px;border-radius:50%}
 #lb-prev,#lb-next{top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;font-size:26px}
 #lb-prev{left:16px}#lb-next{right:16px}
-#lb-footer{position:absolute;bottom:0;left:0;right:0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+#lb-footer{position:absolute;z-index:2;bottom:0;left:0;right:0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 #lb-caption{color:#d1d5db;font-size:.88rem}
 #lb-counter{color:rgba(255,255,255,.5);font-size:.8rem;font-variant-numeric:tabular-nums}
 .lb-meta{display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -86,6 +97,8 @@
 @media(prefers-reduced-motion:reduce){
     .gal-card[data-lazy-card]{opacity:1;transform:none;transition:none}
     .gal-card img[data-gallery-lazy-image]{transition:none;filter:none;transform:none}
+    .gal-preloader .preloader-ring,
+    .gal-preloader .preloader-progress span{animation:none}
 }
 @media(max-width:640px){
     #lb-footer{align-items:flex-start;flex-direction:column;padding:12px 14px}
@@ -107,6 +120,7 @@ $titleGradStart = cms('gallery', 'hero', 'title_gradient_start', '#86efac');
 $titleGradEnd = cms('gallery', 'hero', 'title_gradient_end', '#34d399');
 $subColor = cms('gallery', 'hero', 'subtitle_color', '#bbf7d0');
 $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
+$siteLogo = \App\Models\Setting::get('site_logo');
 @endphp
 
 @section("content")
@@ -247,7 +261,26 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                          data-autoload-type="photos"
                          data-next-url="{{ $photos->nextPageUrl() }}"
                          aria-live="polite">
-                        Carregando mais fotos...
+                        <div class="gal-preloader" aria-hidden="true">
+                            <div class="preloader-shell">
+                                <div class="preloader-mark">
+                                    <span class="preloader-ring"></span>
+                                    <span class="preloader-ring preloader-ring-2"></span>
+                                    <span class="preloader-logo">
+                                        @if($siteLogo)
+                                            <img src="{{ asset('media/' . $siteLogo) }}" alt="ISSM">
+                                        @else
+                                            <strong>ISSM</strong>
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="preloader-copy">
+                                    <span>Galeria ISSM</span>
+                                    <strong>Carregando fotos</strong>
+                                </div>
+                                <div class="preloader-progress"><span></span></div>
+                            </div>
+                        </div>
                     </div>
                 @endif
             @else
@@ -312,7 +345,26 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                          data-autoload-type="folders"
                          data-next-url="{{ $albums->nextPageUrl() }}"
                          aria-live="polite">
-                        Carregando mais álbuns...
+                        <div class="gal-preloader" aria-hidden="true">
+                            <div class="preloader-shell">
+                                <div class="preloader-mark">
+                                    <span class="preloader-ring"></span>
+                                    <span class="preloader-ring preloader-ring-2"></span>
+                                    <span class="preloader-logo">
+                                        @if($siteLogo)
+                                            <img src="{{ asset('media/' . $siteLogo) }}" alt="ISSM">
+                                        @else
+                                            <strong>ISSM</strong>
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="preloader-copy">
+                                    <span>Galeria ISSM</span>
+                                    <strong>Carregando álbuns</strong>
+                                </div>
+                                <div class="preloader-progress"><span></span></div>
+                            </div>
+                        </div>
                     </div>
                 @endif
             @endif
@@ -333,6 +385,26 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     <button id="lb-prev" class="lb-btn" aria-label="Anterior">&#8249;</button>
     <button id="lb-next" class="lb-btn" aria-label="Próxima">&#8250;</button>
     <img id="lb-img" src="" alt="">
+    <div class="gal-lightbox-preloader gal-preloader" aria-hidden="true">
+        <div class="preloader-shell">
+            <div class="preloader-mark">
+                <span class="preloader-ring"></span>
+                <span class="preloader-ring preloader-ring-2"></span>
+                <span class="preloader-logo">
+                    @if($siteLogo)
+                        <img src="{{ asset('media/' . $siteLogo) }}" alt="ISSM">
+                    @else
+                        <strong>ISSM</strong>
+                    @endif
+                </span>
+            </div>
+            <div class="preloader-copy">
+                <span>Galeria ISSM</span>
+                <strong>Carregando imagem</strong>
+            </div>
+            <div class="preloader-progress"><span></span></div>
+        </div>
+    </div>
     <div id="lb-footer">
         <div class="lb-meta">
             <p id="lb-caption"></p>
