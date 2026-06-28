@@ -13,7 +13,11 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::latest()->paginate(15);
+        $projects = Project::withCount([
+            'supportRequests',
+            'supportRequests as new_support_requests_count' => fn ($query) => $query->where('status', 'new'),
+        ])->latest()->paginate(15);
+
         return view('admin.projetos.index', compact('projects'));
     }
 
@@ -67,7 +71,17 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $odsList = Ods::active()->get();
-        return view('admin.projetos.edit', compact('project', 'odsList'));
+        $project->loadCount([
+            'supportRequests',
+            'supportRequests as new_support_requests_count' => fn ($query) => $query->where('status', 'new'),
+        ]);
+        $recentSupportRequests = $project->supportRequests()
+            ->with('supportType:id,name,category')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('admin.projetos.edit', compact('project', 'odsList', 'recentSupportRequests'));
     }
 
     public function update(Request $request, Project $project)

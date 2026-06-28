@@ -40,6 +40,10 @@ function adminMenuChildIsActive($routeName) {
                             @php $newContacts = \App\Models\Contact::where("status","new")->count(); @endphp
                             @if($newContacts > 0)<span class="ml-auto bg-red-500 text-white text-[10px] rounded-full px-1.5 py-0.5">{{ $newContacts }}</span>@endif
                         @endif
+                        @if($child["route_name"] === "admin.project-supports.index")
+                            @php $newSupports = \App\Models\ProjectSupportRequest::where("status","new")->count(); @endphp
+                            @if($newSupports > 0)<span class="ml-auto bg-red-500 text-white text-[10px] rounded-full px-1.5 py-0.5">{{ $newSupports }}</span>@endif
+                        @endif
                     </a>
                 @endforeach
             </div>

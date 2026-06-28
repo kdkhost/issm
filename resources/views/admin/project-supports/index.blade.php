@@ -146,7 +146,15 @@
                 <h2 class="text-base font-black text-gray-900 dark:text-white">Apoios recebidos</h2>
                 <p class="text-sm text-gray-500">Todos os registros ficam vinculados ao projeto apoiado.</p>
             </div>
-            <form method="GET" class="flex gap-2">
+            <form method="GET" class="flex flex-col sm:flex-row gap-2">
+                <select name="project" class="support-field">
+                    <option value="">Todos os projetos</option>
+                    @foreach($projects as $projectOption)
+                        <option value="{{ $projectOption->id }}" @selected((string) request("project") === (string) $projectOption->id)>
+                            {{ $projectOption->title }} ({{ $projectOption->support_requests_count }})
+                        </option>
+                    @endforeach
+                </select>
                 <select name="status" class="support-field">
                     <option value="">Todos</option>
                     @foreach($statusLabels as $key => $label)

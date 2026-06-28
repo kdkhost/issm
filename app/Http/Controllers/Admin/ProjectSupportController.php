@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use App\Models\ProjectSupportRequest;
 use App\Models\ProjectSupportType;
 use Illuminate\Http\Request;
@@ -17,6 +18,10 @@ class ProjectSupportController extends Controller
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
+        $projects = Project::withCount('supportRequests')
+            ->having('support_requests_count', '>', 0)
+            ->orderBy('title')
+            ->get(['id', 'title']);
 
         $supportRequests = ProjectSupportRequest::with(['project:id,title,slug', 'supportType:id,name,category'])
             ->when($request->filled('status'), fn ($query) => $query->where('status', (string) $request->string('status')))
@@ -33,7 +38,7 @@ class ProjectSupportController extends Controller
             'amount' => ProjectSupportRequest::whereNotNull('amount')->sum('amount'),
         ];
 
-        return view('admin.project-supports.index', compact('supportTypes', 'supportRequests', 'stats'));
+        return view('admin.project-supports.index', compact('supportTypes', 'supportRequests', 'stats', 'projects'));
     }
 
     public function storeType(Request $request)

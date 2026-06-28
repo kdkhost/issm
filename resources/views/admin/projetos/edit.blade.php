@@ -44,6 +44,35 @@
                 </div>
                 <div class="bg-white rounded-xl shadow-sm p-6"><h3 class="font-semibold text-gray-800 mb-3">Imagem</h3>@if($project->image)<img src="{{ asset("media/".$project->image) }}" class="w-full h-32 object-cover rounded mb-2" id="existingMainImage">@endif<input type="file" name="image" id="image" accept="image/*" class="w-full text-sm text-gray-600"></div>
                 <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Apoios recebidos</h3>
+                            <p class="text-xs text-gray-500 mt-1">Registros vinculados a este projeto.</p>
+                        </div>
+                        <a href="{{ route("admin.project-supports.index", ["project" => $project->id]) }}" class="text-green-700 hover:text-green-900 text-sm font-bold">Ver todos</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="rounded-xl bg-green-50 border border-green-100 p-3">
+                            <span class="block text-xs text-green-700 font-bold uppercase">Total</span>
+                            <strong class="text-2xl text-green-800">{{ $project->support_requests_count }}</strong>
+                        </div>
+                        <div class="rounded-xl bg-red-50 border border-red-100 p-3">
+                            <span class="block text-xs text-red-700 font-bold uppercase">Novos</span>
+                            <strong class="text-2xl text-red-700">{{ $project->new_support_requests_count }}</strong>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        @forelse($recentSupportRequests as $support)
+                            <a href="{{ route("admin.project-supports.index", ["project" => $project->id]) }}" class="block rounded-lg border border-gray-100 p-3 hover:bg-green-50">
+                                <span class="block text-sm font-bold text-gray-900">{{ $support->name }}</span>
+                                <span class="block text-xs text-gray-500">{{ optional($support->supportType)->name ?: "Tipo removido" }} • {{ optional($support->created_at)->format("d/m/Y H:i") }}</span>
+                            </a>
+                        @empty
+                            <p class="text-sm text-gray-500">Nenhum apoio recebido ainda.</p>
+                        @endforelse
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
                     <h3 class="font-semibold text-gray-800 flex items-center gap-2">
                         <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                         Preview de Compartilhamento
