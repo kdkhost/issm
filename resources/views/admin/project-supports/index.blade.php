@@ -259,7 +259,7 @@
                         @endforeach
                     </div>
 
-                    <button class="support-btn support-btn-dark w-full">Salvar configuracoes do gateway</button>
+                    <button class="support-btn support-btn-primary w-full text-base py-3 mt-4">Salvar configuracoes do gateway</button>
                 </div>
             </form>
 
