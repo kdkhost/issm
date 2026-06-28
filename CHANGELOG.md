@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [1.3.4] - 2026-06-28
+
+### Adicionado - Configuração de ambiente (Sandbox/Produção) para gateways
+
+- Adicionado seletor de ambiente (Produção/Sandbox) para cada gateway de pagamento
+- Campos separados para credenciais de sandbox e produção em todos os 7 gateways
+- JavaScript dinâmico para mostrar/ocultar campos conforme ambiente selecionado
+- Indicador visual do ambiente ativo em tempo real
+- Serviço de pagamentos atualizado para usar credenciais do ambiente correto automaticamente
+- Gateways: Mercado Pago, Stripe, PayPal, Cora, PagBank, Asaas, Efi
+
 ## [1.3.3] - 2026-06-28
 
 ### Verificado - Gateways de doação

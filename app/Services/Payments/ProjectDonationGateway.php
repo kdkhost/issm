@@ -159,7 +159,8 @@ class ProjectDonationGateway
 
     private function mercadoPago(ProjectSupportRequest $support, string $method, Request $request): array
     {
-        $token = trim((string) Setting::get('donation_mercadopago_access_token', ''));
+        $mode = Setting::get('donation_mercadopago_mode', 'production');
+        $token = trim((string) Setting::get($mode === 'sandbox' ? 'donation_mercadopago_access_token_sandbox' : 'donation_mercadopago_access_token', ''));
 
         if (! $token) {
             throw new RuntimeException('Configure o Access Token do Mercado Pago no painel.');
@@ -211,7 +212,9 @@ class ProjectDonationGateway
 
     private function stripe(ProjectSupportRequest $support, string $method): array
     {
-        $secret = trim((string) Setting::get('donation_stripe_secret_key', ''));
+        $mode = Setting::get('donation_stripe_mode', 'production');
+        $secret = trim((string) Setting::get($mode === 'sandbox' ? 'donation_stripe_secret_key_sandbox' : 'donation_stripe_secret_key', ''));
+        $publishable = Setting::get($mode === 'sandbox' ? 'donation_stripe_publishable_key_sandbox' : 'donation_stripe_publishable_key', '');
 
         if (! $secret) {
             throw new RuntimeException('Configure a Secret Key da Stripe no painel.');
@@ -245,16 +248,17 @@ class ProjectDonationGateway
             'public' => [
                 'type' => 'stripe_payment_intent',
                 'client_secret' => data_get($payload, 'client_secret'),
-                'publishable_key' => Setting::get('donation_stripe_publishable_key'),
+                'publishable_key' => $publishable,
             ],
         ]);
     }
 
     private function paypal(ProjectSupportRequest $support): array
     {
-        $clientId = trim((string) Setting::get('donation_paypal_client_id', ''));
-        $secret = trim((string) Setting::get('donation_paypal_secret', ''));
-        $baseUrl = Setting::get('donation_paypal_sandbox', '1') === '1'
+        $mode = Setting::get('donation_paypal_mode', 'production');
+        $clientId = trim((string) Setting::get($mode === 'sandbox' ? 'donation_paypal_client_id_sandbox' : 'donation_paypal_client_id', ''));
+        $secret = trim((string) Setting::get($mode === 'sandbox' ? 'donation_paypal_secret_sandbox' : 'donation_paypal_secret', ''));
+        $baseUrl = $mode === 'sandbox'
             ? 'https://api-m.sandbox.paypal.com'
             : 'https://api-m.paypal.com';
 
@@ -306,8 +310,9 @@ class ProjectDonationGateway
 
     private function genericConfiguredGateway(ProjectSupportRequest $support, string $method, string $gateway): array
     {
-        $baseUrl = trim((string) Setting::get("donation_{$gateway}_base_url", ''));
-        $token = trim((string) Setting::get("donation_{$gateway}_api_key", ''));
+        $mode = Setting::get("donation_{$gateway}_mode", 'production');
+        $baseUrl = trim((string) Setting::get($mode === 'sandbox' ? "donation_{$gateway}_base_url_sandbox" : "donation_{$gateway}_base_url", ''));
+        $token = trim((string) Setting::get($mode === 'sandbox' ? "donation_{$gateway}_api_key_sandbox" : "donation_{$gateway}_api_key", ''));
 
         if (! $baseUrl || ! $token) {
             throw new RuntimeException('Configure URL/API Key do gateway ' . strtoupper($gateway) . ' no painel.');
@@ -319,7 +324,7 @@ class ProjectDonationGateway
             'status' => 'pending',
             'external_id' => null,
             'reference' => $this->reference($support),
-            'payload' => ['message' => 'Gateway configurado para integracao transparente via endpoint dinamico.', 'base_url' => $baseUrl],
+            'payload' => ['message' => 'Gateway configurado para integracao transparente via endpoint dinamico.', 'base_url' => $baseUrl, 'mode' => $mode],
             'public' => ['type' => 'pending_gateway', 'message' => 'A doacao foi registrada. Este gateway exige credenciais e homologacao do provedor para concluir a cobranca transparente.'],
         ]);
     }
