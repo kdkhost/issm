@@ -2,78 +2,239 @@
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
 @section('page-subtitle', 'Visão geral do sistema')
+
 @section('content')
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" style="max-width:100%;overflow:hidden;">
-    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
-        <div class="flex items-center justify-between">
-            <div><p class="text-gray-500 text-sm">Notícias</p><p class="text-3xl font-black text-gray-900">{{ $stats["news"] }}</p></div>
-            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div>
-        </div>
-        <a href="{{ route("admin.noticias.index") }}" class="text-green-600 text-xs mt-2 block hover:underline">Gerenciar notícias</a>
-    </div>
-    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
-        <div class="flex items-center justify-between">
-            <div><p class="text-gray-500 text-sm">Projetos</p><p class="text-3xl font-black text-gray-900">{{ $stats["projects"] }}</p></div>
-            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
-        </div>
-        <a href="{{ route("admin.projetos.index") }}" class="text-blue-600 text-xs mt-2 block hover:underline">Gerenciar projetos</a>
-    </div>
-    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
-        <div class="flex items-center justify-between">
-            <div><p class="text-gray-500 text-sm">Mensagens</p><p class="text-3xl font-black text-gray-900">{{ $stats["contacts"] }}</p></div>
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-        </div>
-        <a href="{{ route("admin.contatos.index") }}" class="text-red-600 text-xs mt-2 block hover:underline">Ver mensagens</a>
-    </div>
-    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-orange-500">
-        <div class="flex items-center justify-between">
-            <div><p class="text-gray-500 text-sm">Manutenção</p><p class="text-xl font-black text-gray-900">{{ $maintenanceMode == "1" ? "Ativa" : "Desativada" }}</p></div>
-            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg></div>
-        </div>
-        <a href="{{ route("admin.settings.index") }}" class="text-orange-600 text-xs mt-2 block hover:underline">Configurações</a>
-    </div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-bold text-gray-800 mb-4">Últimas Mensagens</h3>
-        @forelse($recentContacts as $contact)
-        <div class="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
-            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-green-700 font-bold text-sm">{{ substr($contact->name, 0, 1) }}</span></div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between gap-2">
-                    <p class="font-medium text-gray-900 text-sm truncate">{{ $contact->name }}</p>
-                    <span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0 {{ $contact->status === "new" ? "bg-red-100 text-red-600" : ($contact->status === "replied" ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-600") }}">{{ $contact->status === "new" ? "Nova" : ($contact->status === "replied" ? "Respondida" : "Lida") }}</span>
+<style>
+.dash-wrap{max-width:100%;overflow:hidden}
+.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.dash-kpi{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;overflow:hidden;box-shadow:0 12px 30px rgba(15,23,42,.06);min-height:184px}
+.dash-kpi::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;background:var(--kpi-color)}
+.dash-kpi-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dash-kpi-label{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin:0}
+.dash-kpi-value{font-size:34px;line-height:1;font-weight:950;color:#111827;margin:8px 0 0;font-variant-numeric:tabular-nums}
+.dash-kpi-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:var(--kpi-color);flex-shrink:0}
+.dash-kpi-icon svg{width:22px;height:22px}
+.dash-kpi-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.dash-kpi-trend{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:900;color:var(--kpi-color);background:#f8fafc;border-radius:999px;padding:5px 9px}
+.dash-kpi-today{font-size:12px;font-weight:700;color:#6b7280}
+.dash-spark{height:52px;margin-top:14px}
+.dash-spark svg{width:100%;height:52px;display:block;overflow:visible}
+.dash-spark path.area{opacity:.14}
+.dash-spark path.line{fill:none;stroke:var(--kpi-color);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:260;stroke-dashoffset:260;animation:dashLine 1.15s ease forwards}
+.dash-spark circle{fill:#fff;stroke:var(--kpi-color);stroke-width:2;opacity:0;animation:dashDot .35s ease forwards;animation-delay:.9s}
+.dash-kpi-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:var(--kpi-color);font-size:12px;font-weight:900;text-decoration:none}
+.dash-kpi-link:hover{text-decoration:underline}
+.dash-panels{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-bottom:24px}
+.dash-panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 12px 30px rgba(15,23,42,.06)}
+.dash-panel-title{font-size:14px;font-weight:950;color:#111827;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.dash-bars{height:170px;display:flex;align-items:flex-end;gap:8px;padding-top:12px}
+.dash-bar{flex:1;min-width:10px;height:var(--bar-height);background:linear-gradient(180deg,#22c55e,#15803d);border-radius:10px 10px 4px 4px;position:relative;transform-origin:bottom;animation:dashGrow .75s ease forwards;transform:scaleY(0)}
+.dash-bar::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);background:#111827;color:#fff;border-radius:8px;padding:4px 7px;font-size:10px;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+.dash-bar:hover::after{opacity:1}
+.dash-bar-labels{display:flex;justify-content:space-between;margin-top:8px;color:#9ca3af;font-size:11px;font-weight:700}
+.dash-ring-wrap{display:flex;align-items:center;gap:18px}
+.dash-ring{width:138px;height:138px;border-radius:999px;background:conic-gradient(var(--ring));position:relative;flex-shrink:0;animation:dashSpinIn .85s ease forwards}
+.dash-ring::after{content:'';position:absolute;inset:18px;background:#fff;border-radius:999px}
+.dash-ring-center{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.dash-ring-value{font-size:26px;font-weight:950;color:#111827;line-height:1}
+.dash-ring-label{font-size:11px;font-weight:800;color:#6b7280;margin-top:2px}
+.dash-legend{display:flex;flex-direction:column;gap:8px;min-width:0}
+.dash-legend-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#374151}
+.dash-legend-dot{width:10px;height:10px;border-radius:999px;flex-shrink:0}
+.dash-maintenance{display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:16px;padding:14px 16px;background:{{ $maintenanceMode == "1" ? '#fff7ed' : '#f0fdf4' }};border:1px solid {{ $maintenanceMode == "1" ? '#fed7aa' : '#bbf7d0' }};margin-bottom:24px}
+.dash-maintenance strong{color:#111827}
+.dash-maintenance span{font-size:13px;font-weight:800;color:{{ $maintenanceMode == "1" ? '#c2410c' : '#15803d' }}}
+.dash-list-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 12px 30px rgba(15,23,42,.06)}
+.dash-list-title{font-size:15px;font-weight:950;color:#111827;margin:0 0 12px}
+.dash-quick-grid{margin-top:24px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.dash-quick{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;text-align:center;box-shadow:0 8px 22px rgba(15,23,42,.05);transition:transform .15s,box-shadow .15s;text-decoration:none}
+.dash-quick:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,.1)}
+@keyframes dashLine{to{stroke-dashoffset:0}}
+@keyframes dashDot{to{opacity:1}}
+@keyframes dashGrow{to{transform:scaleY(1)}}
+@keyframes dashSpinIn{from{transform:rotate(-28deg) scale(.92);opacity:.5}to{transform:rotate(0) scale(1);opacity:1}}
+@media(max-width:1200px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-panels{grid-template-columns:1fr}.dash-quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.dash-kpis{grid-template-columns:1fr}.dash-ring-wrap{flex-direction:column;align-items:flex-start}.dash-bars{gap:4px}.dash-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+[data-theme="dark"] .dash-kpi,[data-theme="dark"] .dash-panel,[data-theme="dark"] .dash-list-card,[data-theme="dark"] .dash-quick{background:#1f2937;border-color:#374151;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+[data-theme="dark"] .dash-kpi-value,[data-theme="dark"] .dash-panel-title,[data-theme="dark"] .dash-ring-value,[data-theme="dark"] .dash-maintenance strong,[data-theme="dark"] .dash-list-title{color:#f9fafb}
+[data-theme="dark"] .dash-kpi-label,[data-theme="dark"] .dash-kpi-today,[data-theme="dark"] .dash-ring-label{color:#9ca3af}
+[data-theme="dark"] .dash-kpi-icon,[data-theme="dark"] .dash-kpi-trend{background:rgba(255,255,255,.06)}
+[data-theme="dark"] .dash-spark circle{fill:#1f2937}
+[data-theme="dark"] .dash-ring::after{background:#1f2937}
+[data-theme="dark"] .dash-legend-row{color:#d1d5db}
+</style>
+
+@php
+    $sparkPoints = function (array $series, int $width = 220, int $height = 52) {
+        $max = max(array_column($series, 'value') ?: [0]) ?: 1;
+        $lastIndex = max(count($series) - 1, 1);
+
+        return collect($series)->map(function ($point, $index) use ($width, $height, $max, $lastIndex) {
+            $x = round(($index / $lastIndex) * $width, 2);
+            $y = round($height - (($point['value'] / $max) * ($height - 8)) - 4, 2);
+            return "{$x},{$y}";
+        })->implode(' ');
+    };
+    $visitMax = max(array_column($visitSeries, 'value') ?: [0]) ?: 1;
+    $mixTotal = max(collect($contentMix)->sum('value'), 1);
+    $ringStart = 0;
+    $ringParts = collect($contentMix)->map(function ($item) use (&$ringStart, $mixTotal) {
+        $pct = round(($item['value'] / $mixTotal) * 100, 2);
+        $part = "{$item['color']} {$ringStart}% ".($ringStart + $pct)."%";
+        $ringStart += $pct;
+        return $part;
+    })->implode(', ');
+@endphp
+
+<div class="dash-wrap">
+    <div class="dash-kpis">
+        @foreach($kpis as $kpi)
+            @php
+                $points = $sparkPoints($kpi['series']);
+                $areaPoints = "0,52 {$points} 220,52";
+                $lastPair = collect(explode(' ', $points))->last();
+                [$cx, $cy] = array_pad(explode(',', $lastPair), 2, 0);
+            @endphp
+            <div class="dash-kpi" style="--kpi-color:{{ $kpi['color'] }}">
+                <div class="dash-kpi-head">
+                    <div>
+                        <p class="dash-kpi-label">{{ $kpi['label'] }}</p>
+                        <p class="dash-kpi-value" data-count-to="{{ $kpi['value'] }}">0</p>
+                    </div>
+                    <div class="dash-kpi-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $kpi['icon'] }}"/></svg>
+                    </div>
                 </div>
-                <p class="text-gray-500 text-xs truncate">{{ $contact->subject }}</p>
+                <div class="dash-kpi-meta">
+                    <span class="dash-kpi-trend">{{ $kpi['trend'] >= 0 ? '+' : '' }}{{ $kpi['trend'] }}% hoje</span>
+                    <span class="dash-kpi-today">{{ $kpi['today'] }} novo{{ $kpi['today'] != 1 ? 's' : '' }}</span>
+                </div>
+                <div class="dash-spark" aria-hidden="true">
+                    <svg viewBox="0 0 220 52" preserveAspectRatio="none">
+                        <path class="area" fill="{{ $kpi['color'] }}" d="M {{ $areaPoints }} Z"></path>
+                        <path class="line" d="M {{ $points }}"></path>
+                        <circle cx="{{ $cx }}" cy="{{ $cy }}" r="4"></circle>
+                    </svg>
+                </div>
+                <a href="{{ $kpi['url'] }}" class="dash-kpi-link">{{ $kpi['action'] }} <span>→</span></a>
             </div>
-            <a href="{{ route("admin.contatos.show", $contact) }}" class="text-green-600 hover:text-green-800 text-xs">Ver</a>
-        </div>
-        @empty
-        <p class="text-gray-400 text-sm">Nenhuma mensagem ainda.</p>
-        @endforelse
+        @endforeach
     </div>
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-bold text-gray-800 mb-4">Últimas Notícias</h3>
-        @forelse($recentNews as $news)
-        <div class="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
-            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
-            <div class="flex-1 min-w-0">
-                <p class="font-medium text-gray-900 text-sm truncate">{{ $news->title }}</p>
-                <p class="text-gray-400 text-xs">{{ $news->created_at->format("d/m/Y") }}</p>
+
+    <div class="dash-maintenance">
+        <strong>Status operacional</strong>
+        <span>Manutenção {{ $maintenanceMode == "1" ? "ativa" : "desativada" }}</span>
+        <a href="{{ route("admin.settings.index") }}" class="text-xs font-black hover:underline" style="color:{{ $maintenanceMode == "1" ? '#c2410c' : '#15803d' }}">Configurações</a>
+    </div>
+
+    <div class="dash-panels">
+        <div class="dash-panel">
+            <h3 class="dash-panel-title">Visitas dos últimos 7 dias</h3>
+            <div class="dash-bars">
+                @foreach($visitSeries as $index => $day)
+                    <div class="dash-bar"
+                         style="--bar-height:{{ max(4, round(($day['value'] / $visitMax) * 100)) }}%;animation-delay:{{ $index * 70 }}ms"
+                         data-tip="{{ $day['date'] }}: {{ $day['value'] }} visitas"></div>
+                @endforeach
             </div>
-            <a href="{{ route("admin.noticias.edit", $news) }}" class="text-green-600 hover:text-green-800 text-xs">Editar</a>
+            <div class="dash-bar-labels">
+                <span>{{ $visitSeries[0]['date'] ?? '' }}</span>
+                <span>{{ $visitSeries[3]['date'] ?? '' }}</span>
+                <span>{{ $visitSeries[6]['date'] ?? '' }}</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-3">
+                Hoje: <strong class="text-gray-900">{{ number_format($todayVisits, 0, ",", ".") }}</strong> visitas,
+                <strong class="text-gray-900">{{ number_format($todayUniqueVisitors, 0, ",", ".") }}</strong> visitantes únicos.
+            </p>
         </div>
-        @empty
-        <p class="text-gray-400 text-sm">Nenhuma notícia ainda.</p>
-        @endforelse
+
+        <div class="dash-panel">
+            <h3 class="dash-panel-title">Composição de conteúdo</h3>
+            <div class="dash-ring-wrap">
+                <div class="dash-ring" style="--ring:{{ $ringParts ?: '#e5e7eb 0% 100%' }}">
+                    <div class="dash-ring-center">
+                        <span class="dash-ring-value" data-count-to="{{ $mixTotal }}">0</span>
+                        <span class="dash-ring-label">itens</span>
+                    </div>
+                </div>
+                <div class="dash-legend">
+                    @foreach($contentMix as $item)
+                        <div class="dash-legend-row">
+                            <span class="dash-legend-dot" style="background:{{ $item['color'] }}"></span>
+                            <span>{{ $item['label'] }}: {{ number_format($item['value'], 0, ",", ".") }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="dash-list-card">
+            <h3 class="dash-list-title">Últimas Mensagens</h3>
+            @forelse($recentContacts as $contact)
+                <div class="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-green-700 font-bold text-sm">{{ substr($contact->name, 0, 1) }}</span></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                            <p class="font-medium text-gray-900 text-sm truncate">{{ $contact->name }}</p>
+                            <span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0 {{ $contact->status === "new" ? "bg-red-100 text-red-600" : ($contact->status === "replied" ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-600") }}">{{ $contact->status === "new" ? "Nova" : ($contact->status === "replied" ? "Respondida" : "Lida") }}</span>
+                        </div>
+                        <p class="text-gray-500 text-xs truncate">{{ $contact->subject }}</p>
+                    </div>
+                    <a href="{{ route("admin.contatos.show", $contact) }}" class="text-green-600 hover:text-green-800 text-xs">Ver</a>
+                </div>
+            @empty
+                <p class="text-gray-400 text-sm">Nenhuma mensagem ainda.</p>
+            @endforelse
+        </div>
+
+        <div class="dash-list-card">
+            <h3 class="dash-list-title">Últimas Notícias</h3>
+            @forelse($recentNews as $news)
+                <div class="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-gray-900 text-sm truncate">{{ $news->title }}</p>
+                        <p class="text-gray-400 text-xs">{{ $news->created_at->format("d/m/Y") }}</p>
+                    </div>
+                    <a href="{{ route("admin.noticias.edit", $news) }}" class="text-green-600 hover:text-green-800 text-xs">Editar</a>
+                </div>
+            @empty
+                <p class="text-gray-400 text-sm">Nenhuma notícia ainda.</p>
+            @endforelse
+        </div>
+    </div>
+
+    <div class="dash-quick-grid">
+        <a href="{{ route("admin.banners.create") }}" class="dash-quick"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Banner</p></a>
+        <a href="{{ route("admin.noticias.create") }}" class="dash-quick"><div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Nova Notícia</p></a>
+        <a href="{{ route("admin.projetos.create") }}" class="dash-quick"><div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Projeto</p></a>
+        <a href="{{ route("admin.galeria.create") }}" class="dash-quick"><div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Nova Foto</p></a>
+        <a href="{{ route("admin.equipe.create") }}" class="dash-quick"><div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Membro</p></a>
+        <a href="{{ route("admin.settings.index") }}" class="dash-quick"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg></div><p class="text-xs font-medium text-gray-700">Configurações</p></a>
     </div>
 </div>
-<div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-    <a href="{{ route("admin.banners.create") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Banner</p></a>
-    <a href="{{ route("admin.noticias.create") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Nova Notícia</p></a>
-    <a href="{{ route("admin.projetos.create") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Projeto</p></a>
-    <a href="{{ route("admin.galeria.create") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Nova Foto</p></a>
-    <a href="{{ route("admin.equipe.create") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><p class="text-xs font-medium text-gray-700">Novo Membro</p></a>
-    <a href="{{ route("admin.settings.index") }}" class="bg-white rounded-xl shadow-sm p-4 text-center hover:shadow-md transition-shadow"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg></div><p class="text-xs font-medium text-gray-700">Configurações</p></a>
-</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-count-to]').forEach(function (el) {
+        var target = parseInt(el.getAttribute('data-count-to') || '0', 10);
+        var duration = 850;
+        var start = performance.now();
+
+        function tick(now) {
+            var progress = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * eased).toLocaleString('pt-BR');
+
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            }
+        }
+
+        requestAnimationFrame(tick);
+    });
+});
+</script>
 @endsection
