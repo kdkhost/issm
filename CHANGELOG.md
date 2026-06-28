@@ -37,6 +37,7 @@
 - Painel de projetos passa a exibir contadores, atalhos, filtros e badges de novos apoios para deixar os registros recebidos visíveis no fluxo administrativo
 - Doacoes monetarias dos projetos passam a usar gateway ativo configuravel, com PIX/cartao, retorno automatico, webhook dinamico e rastreio de pagamento no apoio
 - Notificacoes do painel passam a centralizar contatos, apoios, doacoes e pagamentos no sininho administrativo, com envio de e-mail ao administrador configurado
+- Pagina de apoios aos projetos reformulada com organizacao por blocos, instrucoes por gateway de pagamento e registros mais claros no painel administrativo
 
 ## [1.2.0] - 2026-06-09
 
