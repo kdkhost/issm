@@ -91,10 +91,9 @@ class CoraDriver extends AbstractGatewayDriver
     private function credentials(): array
     {
         $mode    = Setting::get('donation_cora_mode', 'production');
-        $baseUrl = trim((string) Setting::get(
-            $mode === 'sandbox' ? 'donation_cora_base_url_sandbox' : 'donation_cora_base_url',
-            $mode === 'sandbox' ? 'https://api.sandbox.cora.com.br' : 'https://api.cora.com.br'
-        ));
+        $baseUrl = $mode === 'sandbox'
+            ? 'https://api.sandbox.cora.com.br'
+            : 'https://api.cora.com.br';
         $apiKey  = trim((string) Setting::get(
             $mode === 'sandbox' ? 'donation_cora_api_key_sandbox' : 'donation_cora_api_key', ''
         ));
@@ -103,6 +102,6 @@ class CoraDriver extends AbstractGatewayDriver
             throw new RuntimeException('Configure a API Key da Cora no painel administrativo.');
         }
 
-        return [rtrim($baseUrl, '/'), $apiKey];
+        return [$baseUrl, $apiKey];
     }
 }

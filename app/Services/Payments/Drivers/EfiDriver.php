@@ -106,11 +106,10 @@ class EfiDriver extends AbstractGatewayDriver
 
     private function credentials(): array
     {
-        $mode        = Setting::get('donation_efi_mode', 'production');
-        $baseUrl     = trim((string) Setting::get(
-            $mode === 'sandbox' ? 'donation_efi_base_url_sandbox' : 'donation_efi_base_url',
-            $mode === 'sandbox' ? 'https://pix-h.api.efipay.com.br' : 'https://pix.api.efipay.com.br'
-        ));
+        $mode         = Setting::get('donation_efi_mode', 'production');
+        $baseUrl      = $mode === 'sandbox'
+            ? 'https://pix-h.api.efipay.com.br'
+            : 'https://pix.api.efipay.com.br';
         $clientId     = trim((string) Setting::get(
             $mode === 'sandbox' ? 'donation_efi_client_id_sandbox' : 'donation_efi_client_id', ''
         ));
@@ -122,6 +121,6 @@ class EfiDriver extends AbstractGatewayDriver
             throw new RuntimeException('Configure Client ID e API Key da Efi no painel administrativo.');
         }
 
-        return [rtrim($baseUrl, '/'), $clientId, $clientSecret];
+        return [$baseUrl, $clientId, $clientSecret];
     }
 }

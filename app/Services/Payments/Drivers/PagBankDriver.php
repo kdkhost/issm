@@ -169,10 +169,9 @@ class PagBankDriver extends AbstractGatewayDriver
     private function credentials(): array
     {
         $mode    = Setting::get('donation_pagbank_mode', 'production');
-        $baseUrl = trim((string) Setting::get(
-            $mode === 'sandbox' ? 'donation_pagbank_base_url_sandbox' : 'donation_pagbank_base_url',
-            $mode === 'sandbox' ? 'https://sandbox.api.pagseguro.com' : 'https://api.pagseguro.com'
-        ));
+        $baseUrl = $mode === 'sandbox'
+            ? 'https://sandbox.api.pagseguro.com'
+            : 'https://api.pagseguro.com';
         $apiKey  = trim((string) Setting::get(
             $mode === 'sandbox' ? 'donation_pagbank_api_key_sandbox' : 'donation_pagbank_api_key', ''
         ));
@@ -181,6 +180,6 @@ class PagBankDriver extends AbstractGatewayDriver
             throw new RuntimeException('Configure a API Key do PagBank no painel administrativo.');
         }
 
-        return [rtrim($baseUrl, '/'), $apiKey];
+        return [$baseUrl, $apiKey];
     }
 }

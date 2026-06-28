@@ -138,10 +138,9 @@ class AsaasDriver extends AbstractGatewayDriver
     private function credentials(): array
     {
         $mode    = Setting::get('donation_asaas_mode', 'production');
-        $baseUrl = trim((string) Setting::get(
-            $mode === 'sandbox' ? 'donation_asaas_base_url_sandbox' : 'donation_asaas_base_url',
-            $mode === 'sandbox' ? 'https://homologacao.asaas.com.br/api' : 'https://api.asaas.com/api'
-        ));
+        $baseUrl = $mode === 'sandbox'
+            ? 'https://homologacao.asaas.com.br/api'
+            : 'https://api.asaas.com/api';
         $apiKey  = trim((string) Setting::get(
             $mode === 'sandbox' ? 'donation_asaas_api_key_sandbox' : 'donation_asaas_api_key', ''
         ));
@@ -149,9 +148,6 @@ class AsaasDriver extends AbstractGatewayDriver
         if (! $apiKey) {
             throw new RuntimeException('Configure a API Key do Asaas no painel administrativo.');
         }
-
-        // Garantir sem barra final
-        $baseUrl = rtrim($baseUrl, '/');
 
         return [$baseUrl, $apiKey];
     }

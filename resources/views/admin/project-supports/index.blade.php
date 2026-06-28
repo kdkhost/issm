@@ -11,20 +11,14 @@
     $activeGateway  = $gatewaySettings["donation_gateway_active"] ?? "";
     $firstActive    = $activeGateway ?: 'mercadopago';
     $gatewayKeys    = ['mercadopago', 'stripe', 'paypal', 'cora', 'pagbank', 'asaas', 'efi'];
-    $gatewayUrls    = [
-        'cora'    => ['production' => 'https://api.cora.com.br',          'sandbox' => 'https://api.sandbox.cora.com.br'],
-        'pagbank' => ['production' => 'https://api.pagseguro.com',         'sandbox' => 'https://sandbox.api.pagseguro.com'],
-        'asaas'   => ['production' => 'https://api.asaas.com/api',         'sandbox' => 'https://homologacao.asaas.com.br/api'],
-        'efi'     => ['production' => 'https://pix.api.efipay.com.br',     'sandbox' => 'https://pix-h.api.efipay.com.br'],
-    ];
     $gatewayInstructions = [
         "mercadopago" => ["Acesse <strong>Suas integracoes</strong> no painel do Mercado Pago e copie o Access Token de producao.", "Para cartao: adicione tambem a Public Key (exibida na mesma tela).", "Cadastre o Webhook apontando para a URL dinamica abaixo."],
         "stripe"      => ["Copie a <strong>Publishable Key</strong> e a <strong>Secret Key</strong> do Dashboard Stripe.", "Ative os metodos de pagamento desejados (cards) em <em>Settings > Payment methods</em>.", "Cadastre o endpoint de webhook para o evento <code>checkout.session.completed</code>."],
         "paypal"      => ["Crie um app REST em <strong>PayPal Developer</strong> e copie Client ID e Secret.", "Selecione o escopo <em>Accept payments</em> na criacao do app.", "Use modo Sandbox para testes antes de ativar producao."],
-        "cora"        => ["Ative a API PIX/cobrancas no portal Cora Business.", "Informe a URL base e o token de acesso gerado.", "Cadastre o webhook do gateway apontando para a URL dinamica abaixo."],
-        "pagbank"     => ["Crie uma aplicacao em <strong>PagBank Developers</strong> e copie o token Bearer.", "Para cartao: adicione a Public Key (usada para criptografia no frontend).", "Cadastre notificacoes para o evento <em>CHARGE_UPDATED</em>."],
-        "asaas"       => ["Gere a API Key em <strong>Minha Conta &rsaquo; Integracoes</strong>.", "Informe URL base de producao ou homologacao conforme o ambiente.", "Cadastre o webhook para o evento <em>PAYMENT_RECEIVED</em>."],
-        "efi"         => ["Informe o <strong>Client ID</strong> e a <strong>Client Secret / API Key</strong> da conta Efi.", "Preencha a <strong>Chave PIX</strong> cadastrada na sua conta Efi (CPF, CNPJ, e-mail ou aleatoria).", "Configure o certificado mTLS no painel Efi caso exigido pela sua conta."],
+        "cora"        => ["Ative a API PIX/cobrancas no portal Cora Business e copie o token de acesso.", "A URL base da API e configurada automaticamente pelo sistema.", "Cadastre o webhook apontando para a URL dinamica abaixo."],
+        "pagbank"     => ["Crie uma aplicacao em <strong>PagBank Developers</strong> e copie o token Bearer.", "Para cartao: adicione a Public Key (usada para criptografia no frontend).", "Cadastre notificacoes para o evento <em>CHARGE_UPDATED</em>. A URL da API e automatica."],
+        "asaas"       => ["Gere a API Key em <strong>Minha Conta &rsaquo; Integracoes</strong>.", "A URL base da API de producao e homologacao e configurada automaticamente.", "Cadastre o webhook para o evento <em>PAYMENT_RECEIVED</em>."],
+        "efi"         => ["Informe o <strong>Client ID</strong> e a <strong>Client Secret / API Key</strong> da conta Efi.", "Preencha a <strong>Chave PIX</strong> cadastrada na sua conta Efi (CPF, CNPJ, e-mail ou aleatoria).", "A URL base da API PIX e configurada automaticamente pelo sistema."],
     ];
 @endphp
 
@@ -185,17 +179,12 @@
                                 </div>
 
                             @elseif($g === 'pagbank')
-                                @php $u = $gatewayUrls[$g] ?? []; @endphp
                                 <div data-gateway="pagbank" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Producao)</label>
-                                    <input type="text" name="donation_pagbank_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url'] ?? $u['production'] ?? '' }}">
-                                    <label class="form-label mt-3">API Key / Token Bearer (Producao)</label>
+                                    <label class="form-label">API Key / Token Bearer (Producao)</label>
                                     <input type="text" name="donation_pagbank_api_key" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key'] ?? '' }}">
                                 </div>
                                 <div data-gateway="pagbank" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Sandbox)</label>
-                                    <input type="text" name="donation_pagbank_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
-                                    <label class="form-label mt-3">API Key / Token Bearer (Sandbox)</label>
+                                    <label class="form-label">API Key / Token Bearer (Sandbox)</label>
                                     <input type="text" name="donation_pagbank_api_key_sandbox" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key_sandbox'] ?? '' }}">
                                 </div>
                                 <div class="mt-3">
@@ -204,19 +193,14 @@
                                 </div>
 
                             @elseif($g === 'efi')
-                                @php $u = $gatewayUrls[$g] ?? []; @endphp
                                 <div data-gateway="efi" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Producao)</label>
-                                    <input type="text" name="donation_efi_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url'] ?? $u['production'] ?? '' }}">
-                                    <label class="form-label mt-3">Client ID (Producao)</label>
+                                    <label class="form-label">Client ID (Producao)</label>
                                     <input type="text" name="donation_efi_client_id" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id'] ?? '' }}">
                                     <label class="form-label mt-3">Client Secret / API Key (Producao)</label>
                                     <input type="text" name="donation_efi_api_key" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key'] ?? '' }}">
                                 </div>
                                 <div data-gateway="efi" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Sandbox)</label>
-                                    <input type="text" name="donation_efi_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
-                                    <label class="form-label mt-3">Client ID (Sandbox)</label>
+                                    <label class="form-label">Client ID (Sandbox)</label>
                                     <input type="text" name="donation_efi_client_id_sandbox" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id_sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">Client Secret / API Key (Sandbox)</label>
                                     <input type="text" name="donation_efi_api_key_sandbox" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key_sandbox'] ?? '' }}">
@@ -227,17 +211,13 @@
                                 </div>
 
                             @else
-                                @php $u = $gatewayUrls[$g] ?? []; @endphp
+                                {{-- Cora: apenas API Key, URL é fixa no driver --}}
                                 <div data-gateway="{{ $g }}" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Producao)</label>
-                                    <input type="text" name="donation_{{ $g }}_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url"] ?? $u['production'] ?? '' }}">
-                                    <label class="form-label mt-3">API Key / Token (Producao)</label>
+                                    <label class="form-label">API Key / Token (Producao)</label>
                                     <input type="text" name="donation_{{ $g }}_api_key" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key"] ?? '' }}">
                                 </div>
                                 <div data-gateway="{{ $g }}" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
-                                    <label class="form-label">URL Base (Sandbox)</label>
-                                    <input type="text" name="donation_{{ $g }}_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url_sandbox"] ?? $u['sandbox'] ?? '' }}">
-                                    <label class="form-label mt-3">API Key / Token (Sandbox)</label>
+                                    <label class="form-label">API Key / Token (Sandbox)</label>
                                     <input type="text" name="donation_{{ $g }}_api_key_sandbox" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key_sandbox"] ?? '' }}">
                                 </div>
                             @endif
