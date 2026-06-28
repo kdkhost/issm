@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -132,17 +133,28 @@ class GalleryController extends Controller
         $album = GalleryAlbum::create($this->albumPayload($validated));
         $album->projects()->sync($validated['project_ids'] ?? []);
 
+        $skippedDuplicates = 0;
+
         foreach ($request->file('images', []) as $index => $file) {
-            $this->createPhotoFromUpload($album, $file, [
+            $photo = $this->createPhotoFromUpload($album, $file, [
                 'title' => $this->titleFromFile($file),
                 'sort_order' => $index,
                 'active' => true,
-            ]);
+            ], false);
+
+            if (! $photo) {
+                $skippedDuplicates++;
+            }
+        }
+
+        $message = 'Album criado com sucesso. Agora voce pode gerenciar as fotos.';
+        if ($skippedDuplicates > 0) {
+            $message .= " {$skippedDuplicates} foto(s) duplicada(s) foram ignoradas.";
         }
 
         return redirect()
             ->route('admin.galeria.edit', $album)
-            ->with('success', 'Album criado com sucesso. Agora voce pode gerenciar as fotos.');
+            ->with('success', $message);
     }
 
     public function edit(GalleryAlbum $gallery)
@@ -235,12 +247,16 @@ class GalleryController extends Controller
         $baseOrder = (int) ($validated['sort_order'] ?? ($gallery->photos()->max('sort_order') + 1));
 
         foreach ($files as $index => $file) {
-            $photos[] = $this->createPhotoFromUpload($gallery, $file, [
+            $photo = $this->createPhotoFromUpload($gallery, $file, [
                 'title' => $validated['title'] ?? $this->titleFromFile($file),
                 'description' => $validated['description'] ?? null,
                 'sort_order' => $baseOrder + $index,
                 'active' => $request->has('active') ? $request->boolean('active') : true,
             ]);
+
+            if ($photo) {
+                $photos[] = $photo;
+            }
         }
 
         return response()->json([
@@ -263,6 +279,15 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            $imageHash = $this->hashUploadedFile($request->file('image'));
+            $duplicate = $this->duplicatePhotoForHash($gallery, $imageHash, $photo->id);
+
+            if ($duplicate) {
+                throw ValidationException::withMessages([
+                    'image' => "Esta imagem ja existe neste album como \"{$duplicate->title}\".",
+                ]);
+            }
+
             $this->deletePublicFile($photo->image);
             $validated = array_merge($validated, $this->imagePayload($request->file('image'), $gallery));
         }
@@ -336,8 +361,21 @@ class GalleryController extends Controller
             ->toArray();
     }
 
-    private function createPhotoFromUpload(GalleryAlbum $album, UploadedFile $file, array $overrides = []): GalleryPhoto
+    private function createPhotoFromUpload(GalleryAlbum $album, UploadedFile $file, array $overrides = [], bool $failOnDuplicate = true): ?GalleryPhoto
     {
+        $imageHash = $this->hashUploadedFile($file);
+        $duplicate = $this->duplicatePhotoForHash($album, $imageHash);
+
+        if ($duplicate) {
+            if ($failOnDuplicate) {
+                throw ValidationException::withMessages([
+                    'image' => "Esta imagem ja existe neste album como \"{$duplicate->title}\".",
+                ]);
+            }
+
+            return null;
+        }
+
         return $album->photos()->create(array_merge([
             'title' => $this->titleFromFile($file),
             'description' => null,
@@ -352,10 +390,24 @@ class GalleryController extends Controller
 
         return [
             'image' => $file->store('gallery/' . $album->id, 'public'),
+            'image_hash' => $this->hashUploadedFile($file),
             'width' => $width,
             'height' => $height,
             'size_kb' => (int) ceil($file->getSize() / 1024),
         ];
+    }
+
+    private function hashUploadedFile(UploadedFile $file): string
+    {
+        return hash_file('sha256', $file->getPathname());
+    }
+
+    private function duplicatePhotoForHash(GalleryAlbum $album, string $imageHash, ?int $ignorePhotoId = null): ?GalleryPhoto
+    {
+        return $album->photos()
+            ->where('image_hash', $imageHash)
+            ->when($ignorePhotoId, fn ($query) => $query->whereKeyNot($ignorePhotoId))
+            ->first();
     }
 
     private function titleFromFile(UploadedFile $file): string

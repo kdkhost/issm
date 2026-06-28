@@ -563,6 +563,18 @@
         return Math.floor(seconds / 60) + 'min ' + Math.ceil(seconds % 60) + 's';
     }
 
+    function fileSignature(file) {
+        return [file.name.toLowerCase(), file.size, file.lastModified].join('|');
+    }
+
+    function hasQueuedFile(file) {
+        var signature = fileSignature(file);
+
+        return queue.some(function(item) {
+            return item.state !== 'error' && fileSignature(item.file) === signature;
+        });
+    }
+
     function makeRow(item) {
         var row = document.createElement('div');
         row.className = 'upload-row';
@@ -613,6 +625,11 @@
             }
             if (file.size > maxBytes) {
                 toast('Arquivo ignorado: ' + file.name + ' passa do limite de {{ $uploadLimitMb }} MB.', 'error');
+                return;
+            }
+
+            if (hasQueuedFile(file)) {
+                toast('Arquivo ignorado: ' + file.name + ' ja esta na fila de envio.', 'error');
                 return;
             }
 

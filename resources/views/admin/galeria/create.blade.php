@@ -193,6 +193,18 @@
         return (bytes / 1024 / 1024).toFixed(2).replace('.', ',') + ' MB';
     }
 
+    function fileSignature(file) {
+        return [file.name.toLowerCase(), file.size, file.lastModified].join('|');
+    }
+
+    function hasQueuedFile(file) {
+        var signature = fileSignature(file);
+
+        return Array.from(bag.files).some(function(current) {
+            return fileSignature(current) === signature;
+        });
+    }
+
     function syncInput() {
         input.files = bag.files;
     }
@@ -236,6 +248,11 @@
 
             if (file.size > maxBytes) {
                 toast('Arquivo ignorado: ' + file.name + ' passa do limite de {{ $uploadLimitMb }} MB.', 'error');
+                return;
+            }
+
+            if (hasQueuedFile(file)) {
+                toast('Arquivo ignorado: ' + file.name + ' ja foi selecionado.', 'error');
                 return;
             }
 

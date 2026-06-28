@@ -31,6 +31,7 @@
 - Card de status operacional da dashboard padronizado para tema dark/light
 - Formulário de contato passa a enviar via AJAX, registrar mensagens no admin, notificar no sino com alerta visual/sonoro e enviar cópias por e-mail configuráveis
 - Galeria passa a registrar analytics completo de visitas, álbuns, fotos, cliques, compartilhamentos, downloads, usuário logado, sessão, IP, origem e detalhes técnicos
+- Galeria corrige troca de fotos no visualizador para evitar impressão de repetição por atraso e bloqueia uploads duplicados por hash da imagem
 
 ## [1.2.0] - 2026-06-09
 

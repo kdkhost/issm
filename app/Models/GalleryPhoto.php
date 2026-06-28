@@ -14,6 +14,7 @@ class GalleryPhoto extends Model
         'title',
         'description',
         'image',
+        'image_hash',
         'width',
         'height',
         'size_kb',

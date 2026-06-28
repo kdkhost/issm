@@ -60,6 +60,8 @@
 #lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.93);align-items:center;justify-content:center}
 #lightbox.open{display:flex}
 #lightbox img#lb-img{max-width:90vw;max-height:85vh;border-radius:10px;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.7);animation:lbIn .2s ease}
+#lightbox.is-loading img#lb-img{opacity:.18;filter:blur(4px)}
+#lightbox.is-loading::after{content:'';position:absolute;width:42px;height:42px;border-radius:999px;border:3px solid rgba(255,255,255,.22);border-top-color:#22c55e;animation:galSpin .75s linear infinite}
 @@keyframes lbIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
 .lb-btn{position:absolute;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center}
 .lb-btn:hover{background:rgba(255,255,255,.2)}
@@ -367,6 +369,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     var lazyObserver = null;
     var autoObserver = null;
     var loadingNext = false;
+    var lightboxLoadToken = 0;
     var trackUrl = @json(route('gallery.track'));
     var csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
@@ -554,10 +557,47 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 
     if (!items.length || !lb || !img || !galleryGrid) return;
 
+    function setLightboxImage(data, immediate) {
+        var source = data.watermarkedUrl || data.src;
+        var token = ++lightboxLoadToken;
+
+        if (!source) return;
+
+        if (immediate && img.src === source) {
+            lb.classList.remove('is-loading');
+            return;
+        }
+
+        lb.classList.add('is-loading');
+        if (!immediate) {
+            img.removeAttribute('src');
+            img.alt = '';
+        }
+
+        var preload = new Image();
+        preload.onload = function() {
+            if (token !== lightboxLoadToken) return;
+            img.style.animation = 'none';
+            requestAnimationFrame(function() {
+                if (token !== lightboxLoadToken) return;
+                img.src = source;
+                img.alt = data.caption || 'Foto da galeria';
+                img.style.animation = '';
+                lb.classList.remove('is-loading');
+            });
+        };
+        preload.onerror = function() {
+            if (token !== lightboxLoadToken) return;
+            img.src = source;
+            lb.classList.remove('is-loading');
+        };
+        preload.src = source;
+    }
+
     function open(idx) {
         cur = idx;
         var d = items[idx].dataset;
-        img.src = d.watermarkedUrl || d.src;
+        setLightboxImage(d, true);
         cap.textContent = d.caption || '';
         ctr.textContent = (idx + 1) + ' / ' + items.length;
         updateLightboxActions(d);
@@ -568,6 +608,8 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
 
     function close() {
         lb.classList.remove('open');
+        lb.classList.remove('is-loading');
+        lightboxLoadToken++;
         img.src = '';
         document.body.style.overflow = '';
     }
@@ -575,15 +617,11 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     function nav(dir) {
         cur = (cur + dir + items.length) % items.length;
         var d = items[cur].dataset;
-        img.style.animation = 'none';
-        requestAnimationFrame(function(){
-            img.style.animation = '';
-            img.src = d.watermarkedUrl || d.src;
-            cap.textContent = d.caption || '';
-            ctr.textContent = (cur + 1) + ' / ' + items.length;
-            updateLightboxActions(d);
-            trackGalleryEvent('photo_view', { albumId: d.albumId, photoId: d.photoId, label: d.caption });
-        });
+        setLightboxImage(d);
+        cap.textContent = d.caption || '';
+        ctr.textContent = (cur + 1) + ' / ' + items.length;
+        updateLightboxActions(d);
+        trackGalleryEvent('photo_view', { albumId: d.albumId, photoId: d.photoId, label: d.caption });
     }
 
     function updateLightboxActions(data) {
