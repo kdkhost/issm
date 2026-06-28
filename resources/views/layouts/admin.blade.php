@@ -575,6 +575,7 @@
                 'admin.banners'      => 'Banners',
                 'admin.noticias'     => 'Notícias',
                 'admin.projetos'     => 'Projetos',
+                'admin.project-supports' => 'Apoios aos Projetos',
                 'admin.equipe'       => 'Equipe',
                 'admin.paginas'      => 'Páginas Dinâmicas',
                 'admin.cms-public-pages' => 'CMS Páginas Públicas',

@@ -33,6 +33,7 @@
 - Galeria passa a registrar analytics completo de visitas, álbuns, fotos, cliques, compartilhamentos, downloads, usuário logado, sessão, IP, origem e detalhes técnicos
 - Galeria corrige troca de fotos no visualizador para evitar impressão de repetição por atraso e bloqueia uploads duplicados por hash da imagem
 - Preloaders da galeria passam a reutilizar o mesmo visual configurado para o site, incluindo logo, aneis animados e barra de progresso
+- Projetos recebem fluxo de apoio configurável com tipos de contribuição, formulário público AJAX e registros administrativos vinculados ao projeto e ao apoiador
 
 ## [1.2.0] - 2026-06-09
 

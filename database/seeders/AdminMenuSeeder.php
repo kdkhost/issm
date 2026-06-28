@@ -33,6 +33,7 @@ class AdminMenuSeeder extends Seeder
                     ['label' => 'Banners', 'route_name' => 'admin.banners.index'],
                     ['label' => 'Notícias', 'route_name' => 'admin.noticias.index'],
                     ['label' => 'Projetos', 'route_name' => 'admin.projetos.index'],
+                    ['label' => 'Apoios aos Projetos', 'route_name' => 'admin.project-supports.index'],
                     ['label' => 'Galeria', 'route_name' => 'admin.galeria.index'],
                     ['label' => 'CMS Páginas Públicas', 'route_name' => 'admin.cms-public-pages.index'],
                     ['label' => 'Páginas Dinâmicas', 'route_name' => 'admin.paginas.index'],

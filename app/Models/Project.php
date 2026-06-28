@@ -35,6 +35,11 @@ class Project extends Model
         return $this->belongsToMany(GalleryAlbum::class, 'gallery_album_project')->withTimestamps();
     }
 
+    public function supportRequests()
+    {
+        return $this->hasMany(ProjectSupportRequest::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

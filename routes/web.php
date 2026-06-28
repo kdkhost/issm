@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\OdsController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProjectSupportController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TeamController;
@@ -46,6 +47,7 @@ Route::get('/galeria', [PublicGalleryController::class, 'index'])->name('gallery
 Route::get('/noticias', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/noticias/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
 Route::get('/projetos', [PublicProjectController::class, 'index'])->name('projects.index');
+Route::post('/projetos/{project:slug}/apoio', [PublicProjectController::class, 'support'])->name('projects.support');
 Route::get('/projetos/{slug}', [PublicProjectController::class, 'show'])->name('projects.show');
 Route::post('/contato', [ContactFormController::class, 'store'])->name('contact.store');
 Route::get('/pagina/{slug}', [PublicPageController::class, 'show'])->name('pages.show');
@@ -65,6 +67,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('banners/{banner}/toggle', [BannerController::class, 'toggleActive'])->name('banners.toggle');
     Route::resource('noticias', NewsController::class)->parameters(['noticias' => 'news']);
     Route::resource('projetos', ProjectController::class)->parameters(['projetos' => 'project']);
+    Route::get('apoios-projetos', [ProjectSupportController::class, 'index'])->name('project-supports.index');
+    Route::post('apoios-projetos/tipos', [ProjectSupportController::class, 'storeType'])->name('project-supports.types.store');
+    Route::put('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'updateType'])->name('project-supports.types.update');
+    Route::delete('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'destroyType'])->name('project-supports.types.destroy');
+    Route::put('apoios-projetos/solicitacoes/{supportRequest}', [ProjectSupportController::class, 'updateRequest'])->name('project-supports.requests.update');
     Route::resource('equipe', TeamController::class)->parameters(['equipe' => 'team']);
     Route::resource('parceiros', PartnerController::class)->parameters(['parceiros' => 'partner']);
     Route::resource('galeria', GalleryController::class)->parameters(['galeria' => 'gallery']);
