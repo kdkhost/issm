@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [1.3.1] - 2026-06-28
+
+### Melhorado - Aparência da página de apoios aos projetos
+
+- Ajustes sutis no CSS para aparência mais profissional mantendo layout original
+- Cores refinadas com palette slate para visual mais moderno e limpo
+- Sombras reduzidas para efeito mais sutil e elegante
+- Border radius padronizado (12px cards, 8px inputs)
+- Font weights equilibrados (600-700 em vez de 950)
+- Espaçamentos ajustados para melhor separação visual
+- Hover nos tabs com feedback visual em verde
+- Dark mode melhorado com cores mais harmoniosas
+
 ## [1.3.0] - 2026-06-27
 
 ### Adicionado - Galeria por albuns e eventos
