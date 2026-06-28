@@ -41,9 +41,17 @@
 .dash-legend{display:flex;flex-direction:column;gap:8px;min-width:0}
 .dash-legend-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#374151}
 .dash-legend-dot{width:10px;height:10px;border-radius:999px;flex-shrink:0}
-.dash-maintenance{display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:16px;padding:14px 16px;background:{{ $maintenanceMode == "1" ? '#fff7ed' : '#f0fdf4' }};border:1px solid {{ $maintenanceMode == "1" ? '#fed7aa' : '#bbf7d0' }};margin-bottom:24px}
-.dash-maintenance strong{color:#111827}
-.dash-maintenance span{font-size:13px;font-weight:800;color:{{ $maintenanceMode == "1" ? '#c2410c' : '#15803d' }}}
+.dash-maintenance{display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:18px;padding:16px 18px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 12px 30px rgba(15,23,42,.06);margin-bottom:24px}
+.dash-maintenance-left{display:flex;align-items:center;gap:12px;min-width:0}
+.dash-maintenance-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--status-bg);color:var(--status-color);flex-shrink:0}
+.dash-maintenance-icon svg{width:21px;height:21px}
+.dash-maintenance-title{display:block;color:#111827;font-size:14px;font-weight:950;line-height:1.2}
+.dash-maintenance-sub{display:block;color:#6b7280;font-size:12px;font-weight:700;margin-top:2px}
+.dash-maintenance-status{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 12px;background:var(--status-bg);color:var(--status-color);font-size:12px;font-weight:950;white-space:nowrap}
+.dash-maintenance-status::before{content:'';width:8px;height:8px;border-radius:999px;background:var(--status-color);box-shadow:0 0 0 4px var(--status-ring)}
+.dash-maintenance-link{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#374151;font-size:12px;font-weight:950;text-decoration:none;white-space:nowrap}
+.dash-maintenance-link:hover{color:var(--status-color);border-color:var(--status-color);text-decoration:none}
+.dash-maintenance-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .dash-list-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 12px 30px rgba(15,23,42,.06)}
 .dash-list-title{font-size:15px;font-weight:950;color:#111827;margin:0 0 12px}
 .dash-quick-grid{margin-top:24px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
@@ -55,13 +63,16 @@
 @keyframes dashSpinIn{from{transform:rotate(-28deg) scale(.92);opacity:.5}to{transform:rotate(0) scale(1);opacity:1}}
 @media(max-width:1200px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-panels{grid-template-columns:1fr}.dash-quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:640px){.dash-kpis{grid-template-columns:1fr}.dash-ring-wrap{flex-direction:column;align-items:flex-start}.dash-bars{gap:4px}.dash-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-[data-theme="dark"] .dash-kpi,[data-theme="dark"] .dash-panel,[data-theme="dark"] .dash-list-card,[data-theme="dark"] .dash-quick{background:#1f2937;border-color:#374151;box-shadow:0 12px 30px rgba(0,0,0,.22)}
-[data-theme="dark"] .dash-kpi-value,[data-theme="dark"] .dash-panel-title,[data-theme="dark"] .dash-ring-value,[data-theme="dark"] .dash-maintenance strong,[data-theme="dark"] .dash-list-title{color:#f9fafb}
+[data-theme="dark"] .dash-kpi,[data-theme="dark"] .dash-panel,[data-theme="dark"] .dash-list-card,[data-theme="dark"] .dash-quick,[data-theme="dark"] .dash-maintenance{background:#1f2937;border-color:#374151;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+[data-theme="dark"] .dash-kpi-value,[data-theme="dark"] .dash-panel-title,[data-theme="dark"] .dash-ring-value,[data-theme="dark"] .dash-list-title,[data-theme="dark"] .dash-maintenance-title{color:#f9fafb}
 [data-theme="dark"] .dash-kpi-label,[data-theme="dark"] .dash-kpi-today,[data-theme="dark"] .dash-ring-label{color:#9ca3af}
 [data-theme="dark"] .dash-kpi-icon,[data-theme="dark"] .dash-kpi-trend{background:rgba(255,255,255,.06)}
 [data-theme="dark"] .dash-spark circle{fill:#1f2937}
 [data-theme="dark"] .dash-ring::after{background:#1f2937}
 [data-theme="dark"] .dash-legend-row{color:#d1d5db}
+[data-theme="dark"] .dash-maintenance-sub{color:#9ca3af}
+[data-theme="dark"] .dash-maintenance-link{background:#111827;border-color:#374151;color:#d1d5db}
+[data-theme="dark"] .dash-maintenance-link:hover{color:var(--status-color);border-color:var(--status-color)}
 </style>
 
 @php
@@ -121,10 +132,20 @@
         @endforeach
     </div>
 
-    <div class="dash-maintenance">
-        <strong>Status operacional</strong>
-        <span>Manutenção {{ $maintenanceMode == "1" ? "ativa" : "desativada" }}</span>
-        <a href="{{ route("admin.settings.index") }}" class="text-xs font-black hover:underline" style="color:{{ $maintenanceMode == "1" ? '#c2410c' : '#15803d' }}">Configurações</a>
+    <div class="dash-maintenance" style="--status-color:{{ $maintenanceMode == "1" ? '#ea580c' : '#16a34a' }};--status-bg:{{ $maintenanceMode == "1" ? '#fff7ed' : '#f0fdf4' }};--status-ring:{{ $maintenanceMode == "1" ? 'rgba(234,88,12,.14)' : 'rgba(22,163,74,.14)' }}">
+        <div class="dash-maintenance-left">
+            <div class="dash-maintenance-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $maintenanceMode == "1" ? 'M12 9v2m0 4h.01M4.93 19h14.14c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.2 16c-.77 1.33.19 3 1.73 3z' : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' }}"/></svg>
+            </div>
+            <div>
+                <span class="dash-maintenance-title">Status operacional</span>
+                <span class="dash-maintenance-sub">Controle rápido da disponibilidade pública do site</span>
+            </div>
+        </div>
+        <div class="dash-maintenance-actions">
+            <span class="dash-maintenance-status">Manutenção {{ $maintenanceMode == "1" ? "ativa" : "desativada" }}</span>
+            <a href="{{ route("admin.settings.index") }}" class="dash-maintenance-link">Configurações</a>
+        </div>
     </div>
 
     <div class="dash-panels">

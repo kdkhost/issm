@@ -28,6 +28,7 @@
 - Página de contato passa a listar endereços em linhas separadas e exibir um mapa para cada endereço cadastrado
 - Card de contato recebe anúncio institucional de parcerias para ocupar o espaço abaixo do formulário
 - Dashboard administrativa recebe KPIs com contadores animados, sparklines, gráfico de visitas e composição de conteúdo
+- Card de status operacional da dashboard padronizado para tema dark/light
 
 ## [1.2.0] - 2026-06-09
 
