@@ -2,6 +2,63 @@
 @section("title", "Apoios aos Projetos")
 @section("page-title", "Apoios aos Projetos")
 
+@push("styles")
+<style>
+    .support-shell { display:grid;gap:18px; }
+    .support-card { background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 26px rgba(15,23,42,.05);overflow:hidden; }
+    .support-card-head { display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid #edf2f7;background:#fbfcfe; }
+    .support-card-title { margin:0;color:#111827;font-size:16px;font-weight:950;line-height:1.2; }
+    .support-card-subtitle { margin:5px 0 0;color:#64748b;font-size:13px;line-height:1.45; }
+    .support-card-body { padding:20px; }
+    .support-kpi { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:14px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 8px 20px rgba(15,23,42,.04);min-height:92px; }
+    .support-kpi span { display:block;color:#64748b;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em; }
+    .support-kpi strong { display:block;margin-top:6px;color:#111827;font-size:25px;font-weight:950;line-height:1; }
+    .support-kpi-icon { width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:#ecfdf5;color:#047857;font-weight:950; }
+    .support-field { width:100%;border:1px solid #d1d5db;border-radius:10px;padding:10px 11px;font-size:13px;color:#111827;background:#fff;transition:border-color .15s,box-shadow .15s; }
+    .support-field:focus { outline:0;border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.12); }
+    .support-label { display:block;font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.045em;color:#64748b;margin-bottom:6px; }
+    .support-check { display:flex;align-items:center;gap:8px;min-height:34px;font-size:12px;font-weight:800;color:#374151; }
+    .support-check input { width:16px;height:16px;accent-color:#15803d; }
+    .support-btn { display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:950;transition:background .15s,color .15s,border-color .15s; }
+    .support-btn-primary { background:#15803d;color:#fff; }
+    .support-btn-primary:hover { background:#166534;color:#fff;text-decoration:none; }
+    .support-btn-dark { background:#111827;color:#fff; }
+    .support-btn-dark:hover { background:#030712;color:#fff;text-decoration:none; }
+    .support-badge { display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;line-height:1; }
+    .support-badge-green { background:#dcfce7;color:#166534; }
+    .support-badge-gray { background:#f1f5f9;color:#475569; }
+    .support-badge-blue { background:#dbeafe;color:#1d4ed8; }
+    .support-badge-red { background:#fee2e2;color:#b91c1c; }
+    .support-row { border-top:1px solid #edf2f7;scroll-margin-top:110px; }
+    .support-row:hover { background:#fbfcfe; }
+    .support-helpbox { border:1px solid #bbf7d0;background:#f0fdf4;border-radius:14px;padding:14px;color:#14532d;font-size:12px;line-height:1.55; }
+    .support-helpbox code { background:rgba(22,101,52,.1);border-radius:6px;padding:2px 5px;font-weight:900; }
+    .gateway-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+    .gateway-note { border:1px solid #e5e7eb;border-radius:14px;padding:13px;background:#fff; }
+    .gateway-note strong { display:block;color:#111827;font-size:12px;font-weight:950;margin-bottom:6px; }
+    .gateway-note ul { margin:0;padding-left:16px;color:#64748b;font-size:12px;line-height:1.55; }
+    .type-list { display:grid;gap:12px; }
+    .type-card { border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fff; }
+    .request-grid { display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start; }
+    .request-meta { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin-top:12px;font-size:13px; }
+    .request-meta dt { color:#64748b;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.05em; }
+    .request-meta dd { margin:2px 0 0;color:#1f2937;font-weight:700;word-break:break-word; }
+    .section-tabs { display:flex;gap:8px;flex-wrap:wrap; }
+    .section-tabs a { border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;text-decoration:none; }
+    .section-tabs a:hover { border-color:#16a34a;color:#15803d; }
+    @media(max-width:1100px){.gateway-grid,.request-grid{grid-template-columns:1fr}.request-meta{grid-template-columns:1fr}.support-card-head{flex-direction:column}.section-tabs{width:100%}}
+    [data-theme="dark"] .support-card,[data-theme="dark"] .support-kpi,[data-theme="dark"] .gateway-note,[data-theme="dark"] .type-card { background:#1f2937;border-color:#374151;box-shadow:none; }
+    [data-theme="dark"] .support-card-head { background:#111827;border-color:#374151; }
+    [data-theme="dark"] .support-card-title,[data-theme="dark"] .support-kpi strong,[data-theme="dark"] .gateway-note strong { color:#f9fafb; }
+    [data-theme="dark"] .support-card-subtitle,[data-theme="dark"] .support-kpi span,[data-theme="dark"] .gateway-note ul,[data-theme="dark"] .support-label { color:#9ca3af; }
+    [data-theme="dark"] .support-field { background:#111827;border-color:#4b5563;color:#f9fafb; }
+    [data-theme="dark"] .support-check,[data-theme="dark"] .request-meta dd { color:#e5e7eb; }
+    [data-theme="dark"] .support-row { border-color:#374151; }
+    [data-theme="dark"] .support-row:hover { background:#111827; }
+    [data-theme="dark"] .support-helpbox { background:rgba(20,83,45,.22);border-color:rgba(74,222,128,.35);color:#bbf7d0; }
+    [data-theme="dark"] .section-tabs a { background:#1f2937;border-color:#374151;color:#d1d5db; }
+</style>
+@endpush
 
 @section("content")
 @php
@@ -42,92 +99,47 @@
     $activeGateway = $gatewaySettings["donation_gateway_active"] ?? "";
 @endphp
 
-<div class="mb-6">
-    <div class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="font-bold text-gray-800">Central de apoios e doacoes</h2>
-                    <p class="text-sm text-gray-500 mt-1">Gerencie formas de apoio, gateway de doacoes monetarias, registros recebidos e instrucoes para cada portal de pagamento.</p>
-                </div>
-                <div class="flex gap-2">
-                    <a href="#gateway" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Gateway</a>
-                    <a href="#tipos" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Tipos de apoio</a>
-                    <a href="#registros" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Registros</a>
-                </div>
+<div class="support-shell">
+    <div class="support-card">
+        <div class="support-card-head">
+            <div>
+                <h2 class="support-card-title">Central de apoios e doacoes</h2>
+                <p class="support-card-subtitle">Gerencie formas de apoio, gateway de doacoes monetarias, registros recebidos e instrucoes para cada portal de pagamento.</p>
+            </div>
+            <div class="section-tabs">
+                <a href="#gateway">Gateway</a>
+                <a href="#tipos">Tipos de apoio</a>
+                <a href="#registros">Registros</a>
             </div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div class="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Total</p>
-                <p class="text-2xl font-black text-gray-900 mt-1">{{ $stats["total"] }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Novos</p>
-                <p class="text-2xl font-black text-red-600 mt-1">{{ $stats["new"] }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
-                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Contatados</p>
-                <p class="text-2xl font-black text-blue-600 mt-1">{{ $stats["contacted"] }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Concluidos</p>
-                <p class="text-2xl font-black text-green-700 mt-1">{{ $stats["completed"] }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Valor sinalizado</p>
-                <p class="text-2xl font-black text-green-700 mt-1">R$ {{ $fmt($stats["amount"]) }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-        </div>
+        <div class="support-kpi"><div><span>Total</span><strong>{{ $stats["total"] }}</strong></div><div class="support-kpi-icon">T</div></div>
+        <div class="support-kpi"><div><span>Novos</span><strong class="text-red-600">{{ $stats["new"] }}</strong></div><div class="support-kpi-icon">N</div></div>
+        <div class="support-kpi"><div><span>Contatados</span><strong class="text-blue-600">{{ $stats["contacted"] }}</strong></div><div class="support-kpi-icon">C</div></div>
+        <div class="support-kpi"><div><span>Concluidos</span><strong class="text-green-700">{{ $stats["completed"] }}</strong></div><div class="support-kpi-icon">OK</div></div>
+        <div class="support-kpi"><div><span>Valor sinalizado</span><strong class="text-green-700">R$ {{ $fmt($stats["amount"]) }}</strong></div><div class="support-kpi-icon">R$</div></div>
     </div>
-</div>
 
-    <div id="gateway" class="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="font-bold text-gray-800">Gateway de doacoes</h2>
-                    <p class="text-sm text-gray-500 mt-1">Somente um gateway fica ativo por vez. As URLs abaixo devem ser cadastradas no portal escolhido.</p>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold {{ $activeGateway ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' }}">
-                    {{ $activeGateway ? 'Ativo: ' . ($gatewayLabels[$activeGateway] ?? strtoupper($activeGateway)) : 'Gateway desativado' }}
-                </span>
+    <div id="gateway" class="support-card">
+        <div class="support-card-head">
+            <div>
+                <h2 class="support-card-title">Gateway de doacoes</h2>
+                <p class="support-card-subtitle">Somente um gateway fica ativo por vez. As URLs abaixo devem ser cadastradas no portal escolhido.</p>
             </div>
+            <span class="support-badge {{ $activeGateway ? 'support-badge-green' : 'support-badge-gray' }}">
+                {{ $activeGateway ? 'Ativo: ' . ($gatewayLabels[$activeGateway] ?? strtoupper($activeGateway)) : 'Gateway desativado' }}
+            </span>
         </div>
-        <div class="p-6">
+        <div class="support-card-body">
             <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}" class="grid grid-cols-1 xl:grid-cols-3 gap-5">
                 @csrf
                 @method("PUT")
-                <div class="xl:col-span-1 space-y-5">
+                <div class="xl:col-span-1 space-y-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Gateway ativo</label>
-                        <select name="donation_gateway_active">
+                        <label class="support-label">Gateway ativo</label>
+                        <select name="donation_gateway_active" class="support-field">
                             <option value="">Desativado</option>
                             @foreach($gateways as $gateway)
                                 <option value="{{ $gateway }}" @selected($activeGateway === $gateway)>{{ $gatewayLabels[$gateway] ?? strtoupper($gateway) }}</option>
@@ -135,67 +147,64 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">E-mail padrao do pagador</label>
-                        <input type="email" name="donation_default_payer_email" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}" placeholder="doacao@issm.org.br">
+                        <label class="support-label">E-mail padrao do pagador</label>
+                        <input type="email" name="donation_default_payer_email" class="support-field" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}" placeholder="doacao@issm.org.br">
                     </div>
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-800">
-                        <p><strong class="font-semibold">Webhook:</strong> <code class="bg-green-100 px-1 rounded">{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
-                        <p class="mt-1"><strong class="font-semibold">Retorno:</strong> <code class="bg-green-100 px-1 rounded">{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
-                        <p class="mt-1 text-xs">Troque <code class="bg-green-100 px-1 rounded">{gateway}</code> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
+                    <div class="support-helpbox">
+                        <p><strong>Webhook:</strong> <code>{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
+                        <p><strong>Retorno:</strong> <code>{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
+                        <p>Troque <code>{gateway}</code> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
                     </div>
                 </div>
 
                 <div class="xl:col-span-2 space-y-5">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Mercado Pago - Access Token</label>
-                            <input name="donation_mercadopago_access_token" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
+                            <label class="support-label">Mercado Pago - Access Token</label>
+                            <input name="donation_mercadopago_access_token" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Stripe - Publishable Key</label>
-                            <input name="donation_stripe_publishable_key" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
+                            <label class="support-label">Stripe - Publishable Key</label>
+                            <input name="donation_stripe_publishable_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Stripe - Secret Key</label>
-                            <input name="donation_stripe_secret_key" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
+                            <label class="support-label">Stripe - Secret Key</label>
+                            <input name="donation_stripe_secret_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">PayPal - Client ID</label>
-                            <input name="donation_paypal_client_id" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
+                            <label class="support-label">PayPal - Client ID</label>
+                            <input name="donation_paypal_client_id" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">PayPal - Secret</label>
-                            <input name="donation_paypal_secret" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
+                            <label class="support-label">PayPal - Secret</label>
+                            <input name="donation_paypal_secret" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
                         </div>
-                        <div class="flex items-center mt-6">
-                            <input type="checkbox" name="donation_paypal_sandbox" value="1" id="paypal_sandbox" @checked(($gatewaySettings["donation_paypal_sandbox"] ?? "1") === "1") class="w-4 h-4 text-green-600 rounded">
-                            <label for="paypal_sandbox" class="ml-2 text-sm font-medium text-gray-700">Usar sandbox do PayPal para testes</label>
-                        </div>
+                        <label class="support-check mt-6"><input type="checkbox" name="donation_paypal_sandbox" value="1" @checked(($gatewaySettings["donation_paypal_sandbox"] ?? "1") === "1")> Usar sandbox do PayPal para testes</label>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         @foreach(["cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efi Pro"] as $key => $label)
-                            <div class="border border-gray-200 rounded-lg p-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">{{ $label }}</label>
+                            <div class="type-card">
+                                <label class="support-label">{{ $label }}</label>
                                 <div class="space-y-2">
-                                    <input name="donation_{{ $key }}_base_url" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
-                                    <input name="donation_{{ $key }}_api_key" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
+                                    <input name="donation_{{ $key }}_base_url" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
+                                    <input name="donation_{{ $key }}_api_key" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
                                 </div>
                             </div>
                         @endforeach
                     </div>
 
-                    <button class="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 font-medium text-sm w-full">Salvar configuracoes do gateway</button>
+                    <button class="support-btn support-btn-dark w-full">Salvar configuracoes do gateway</button>
                 </div>
             </form>
 
-            <div class="mt-6 pt-6 border-t border-gray-100">
-                <h3 class="text-sm font-bold text-gray-900 mb-3">Instrucoes por portal de pagamento</h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="mt-5">
+                <h3 class="text-sm font-black text-gray-900 dark:text-white mb-3">Instrucoes por portal de pagamento</h3>
+                <div class="gateway-grid">
                     @foreach($gatewayInstructions as $key => $instructions)
-                        <div class="border border-gray-200 rounded-lg p-4">
-                            <strong class="block text-sm font-bold text-gray-900 mb-2">{{ $gatewayLabels[$key] ?? strtoupper($key) }}</strong>
-                            <ul class="text-sm text-gray-600 space-y-1">
+                        <div class="gateway-note">
+                            <strong>{{ $gatewayLabels[$key] ?? strtoupper($key) }}</strong>
+                            <ul>
                                 @foreach($instructions as $instruction)
                                     <li>{{ $instruction }}</li>
                                 @endforeach
@@ -208,143 +217,115 @@
     </div>
 
     <div id="tipos" class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                <h2 class="font-bold text-gray-800">Novo tipo de apoio</h2>
-                <p class="text-sm text-gray-500 mt-1">Defina o que aparece no botao Apoiar Projeto.</p>
+        <div class="support-card">
+            <div class="support-card-head">
+                <div>
+                    <h2 class="support-card-title">Novo tipo de apoio</h2>
+                    <p class="support-card-subtitle">Defina o que aparece no botao Apoiar Projeto.</p>
+                </div>
             </div>
-            <div class="p-6">
-                <form method="POST" action="{{ route("admin.project-supports.types.store") }}" class="space-y-4">
+            <div class="support-card-body">
+                <form method="POST" action="{{ route("admin.project-supports.types.store") }}" class="space-y-3">
                     @csrf
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nome</label>
-                        <input name="name" required placeholder="Ex: Doacao de mudas">
+                        <label class="support-label">Nome</label>
+                        <input name="name" class="support-field" required placeholder="Ex: Doacao de mudas">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Categoria</label>
-                        <select name="category" required>
+                        <label class="support-label">Categoria</label>
+                        <select name="category" class="support-field" required>
                             @foreach($categoryLabels as $key => $label)
                                 <option value="{{ $key }}">{{ $label }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Descricao</label>
-                        <textarea name="description" rows="2"></textarea>
+                        <label class="support-label">Descricao</label>
+                        <textarea name="description" class="support-field" rows="2"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Instrucoes para o apoiador</label>
-                        <textarea name="instructions" rows="3"></textarea>
+                        <label class="support-label">Instrucoes para o apoiador</label>
+                        <textarea name="instructions" class="support-field" rows="3"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Valores sugeridos</label>
-                        <input name="suggested_amounts" placeholder="50, 100, 250">
+                        <label class="support-label">Valores sugeridos</label>
+                        <input name="suggested_amounts" class="support-field" placeholder="50, 100, 250">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" name="requires_amount" value="1" class="w-4 h-4 text-green-600 rounded">
-                            <label class="text-sm font-medium text-gray-700">Valor</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" name="requires_quantity" value="1" class="w-4 h-4 text-green-600 rounded">
-                            <label class="text-sm font-medium text-gray-700">Quantidade</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" name="requires_address" value="1" class="w-4 h-4 text-green-600 rounded">
-                            <label class="text-sm font-medium text-gray-700">Endereco</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" name="requires_document" value="1" class="w-4 h-4 text-green-600 rounded">
-                            <label class="text-sm font-medium text-gray-700">Documento</label>
-                        </div>
+                        <label class="support-check"><input type="checkbox" name="requires_amount" value="1"> Valor</label>
+                        <label class="support-check"><input type="checkbox" name="requires_quantity" value="1"> Quantidade</label>
+                        <label class="support-check"><input type="checkbox" name="requires_address" value="1"> Endereco</label>
+                        <label class="support-check"><input type="checkbox" name="requires_document" value="1"> Documento</label>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Ordem</label>
-                            <input type="number" name="sort_order" value="0">
+                            <label class="support-label">Ordem</label>
+                            <input type="number" name="sort_order" class="support-field" value="0">
                         </div>
-                        <div class="flex items-end">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" name="active" value="1" checked class="w-4 h-4 text-green-600 rounded">
-                                <label class="text-sm font-medium text-gray-700">Ativo</label>
-                            </div>
-                        </div>
+                        <label class="support-check mt-6"><input type="checkbox" name="active" value="1" checked> Ativo</label>
                     </div>
-                    <button class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 font-medium text-sm w-full">Adicionar tipo</button>
+                    <button class="support-btn support-btn-primary w-full">Adicionar tipo</button>
                 </form>
             </div>
         </div>
 
-        <div class="xl:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                <h2 class="font-bold text-gray-800">Tipos configurados</h2>
-                <p class="text-sm text-gray-500 mt-1">Edite exigencias, instrucoes e ordem de exibicao no site.</p>
+        <div class="xl:col-span-2 support-card">
+            <div class="support-card-head">
+                <div>
+                    <h2 class="support-card-title">Tipos configurados</h2>
+                    <p class="support-card-subtitle">Edite exigencias, instrucoes e ordem de exibicao no site.</p>
+                </div>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="support-card-body type-list">
                 @forelse($supportTypes as $type)
-                    <form method="POST" action="{{ route("admin.project-supports.types.update", $type) }}" class="border border-gray-200 rounded-lg p-4">
+                    <form method="POST" action="{{ route("admin.project-supports.types.update", $type) }}" class="type-card">
                         @csrf
                         @method("PUT")
                         <div class="grid grid-cols-1 lg:grid-cols-5 gap-3">
                             <div class="lg:col-span-2">
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Nome</label>
-                                <input name="name" value="{{ $type->name }}" required>
+                                <label class="support-label">Nome</label>
+                                <input name="name" class="support-field" value="{{ $type->name }}" required>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Categoria</label>
-                                <select name="category" required>
+                                <label class="support-label">Categoria</label>
+                                <select name="category" class="support-field" required>
                                     @foreach($categoryLabels as $key => $label)
                                         <option value="{{ $key }}" @selected($type->category === $key)>{{ $label }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Ordem</label>
-                                <input type="number" name="sort_order" value="{{ $type->sort_order }}">
+                                <label class="support-label">Ordem</label>
+                                <input type="number" name="sort_order" class="support-field" value="{{ $type->sort_order }}">
                             </div>
                             <div class="flex items-end">
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" name="active" value="1" @checked($type->active) class="w-4 h-4 text-green-600 rounded">
-                                    <label class="text-sm font-medium text-gray-700">Ativo</label>
-                                </div>
+                                <label class="support-check"><input type="checkbox" name="active" value="1" @checked($type->active)> Ativo</label>
                             </div>
                             <div class="lg:col-span-2">
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Descricao</label>
-                                <textarea name="description" rows="2">{{ $type->description }}</textarea>
+                                <label class="support-label">Descricao</label>
+                                <textarea name="description" class="support-field" rows="2">{{ $type->description }}</textarea>
                             </div>
                             <div class="lg:col-span-2">
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Instrucoes</label>
-                                <textarea name="instructions" rows="2">{{ $type->instructions }}</textarea>
+                                <label class="support-label">Instrucoes</label>
+                                <textarea name="instructions" class="support-field" rows="2">{{ $type->instructions }}</textarea>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Valores</label>
-                                <input name="suggested_amounts" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
+                                <label class="support-label">Valores</label>
+                                <input name="suggested_amounts" class="support-field" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
                             </div>
                         </div>
-                        <div class="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-gray-100">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                             <div class="flex flex-wrap gap-3">
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" name="requires_amount" value="1" @checked($type->requires_amount) class="w-4 h-4 text-green-600 rounded">
-                                    <label class="text-sm font-medium text-gray-700">Exigir valor</label>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" name="requires_quantity" value="1" @checked($type->requires_quantity) class="w-4 h-4 text-green-600 rounded">
-                                    <label class="text-sm font-medium text-gray-700">Exigir quantidade</label>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" name="requires_address" value="1" @checked($type->requires_address) class="w-4 h-4 text-green-600 rounded">
-                                    <label class="text-sm font-medium text-gray-700">Exigir endereco</label>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" name="requires_document" value="1" @checked($type->requires_document) class="w-4 h-4 text-green-600 rounded">
-                                    <label class="text-sm font-medium text-gray-700">Exigir documento</label>
-                                </div>
+                                <label class="support-check"><input type="checkbox" name="requires_amount" value="1" @checked($type->requires_amount)> Exigir valor</label>
+                                <label class="support-check"><input type="checkbox" name="requires_quantity" value="1" @checked($type->requires_quantity)> Exigir quantidade</label>
+                                <label class="support-check"><input type="checkbox" name="requires_address" value="1" @checked($type->requires_address)> Exigir endereco</label>
+                                <label class="support-check"><input type="checkbox" name="requires_document" value="1" @checked($type->requires_document)> Exigir documento</label>
                             </div>
                             <div class="flex items-center gap-3">
                                 <span class="text-xs text-gray-500">{{ $type->requests_count }} registro(s)</span>
-                                <button class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 font-medium text-sm">Salvar</button>
+                                <button class="support-btn support-btn-dark">Salvar</button>
                                 @if($type->requests_count === 0)
-                                    <button form="delete-type-{{ $type->id }}" type="submit" data-confirm="Excluir este tipo de apoio?" class="px-4 py-2 border border-red-200 rounded-lg text-red-600 hover:bg-red-50 text-sm">Excluir</button>
+                                    <button form="delete-type-{{ $type->id }}" type="submit" data-confirm="Excluir este tipo de apoio?" class="support-btn text-red-600 border border-red-200">Excluir</button>
                                 @endif
                             </div>
                         </div>
@@ -359,88 +340,80 @@
         </div>
     </div>
 
-    <div id="registros" class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="font-bold text-gray-800">Apoios recebidos</h2>
-                    <p class="text-sm text-gray-500 mt-1">Todos os registros ficam vinculados ao projeto apoiado e aparecem no sininho administrativo.</p>
-                </div>
-                <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
-                    <select name="project">
-                        <option value="">Todos os projetos</option>
-                        @foreach($projects as $projectOption)
-                            <option value="{{ $projectOption->id }}" @selected((string) request("project") === (string) $projectOption->id)>
-                                {{ $projectOption->title }} ({{ $projectOption->support_requests_count }})
-                            </option>
-                        @endforeach
-                    </select>
-                    <select name="status">
-                        <option value="">Todos</option>
-                        @foreach($statusLabels as $key => $label)
-                            <option value="{{ $key }}" @selected(request("status") === $key)>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                    <button class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 font-medium text-sm">Filtrar</button>
-                </form>
+    <div id="registros" class="support-card">
+        <div class="support-card-head">
+            <div>
+                <h2 class="support-card-title">Apoios recebidos</h2>
+                <p class="support-card-subtitle">Todos os registros ficam vinculados ao projeto apoiado e aparecem no sininho administrativo.</p>
             </div>
+            <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
+                <select name="project" class="support-field">
+                    <option value="">Todos os projetos</option>
+                    @foreach($projects as $projectOption)
+                        <option value="{{ $projectOption->id }}" @selected((string) request("project") === (string) $projectOption->id)>
+                            {{ $projectOption->title }} ({{ $projectOption->support_requests_count }})
+                        </option>
+                    @endforeach
+                </select>
+                <select name="status" class="support-field">
+                    <option value="">Todos</option>
+                    @foreach($statusLabels as $key => $label)
+                        <option value="{{ $key }}" @selected(request("status") === $key)>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <button class="support-btn support-btn-dark">Filtrar</button>
+            </form>
         </div>
 
-        <div class="p-6">
-            @forelse($supportRequests as $support)
-                <div id="apoio-{{ $support->id }}" class="border-t border-gray-100 first:border-t-0 p-5 scroll-margin-top-20 hover:bg-gray-50">
-                    <div class="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-6">
-                        <div class="min-w-0">
-                            <div class="flex flex-wrap items-center gap-2 mb-2">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">{{ optional($support->supportType)->name ?: "Tipo removido" }}</span>
-                                <span class="px-3 py-1 rounded-full text-xs font-bold {{ $support->status === 'new' ? 'bg-red-100 text-red-700' : ($support->status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700') }}">{{ $statusLabels[$support->status] ?? $support->status }}</span>
-                                @if($support->payment_status)
-                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Pagamento: {{ $support->payment_status }}</span>
-                                @endif
-                                <span class="text-xs text-gray-500">{{ optional($support->created_at)->format("d/m/Y H:i") }}</span>
-                            </div>
-                            <h3 class="font-black text-gray-900 text-lg">{{ $support->name }}</h3>
-                            <p class="text-sm text-gray-600">{{ optional($support->project)->title ?: "Projeto removido" }}</p>
-
-                            <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mt-4 text-sm">
-                                <div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Contato</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->phone }} @if($support->email) - {{ $support->email }} @endif</dd></div>
-                                <div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Perfil</dt><dd class="mt-1 font-semibold text-gray-900">{{ str_replace("_", " ", $support->supporter_type) }}</dd></div>
-                                @if($support->organization || $support->government_agency)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Organizacao/orgao</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->organization ?: $support->government_agency }}</dd></div>@endif
-                                @if($support->amount)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Valor</dt><dd class="mt-1 font-semibold text-green-700">R$ {{ $fmt($support->amount) }}</dd></div>@endif
-                                @if($support->payment_gateway)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Gateway</dt><dd class="mt-1 font-semibold text-gray-900">{{ strtoupper($support->payment_gateway) }} / {{ strtoupper((string) $support->payment_method) }}</dd></div>@endif
-                                @if($support->payment_external_id)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">ID externo</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->payment_external_id }}</dd></div>@endif
-                                @if($support->payment_reference)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Referencia</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->payment_reference }}</dd></div>@endif
-                                @if($support->quantity)<div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Quantidade</dt><dd class="mt-1 font-semibold text-gray-900">{{ $fmt($support->quantity) }} {{ $support->unit }}</dd></div>@endif
-                                @if($support->item_description)<div class="md:col-span-2"><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Apoio oferecido</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->item_description }}</dd></div>@endif
-                                @if($support->message)<div class="md:col-span-2"><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">Mensagem</dt><dd class="mt-1 font-semibold text-gray-900">{{ $support->message }}</dd></div>@endif
-                                <div><dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">IP</dt><dd class="mt-1 text-gray-500">{{ $support->ip_address ?: "-" }}</dd></div>
-                            </dl>
+        @forelse($supportRequests as $support)
+            <div id="apoio-{{ $support->id }}" class="support-row p-5">
+                <div class="request-grid">
+                    <div class="min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
+                            <span class="support-badge support-badge-green">{{ optional($support->supportType)->name ?: "Tipo removido" }}</span>
+                            <span class="support-badge {{ $support->status === 'new' ? 'support-badge-red' : ($support->status === 'completed' ? 'support-badge-green' : 'support-badge-gray') }}">{{ $statusLabels[$support->status] ?? $support->status }}</span>
+                            @if($support->payment_status)
+                                <span class="support-badge support-badge-blue">Pagamento: {{ $support->payment_status }}</span>
+                            @endif
+                            <span class="text-xs text-gray-500">{{ optional($support->created_at)->format("d/m/Y H:i") }}</span>
                         </div>
-                        <form method="POST" action="{{ route("admin.project-supports.requests.update", $support) }}" class="space-y-4">
-                            @csrf
-                            @method("PUT")
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Status interno</label>
-                                <select name="status">
-                                    @foreach($statusLabels as $key => $label)
-                                        <option value="{{ $key }}" @selected($support->status === $key)>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Observacao interna</label>
-                                <textarea name="admin_note" rows="4" placeholder="Observacao interna">{{ data_get($support->metadata, "admin_note") }}</textarea>
-                            </div>
-                            <button class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 font-medium text-sm w-full">Atualizar registro</button>
-                        </form>
-                    </div>
-                </div>
-            @empty
-                <div class="p-12 text-center text-gray-400">Nenhum apoio registrado ainda.</div>
-            @endforelse
-        </div>
+                        <h3 class="font-black text-gray-900 dark:text-white text-lg">{{ $support->name }}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ optional($support->project)->title ?: "Projeto removido" }}</p>
 
-        <div class="p-4 border-t border-gray-100">{{ $supportRequests->links() }}</div>
+                        <dl class="request-meta">
+                            <div><dt>Contato</dt><dd>{{ $support->phone }} @if($support->email) - {{ $support->email }} @endif</dd></div>
+                            <div><dt>Perfil</dt><dd>{{ str_replace("_", " ", $support->supporter_type) }}</dd></div>
+                            @if($support->organization || $support->government_agency)<div><dt>Organizacao/orgao</dt><dd>{{ $support->organization ?: $support->government_agency }}</dd></div>@endif
+                            @if($support->amount)<div><dt>Valor</dt><dd class="text-green-700">R$ {{ $fmt($support->amount) }}</dd></div>@endif
+                            @if($support->payment_gateway)<div><dt>Gateway</dt><dd>{{ strtoupper($support->payment_gateway) }} / {{ strtoupper((string) $support->payment_method) }}</dd></div>@endif
+                            @if($support->payment_external_id)<div><dt>ID externo</dt><dd>{{ $support->payment_external_id }}</dd></div>@endif
+                            @if($support->payment_reference)<div><dt>Referencia</dt><dd>{{ $support->payment_reference }}</dd></div>@endif
+                            @if($support->quantity)<div><dt>Quantidade</dt><dd>{{ $fmt($support->quantity) }} {{ $support->unit }}</dd></div>@endif
+                            @if($support->item_description)<div class="md:col-span-2"><dt>Apoio oferecido</dt><dd>{{ $support->item_description }}</dd></div>@endif
+                            @if($support->message)<div class="md:col-span-2"><dt>Mensagem</dt><dd>{{ $support->message }}</dd></div>@endif
+                            <div><dt>IP</dt><dd class="text-gray-500">{{ $support->ip_address ?: "-" }}</dd></div>
+                        </dl>
+                    </div>
+                    <form method="POST" action="{{ route("admin.project-supports.requests.update", $support) }}" class="space-y-2">
+                        @csrf
+                        @method("PUT")
+                        <label class="support-label">Status interno</label>
+                        <select name="status" class="support-field">
+                            @foreach($statusLabels as $key => $label)
+                                <option value="{{ $key }}" @selected($support->status === $key)>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <label class="support-label">Observacao interna</label>
+                        <textarea name="admin_note" class="support-field" rows="4" placeholder="Observacao interna">{{ data_get($support->metadata, "admin_note") }}</textarea>
+                        <button class="support-btn support-btn-primary w-full">Atualizar registro</button>
+                    </form>
+                </div>
+            </div>
+        @empty
+            <div class="p-12 text-center text-gray-400">Nenhum apoio registrado ainda.</div>
+        @endforelse
+
+        <div class="p-4 border-t border-gray-100 dark:border-gray-700">{{ $supportRequests->links() }}</div>
     </div>
 </div>
 @endsection

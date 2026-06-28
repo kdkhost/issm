@@ -1,18 +1,5 @@
 # CHANGELOG
 
-## [1.3.1] - 2026-06-28
-
-### Melhorado - Página de apoios aos projetos
-
-- Página `/admin/apoios-projetos` reformulada para seguir o padrão visual do sistema
-- Removido CSS customizado e substituído por classes Tailwind padrão
-- KPIs padronizados com cards do sistema (bg-white rounded-xl shadow-sm)
-- Card de Gateway reformulado com header bg-gray-50 e inputs padronizados
-- Cards de Tipos de Apoio reformulados com layout consistente
-- Lista de Registros reformulada com grid responsiva e badges padronizados
-- Removidas classes dark: customizadas (dark mode gerenciado pelo CSS global)
-- Todas as funcionalidades mantidas sem alterações no backend
-
 ## [1.3.0] - 2026-06-27
 
 ### Adicionado - Galeria por albuns e eventos
