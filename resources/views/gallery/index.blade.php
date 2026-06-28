@@ -210,6 +210,8 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                                     <div class="gal-card"
                                          data-lazy-card
                                          data-src="{{ asset('media/' . $photo->image) }}"
+                                         data-album-id="{{ $album->id }}"
+                                         data-photo-id="{{ $photo->id }}"
                                          data-watermarked-url="{{ route('gallery.photos.watermarked', $photo) }}"
                                          data-download-url="{{ route('gallery.photos.watermarked', ['photo' => $photo, 'download' => 1]) }}"
                                          data-file-name="{{ \Illuminate\Support\Str::slug($photo->title ?: 'foto-galeria') }}.jpg"
@@ -256,7 +258,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
                         @php
                             $cover = $album->cover_image ?: $album->cover_photo_image;
                         @endphp
-                        <a href="{{ route('gallery.index', ['album' => $album->slug]) }}" class="gal-folder">
+                        <a href="{{ route('gallery.index', ['album' => $album->slug]) }}" class="gal-folder" data-gallery-album-link data-album-id="{{ $album->id }}" data-label="{{ $album->title }}">
                             <div class="gal-folder-cover">
                                 @if($cover)
                                     <img src="{{ asset('media/' . $cover) }}" alt="{{ $album->title }}" loading="lazy" decoding="async">
@@ -365,9 +367,34 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     var lazyObserver = null;
     var autoObserver = null;
     var loadingNext = false;
+    var trackUrl = @json(route('gallery.track'));
+    var csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
     function refreshItems() {
         items = Array.from(document.querySelectorAll('#gallery-grid .gal-card[data-src]'));
+    }
+
+    function trackGalleryEvent(type, data) {
+        var payload = new FormData();
+        payload.append('event_type', type);
+        payload.append('_token', csrfToken);
+
+        if (data && data.albumId) payload.append('album_id', data.albumId);
+        if (data && data.photoId) payload.append('photo_id', data.photoId);
+        if (data && data.label) payload.append('label', data.label);
+
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(trackUrl, payload);
+            return;
+        }
+
+        fetch(trackUrl, {
+            method: 'POST',
+            body: payload,
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+            credentials: 'same-origin',
+            keepalive: true
+        }).catch(function() {});
     }
 
     function loadCardImage(card) {
@@ -493,6 +520,12 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     refreshItems();
     observeLazyCards(document);
 
+    document.querySelectorAll('[data-gallery-album-link]').forEach(function(link) {
+        link.addEventListener('click', function() {
+            trackGalleryEvent('album_click', { albumId: link.dataset.albumId, label: link.dataset.label });
+        });
+    });
+
     if (loader && loader.dataset.nextUrl) {
         if ('IntersectionObserver' in window) {
             autoObserver = new IntersectionObserver(function(entries) {
@@ -528,6 +561,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         cap.textContent = d.caption || '';
         ctr.textContent = (idx + 1) + ' / ' + items.length;
         updateLightboxActions(d);
+        trackGalleryEvent('photo_view', { albumId: d.albumId, photoId: d.photoId, label: d.caption });
         lb.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -548,6 +582,7 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
             cap.textContent = d.caption || '';
             ctr.textContent = (cur + 1) + ' / ' + items.length;
             updateLightboxActions(d);
+            trackGalleryEvent('photo_view', { albumId: d.albumId, photoId: d.photoId, label: d.caption });
         });
     }
 
@@ -586,7 +621,10 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
         if (!card) return;
         refreshItems();
         var index = items.indexOf(card);
-        if (index >= 0) open(index);
+        if (index >= 0) {
+            trackGalleryEvent('photo_click', { albumId: card.dataset.albumId, photoId: card.dataset.photoId, label: card.dataset.caption });
+            open(index);
+        }
     });
     document.getElementById('lb-close').addEventListener('click', close);
     document.getElementById('lb-prev').addEventListener('click', function(){ nav(-1); });
@@ -594,6 +632,8 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
     if (shareButton) {
         shareButton.addEventListener('click', function() {
             var data = currentShareData();
+            var current = items[cur] ? items[cur].dataset : {};
+            trackGalleryEvent('photo_share', { albumId: current.albumId, photoId: current.photoId, label: current.caption });
 
             if (navigator.share && window.fetch && window.File && navigator.canShare) {
                 fetch(data.url, { credentials: 'same-origin' })
@@ -622,6 +662,12 @@ $fullTitle = cms('gallery', 'hero', 'title', 'Galeria Completa');
             }
 
             copyShareLink(data.url);
+        });
+    }
+    if (downloadButton) {
+        downloadButton.addEventListener('click', function() {
+            var current = items[cur] ? items[cur].dataset : {};
+            trackGalleryEvent('download_click', { albumId: current.albumId, photoId: current.photoId, label: current.caption });
         });
     }
     lb.addEventListener('click', function(e){ if(e.target === lb) close(); });

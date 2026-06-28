@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryAlbum;
+use App\Models\GalleryAnalyticsEvent;
 use App\Models\GalleryPhoto;
 use App\Models\Project;
 use App\Models\Setting;
@@ -13,7 +14,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class PublicGalleryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $filter = request('album') ?: request('filter');
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
@@ -59,6 +60,13 @@ class PublicGalleryController extends Controller
             $photos = $selectedAlbum
                 ? $selectedAlbum->activePhotos()->paginate($photoPageSize, ['*'], 'fotos')->withQueryString()
                 : null;
+
+            if ($selectedAlbum && ! $request->ajax()) {
+                GalleryAnalyticsEvent::recordFromRequest($request, 'album_view', $selectedAlbum->id, null, [
+                    'album_slug' => $selectedAlbum->slug,
+                    'album_title' => $selectedAlbum->title,
+                ]);
+            }
         } else {
             $albums = GalleryAlbum::active()
                 ->whereHas('activePhotos')
@@ -73,6 +81,10 @@ class PublicGalleryController extends Controller
                 ])
                 ->paginate($albumPageSize, ['*'], 'albuns')
                 ->withQueryString();
+
+            if (! $request->ajax()) {
+                GalleryAnalyticsEvent::recordFromRequest($request, 'gallery_index');
+            }
         }
 
         $totalAlbums = $allAlbums->count();
@@ -112,6 +124,14 @@ class PublicGalleryController extends Controller
         $fileName = (Str::slug($photo->title ?: pathinfo($photo->image, PATHINFO_FILENAME)) ?: 'foto-galeria').'.'.$this->extensionFor($sourcePath);
         $disposition = $request->boolean('download') ? 'attachment' : 'inline';
 
+        if ($request->boolean('download')) {
+            GalleryAnalyticsEvent::recordFromRequest($request, 'photo_download', $photo->gallery_album_id, $photo->id, [
+                'photo_title' => $photo->title,
+                'album_title' => optional($photo->album)->title,
+                'file_name' => $fileName,
+            ]);
+        }
+
         if (! $logoPath) {
             return response()->file($sourcePath, [
                 'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"",
@@ -132,6 +152,26 @@ class PublicGalleryController extends Controller
             'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"",
             'Cache-Control' => 'public, max-age=604800',
         ]);
+    }
+
+    public function track(Request $request)
+    {
+        $validated = $request->validate([
+            'event_type' => 'required|string|in:album_click,photo_view,photo_click,photo_share,download_click',
+            'album_id' => 'nullable|integer|exists:gallery_albums,id',
+            'photo_id' => 'nullable|integer|exists:gallery_photos,id',
+            'label' => 'nullable|string|max:255',
+        ]);
+
+        GalleryAnalyticsEvent::recordFromRequest(
+            $request,
+            $validated['event_type'],
+            $validated['album_id'] ?? null,
+            $validated['photo_id'] ?? null,
+            ['label' => $validated['label'] ?? null]
+        );
+
+        return response()->json(['success' => true]);
     }
 
     private function resolveMediaPath(?string $path): ?string

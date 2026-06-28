@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\GalleryAlbum;
+use App\Models\GalleryAnalyticsEvent;
 use App\Models\GalleryPhoto;
 use App\Models\Project;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class GalleryController extends Controller
@@ -40,7 +42,70 @@ class GalleryController extends Controller
             'active_photos' => GalleryPhoto::where('active', true)->count(),
         ];
 
-        return view('admin.galeria.index', compact('albums', 'stats'));
+        $analyticsStart = now()->subDays(30);
+        $eventCounts = GalleryAnalyticsEvent::where('occurred_at', '>=', $analyticsStart)
+            ->select('event_type', DB::raw('COUNT(*) as total'))
+            ->groupBy('event_type')
+            ->pluck('total', 'event_type');
+
+        $topAlbums = GalleryAlbum::query()
+            ->select('gallery_albums.*')
+            ->selectSub(function ($query) use ($analyticsStart) {
+                $query->from('gallery_analytics_events')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('gallery_analytics_events.gallery_album_id', 'gallery_albums.id')
+                    ->where('occurred_at', '>=', $analyticsStart);
+            }, 'analytics_events_count')
+            ->having('analytics_events_count', '>', 0)
+            ->orderByDesc('analytics_events_count')
+            ->limit(5)
+            ->get();
+
+        $topPhotos = GalleryPhoto::query()
+            ->with('album:id,title')
+            ->select('gallery_photos.*')
+            ->selectSub(function ($query) use ($analyticsStart) {
+                $query->from('gallery_analytics_events')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('gallery_analytics_events.gallery_photo_id', 'gallery_photos.id')
+                    ->where('occurred_at', '>=', $analyticsStart);
+            }, 'analytics_events_count')
+            ->selectSub(function ($query) use ($analyticsStart) {
+                $query->from('gallery_analytics_events')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('gallery_analytics_events.gallery_photo_id', 'gallery_photos.id')
+                    ->where('event_type', 'photo_download')
+                    ->where('occurred_at', '>=', $analyticsStart);
+            }, 'downloads_count')
+            ->having('analytics_events_count', '>', 0)
+            ->orderByDesc('analytics_events_count')
+            ->limit(5)
+            ->get();
+
+        $recentDownloads = GalleryAnalyticsEvent::with(['album:id,title', 'photo:id,title', 'user:id,name,email'])
+            ->where('event_type', 'photo_download')
+            ->latest('occurred_at')
+            ->limit(8)
+            ->get();
+
+        $analytics = [
+            'period_label' => 'Últimos 30 dias',
+            'events' => [
+                'gallery_index' => (int) ($eventCounts['gallery_index'] ?? 0),
+                'album_view' => (int) ($eventCounts['album_view'] ?? 0),
+                'album_click' => (int) ($eventCounts['album_click'] ?? 0),
+                'photo_view' => (int) ($eventCounts['photo_view'] ?? 0),
+                'photo_click' => (int) ($eventCounts['photo_click'] ?? 0),
+                'photo_share' => (int) ($eventCounts['photo_share'] ?? 0),
+                'download_click' => (int) ($eventCounts['download_click'] ?? 0),
+                'photo_download' => (int) ($eventCounts['photo_download'] ?? 0),
+            ],
+            'top_albums' => $topAlbums,
+            'top_photos' => $topPhotos,
+            'recent_downloads' => $recentDownloads,
+        ];
+
+        return view('admin.galeria.index', compact('albums', 'stats', 'analytics'));
     }
 
     public function create()

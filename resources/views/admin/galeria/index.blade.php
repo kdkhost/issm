@@ -12,6 +12,123 @@
         box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
     }
 
+    .gallery-analytics-panel {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, .05);
+        margin-bottom: 24px;
+    }
+
+    .gallery-analytics-title {
+        color: #111827;
+        font-size: 16px;
+        font-weight: 900;
+        margin: 0;
+    }
+
+    .gallery-analytics-subtitle {
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 3px;
+    }
+
+    .gallery-analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    .gallery-analytics-card {
+        border-radius: 14px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        padding: 13px;
+    }
+
+    .gallery-analytics-card span {
+        display: block;
+        color: #6b7280;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .gallery-analytics-card strong {
+        display: block;
+        color: #111827;
+        font-size: 23px;
+        font-weight: 950;
+        margin-top: 5px;
+    }
+
+    .gallery-analytics-lists {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+    }
+
+    .gallery-analytics-list {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .gallery-analytics-list h3 {
+        margin: 0;
+        padding: 12px 14px;
+        background: #f9fafb;
+        color: #111827;
+        font-size: 13px;
+        font-weight: 900;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .gallery-analytics-row {
+        display: block;
+        padding: 11px 14px;
+        border-bottom: 1px solid #f3f4f6;
+        text-decoration: none;
+    }
+
+    .gallery-analytics-row:last-child {
+        border-bottom: 0;
+    }
+
+    .gallery-analytics-row strong {
+        display: block;
+        color: #111827;
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
+    .gallery-analytics-row span {
+        display: block;
+        color: #6b7280;
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 3px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .gallery-analytics-row:hover {
+        background: #f9fafb;
+    }
+
+    .gallery-analytics-empty {
+        padding: 16px 14px;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
     .gallery-folder-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -196,29 +313,63 @@
         .gallery-folder-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        .gallery-analytics-grid,
+        .gallery-analytics-lists {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 720px) {
         .gallery-folder-grid,
-        .gallery-folder-info {
+        .gallery-folder-info,
+        .gallery-analytics-grid,
+        .gallery-analytics-lists {
             grid-template-columns: 1fr;
         }
     }
 
     [data-theme="dark"] .gallery-stat-card,
     [data-theme="dark"] .gallery-folder,
-    [data-theme="dark"] .gallery-folder-info-item {
+    [data-theme="dark"] .gallery-folder-info-item,
+    [data-theme="dark"] .gallery-analytics-panel,
+    [data-theme="dark"] .gallery-analytics-card,
+    [data-theme="dark"] .gallery-analytics-list {
         background: #1f2937;
         border-color: #374151;
     }
 
     [data-theme="dark"] .gallery-folder-title,
-    [data-theme="dark"] .gallery-folder-info-item strong {
+    [data-theme="dark"] .gallery-folder-info-item strong,
+    [data-theme="dark"] .gallery-analytics-title,
+    [data-theme="dark"] .gallery-analytics-card strong,
+    [data-theme="dark"] .gallery-analytics-list h3,
+    [data-theme="dark"] .gallery-analytics-row strong {
         color: #f9fafb;
     }
 
     [data-theme="dark"] .gallery-folder-meta,
-    [data-theme="dark"] .gallery-folder-info-item span {
+    [data-theme="dark"] .gallery-folder-info-item span,
+    [data-theme="dark"] .gallery-analytics-subtitle,
+    [data-theme="dark"] .gallery-analytics-card span,
+    [data-theme="dark"] .gallery-analytics-row span {
+        color: #9ca3af;
+    }
+
+    [data-theme="dark"] .gallery-analytics-list h3 {
+        background: #111827;
+        border-color: #374151;
+    }
+
+    [data-theme="dark"] .gallery-analytics-row {
+        border-color: #374151;
+    }
+
+    [data-theme="dark"] .gallery-analytics-row:hover {
+        background: #111827;
+    }
+
+    [data-theme="dark"] .gallery-analytics-empty {
         color: #9ca3af;
     }
 
@@ -275,6 +426,90 @@
         <p class="text-2xl font-bold text-green-700 mt-1">{{ $formatNumber($stats["active_photos"] ?? 0) }}</p>
     </div>
 </div>
+
+@php
+    $analyticsEvents = $analytics["events"] ?? [];
+    $analyticsCards = [
+        "gallery_index" => "Visitas a galeria",
+        "album_view" => "Visitas a albuns",
+        "album_click" => "Cliques em albuns",
+        "photo_view" => "Visualizacoes de fotos",
+        "photo_click" => "Cliques em fotos",
+        "photo_share" => "Compartilhamentos",
+        "download_click" => "Cliques em download",
+        "photo_download" => "Downloads confirmados",
+    ];
+@endphp
+
+<section class="gallery-analytics-panel">
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+        <div>
+            <h2 class="gallery-analytics-title">Analytics da galeria</h2>
+            <p class="gallery-analytics-subtitle">{{ $analytics["period_label"] ?? "Ultimos 30 dias" }}</p>
+        </div>
+        <p class="gallery-analytics-subtitle md:text-right">
+            Registra visitas, cliques, compartilhamentos, downloads, usuario logado, IP, sessao e origem.
+        </p>
+    </div>
+
+    <div class="gallery-analytics-grid">
+        @foreach($analyticsCards as $eventKey => $eventLabel)
+            <div class="gallery-analytics-card">
+                <span>{{ $eventLabel }}</span>
+                <strong>{{ $formatNumber($analyticsEvents[$eventKey] ?? 0) }}</strong>
+            </div>
+        @endforeach
+    </div>
+
+    <div class="gallery-analytics-lists">
+        <div class="gallery-analytics-list">
+            <h3>Albuns mais acessados</h3>
+            @forelse(($analytics["top_albums"] ?? collect()) as $topAlbum)
+                <a href="{{ route("admin.galeria.edit", $topAlbum) }}" class="gallery-analytics-row">
+                    <strong>{{ $topAlbum->title }}</strong>
+                    <span>{{ $formatNumber($topAlbum->analytics_events_count ?? 0) }} eventos registrados</span>
+                </a>
+            @empty
+                <div class="gallery-analytics-empty">Sem eventos de album no periodo.</div>
+            @endforelse
+        </div>
+
+        <div class="gallery-analytics-list">
+            <h3>Fotos em destaque</h3>
+            @forelse(($analytics["top_photos"] ?? collect()) as $topPhoto)
+                @if($topPhoto->album)
+                    <a href="{{ route("admin.galeria.edit", $topPhoto->album) }}#fotos-album" class="gallery-analytics-row">
+                        <strong>{{ $topPhoto->title ?: "Foto sem titulo" }}</strong>
+                        <span>{{ $topPhoto->album->title }} - {{ $formatNumber($topPhoto->analytics_events_count ?? 0) }} eventos, {{ $formatNumber($topPhoto->downloads_count ?? 0) }} downloads</span>
+                    </a>
+                @else
+                    <div class="gallery-analytics-row">
+                        <strong>{{ $topPhoto->title ?: "Foto sem titulo" }}</strong>
+                        <span>{{ $formatNumber($topPhoto->analytics_events_count ?? 0) }} eventos, {{ $formatNumber($topPhoto->downloads_count ?? 0) }} downloads</span>
+                    </div>
+                @endif
+            @empty
+                <div class="gallery-analytics-empty">Sem eventos de foto no periodo.</div>
+            @endforelse
+        </div>
+
+        <div class="gallery-analytics-list">
+            <h3>Ultimos downloads</h3>
+            @forelse(($analytics["recent_downloads"] ?? collect()) as $download)
+                <div class="gallery-analytics-row">
+                    <strong>{{ optional($download->photo)->title ?: data_get($download->metadata, "file_name", "Foto baixada") }}</strong>
+                    <span>{{ optional($download->album)->title ?: "Album nao identificado" }}</span>
+                    <span>
+                        {{ optional($download->occurred_at)->format("d/m/Y H:i") }}
+                        - {{ $download->user ? ($download->user->name . " (" . $download->user->email . ")") : ("Visitante - " . ($download->ip_address ?: "IP nao identificado")) }}
+                    </span>
+                </div>
+            @empty
+                <div class="gallery-analytics-empty">Nenhum download registrado ainda.</div>
+            @endforelse
+        </div>
+    </div>
+</section>
 
 @if($albums->count())
     <div class="gallery-folder-grid">

@@ -41,6 +41,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sobre', [PublicAboutController::class, 'index'])->name('about.index');
 Route::get('/ods', [PublicOdsController::class, 'index'])->name('ods.index');
 Route::get('/galeria/fotos/{photo}/marca-dagua', [PublicGalleryController::class, 'watermarked'])->name('gallery.photos.watermarked');
+Route::post('/galeria/eventos', [PublicGalleryController::class, 'track'])->name('gallery.track');
 Route::get('/galeria', [PublicGalleryController::class, 'index'])->name('gallery.index');
 Route::get('/noticias', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/noticias/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
