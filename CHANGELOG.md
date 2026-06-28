@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.3.5] - 2026-06-28
+
+### Melhorado - Configuração individual de gateways
+
+- Cada gateway agora tem seu próprio formulário com botão de salvar individual
+- Evita alteração acidental de dados de um gateway ao salvar outro
+- Configurações gerais (gateway ativo e e-mail) separadas em formulário próprio
+- Controller atualizado para processar atualizações individuais por gateway
+- Rota atualizada para suportar parâmetro opcional de gateway
+
 ## [1.3.4] - 2026-06-28
 
 ### Adicionado - Configuração de ambiente (Sandbox/Produção) para gateways
