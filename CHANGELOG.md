@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [1.3.3] - 2026-06-28
+
+### Verificado - Gateways de doação
+
+- Confirmado que todos os 7 gateways (Mercado Pago, Stripe, PayPal, Cora, PagBank, Asaas, Efi) já estão preparados
+- Todos os campos de configuração já estão visíveis e funcionais no painel
+- Sistema pronto para uso imediato de qualquer gateway
+
 ## [1.3.2] - 2026-06-28
 
 ### Corrigido - Central de notificações do painel
