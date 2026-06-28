@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\TransparencyCategoryController;
 use App\Http\Controllers\Admin\TransparencyController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PublicAboutController;
 use App\Http\Controllers\PublicContactController;
 use App\Http\Controllers\PublicGalleryController;
@@ -49,6 +50,8 @@ Route::get('/noticias/{slug}', [PublicNewsController::class, 'show'])->name('new
 Route::get('/projetos', [PublicProjectController::class, 'index'])->name('projects.index');
 Route::post('/projetos/{project:slug}/apoio', [PublicProjectController::class, 'support'])->name('projects.support');
 Route::get('/projetos/{slug}', [PublicProjectController::class, 'show'])->name('projects.show');
+Route::post('/pagamentos/{gateway}/webhook', [PaymentController::class, 'webhook'])->name('payments.webhook');
+Route::get('/pagamentos/{gateway}/retorno', [PaymentController::class, 'return'])->name('payments.return');
 Route::post('/contato', [ContactFormController::class, 'store'])->name('contact.store');
 Route::get('/pagina/{slug}', [PublicPageController::class, 'show'])->name('pages.show');
 Route::get('/transparencia', [PublicTransparencyController::class, 'index'])->name('transparency.index');
@@ -68,6 +71,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('noticias', NewsController::class)->parameters(['noticias' => 'news']);
     Route::resource('projetos', ProjectController::class)->parameters(['projetos' => 'project']);
     Route::get('apoios-projetos', [ProjectSupportController::class, 'index'])->name('project-supports.index');
+    Route::put('apoios-projetos/gateway', [ProjectSupportController::class, 'updateGateway'])->name('project-supports.gateway.update');
     Route::post('apoios-projetos/tipos', [ProjectSupportController::class, 'storeType'])->name('project-supports.types.store');
     Route::put('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'updateType'])->name('project-supports.types.update');
     Route::delete('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'destroyType'])->name('project-supports.types.destroy');

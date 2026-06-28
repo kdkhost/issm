@@ -49,6 +49,52 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
     <div class="xl:col-span-1 space-y-6">
         <div class="support-card p-5">
+            <h2 class="text-base font-black text-gray-900 dark:text-white mb-1">Gateway de doacoes</h2>
+            <p class="text-sm text-gray-500 mb-4">Somente um gateway fica ativo por vez para doacoes monetarias.</p>
+            <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}" class="space-y-3">
+                @csrf
+                @method("PUT")
+                <div>
+                    <label class="support-label">Gateway ativo</label>
+                    <select name="donation_gateway_active" class="support-field">
+                        <option value="">Desativado</option>
+                        @foreach($gateways as $gateway)
+                            <option value="{{ $gateway }}" @selected(($gatewaySettings["donation_gateway_active"] ?? "") === $gateway)>{{ strtoupper($gateway) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="support-label">E-mail padrao do pagador</label>
+                    <input type="email" name="donation_default_payer_email" class="support-field" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}">
+                </div>
+                <div class="rounded-xl bg-green-50 border border-green-100 p-3 text-xs text-green-900 space-y-1">
+                    <p><strong>Webhook dinamico:</strong> {{ url("/pagamentos/{gateway}/webhook") }}</p>
+                    <p><strong>Retorno dinamico:</strong> {{ url("/pagamentos/{gateway}/retorno") }}</p>
+                    <p>Substitua <strong>{gateway}</strong> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
+                </div>
+                <div>
+                    <label class="support-label">Mercado Pago - Access Token</label>
+                    <input name="donation_mercadopago_access_token" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}">
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <input name="donation_stripe_publishable_key" class="support-field" placeholder="Stripe Publishable Key" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}">
+                    <input name="donation_stripe_secret_key" class="support-field" placeholder="Stripe Secret Key" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}">
+                    <input name="donation_paypal_client_id" class="support-field" placeholder="PayPal Client ID" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
+                    <input name="donation_paypal_secret" class="support-field" placeholder="PayPal Secret" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
+                    <label class="support-check"><input type="checkbox" name="donation_paypal_sandbox" value="1" @checked(($gatewaySettings["donation_paypal_sandbox"] ?? "1") === "1")> PayPal sandbox</label>
+                </div>
+                @foreach(["cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efí Pro"] as $key => $label)
+                    <div class="grid grid-cols-1 gap-2 border-t border-gray-100 pt-3">
+                        <label class="support-label">{{ $label }}</label>
+                        <input name="donation_{{ $key }}_base_url" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
+                        <input name="donation_{{ $key }}_api_key" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
+                    </div>
+                @endforeach
+                <button class="w-full bg-gray-900 hover:bg-black text-white rounded-lg px-4 py-2 font-bold">Salvar gateway</button>
+            </form>
+        </div>
+
+        <div class="support-card p-5">
             <h2 class="text-base font-black text-gray-900 dark:text-white mb-1">Novo tipo de apoio</h2>
             <p class="text-sm text-gray-500 mb-4">Configure as formas exibidas no botao Apoiar Projeto.</p>
             <form method="POST" action="{{ route("admin.project-supports.types.store") }}" class="space-y-3">
@@ -181,6 +227,9 @@
                             <div><dt class="text-xs font-bold text-gray-500 uppercase">Perfil</dt><dd class="text-gray-800 dark:text-gray-200">{{ str_replace("_", " ", $support->supporter_type) }}</dd></div>
                             @if($support->organization || $support->government_agency)<div><dt class="text-xs font-bold text-gray-500 uppercase">Organizacao/orgao</dt><dd class="text-gray-800 dark:text-gray-200">{{ $support->organization ?: $support->government_agency }}</dd></div>@endif
                             @if($support->amount)<div><dt class="text-xs font-bold text-gray-500 uppercase">Valor</dt><dd class="text-green-700 font-bold">R$ {{ $fmt($support->amount) }}</dd></div>@endif
+                            @if($support->payment_gateway)<div><dt class="text-xs font-bold text-gray-500 uppercase">Gateway</dt><dd class="text-gray-800 dark:text-gray-200">{{ strtoupper($support->payment_gateway) }} / {{ strtoupper((string) $support->payment_method) }}</dd></div>@endif
+                            @if($support->payment_status)<div><dt class="text-xs font-bold text-gray-500 uppercase">Pagamento</dt><dd class="text-gray-800 dark:text-gray-200">{{ $support->payment_status }} @if($support->payment_external_id) • {{ $support->payment_external_id }} @endif</dd></div>@endif
+                            @if($support->payment_reference)<div><dt class="text-xs font-bold text-gray-500 uppercase">Referencia</dt><dd class="text-gray-800 dark:text-gray-200">{{ $support->payment_reference }}</dd></div>@endif
                             @if($support->item_description)<div class="md:col-span-2"><dt class="text-xs font-bold text-gray-500 uppercase">Apoio oferecido</dt><dd class="text-gray-800 dark:text-gray-200">{{ $support->item_description }}</dd></div>@endif
                             @if($support->quantity)<div><dt class="text-xs font-bold text-gray-500 uppercase">Quantidade</dt><dd class="text-gray-800 dark:text-gray-200">{{ $fmt($support->quantity) }} {{ $support->unit }}</dd></div>@endif
                             @if($support->message)<div class="md:col-span-2"><dt class="text-xs font-bold text-gray-500 uppercase">Mensagem</dt><dd class="text-gray-800 dark:text-gray-200">{{ $support->message }}</dd></div>@endif

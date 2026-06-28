@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectSupportType;
 use App\Models\Setting;
+use App\Services\Payments\ProjectDonationGateway;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class PublicProjectController extends Controller
 {
@@ -18,16 +20,19 @@ class PublicProjectController extends Controller
         return view('projects.index', compact('featuredProjects', 'projects', 'settings'));
     }
 
-    public function show(string $slug)
+    public function show(string $slug, ProjectDonationGateway $donationGateway)
     {
         $project = Project::active()->where('slug', $slug)->firstOrFail();
         $related = Project::active()->where('id', '!=', $project->id)->take(3)->get();
         $supportTypes = ProjectSupportType::active()->get();
+        $activeDonationGateway = $donationGateway->activeGateway();
+        $donationPaymentMethods = $donationGateway->supportedMethods($activeDonationGateway);
+        $donationMethodLabels = ProjectDonationGateway::METHOD_LABELS;
         $settings = ['site_name' => Setting::get('site_name', 'ISSM')];
-        return view('projects.show', compact('project', 'related', 'settings', 'supportTypes'));
+        return view('projects.show', compact('project', 'related', 'settings', 'supportTypes', 'activeDonationGateway', 'donationPaymentMethods', 'donationMethodLabels'));
     }
 
-    public function support(Request $request, Project $project)
+    public function support(Request $request, Project $project, ProjectDonationGateway $donationGateway)
     {
         abort_unless($project->active, 404);
 
@@ -41,6 +46,7 @@ class PublicProjectController extends Controller
             'organization' => 'nullable|string|max:255',
             'government_agency' => 'nullable|string|max:255',
             'amount' => 'nullable|string|max:30',
+            'payment_method' => 'nullable|string|in:pix,credit_card,debit_card,paypal',
             'item_description' => 'nullable|string|max:2000',
             'quantity' => 'nullable|string|max:30',
             'unit' => 'nullable|string|max:40',
@@ -52,7 +58,7 @@ class PublicProjectController extends Controller
         $supportType = ProjectSupportType::active()->whereKey($validated['project_support_type_id'])->firstOrFail();
         $this->validateRequiredSupportFields($supportType, $validated);
 
-        $project->supportRequests()->create([
+        $support = $project->supportRequests()->create([
             'project_support_type_id' => $supportType->id,
             'supporter_type' => $validated['supporter_type'],
             'name' => $validated['name'],
@@ -80,10 +86,22 @@ class PublicProjectController extends Controller
             'user_agent' => (string) $request->userAgent(),
         ]);
 
+        $payment = null;
         $message = 'Apoio registrado com sucesso. Nossa equipe entrara em contato para dar continuidade.';
 
+        if ($supportType->category === 'monetario') {
+            try {
+                $payment = $donationGateway->createPayment($support->fresh(['project']), $validated['payment_method'] ?? 'pix', $request);
+            } catch (RuntimeException $exception) {
+                throw ValidationException::withMessages([
+                    'payment_method' => $exception->getMessage(),
+                ]);
+            }
+            $message = 'Doacao registrada. Conclua o pagamento pelo gateway configurado.';
+        }
+
         if ($request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => $message]);
+            return response()->json(['success' => true, 'message' => $message, 'payment' => $payment]);
         }
 
         return back()->with('success', $message);

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectSupportRequest;
 use App\Models\ProjectSupportType;
+use App\Models\Setting;
+use App\Services\Payments\ProjectDonationGateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -37,8 +39,57 @@ class ProjectSupportController extends Controller
             'completed' => ProjectSupportRequest::where('status', 'completed')->count(),
             'amount' => ProjectSupportRequest::whereNotNull('amount')->sum('amount'),
         ];
+        $gatewaySettings = collect([
+            'donation_gateway_active',
+            'donation_default_payer_email',
+            'donation_mercadopago_access_token',
+            'donation_stripe_publishable_key',
+            'donation_stripe_secret_key',
+            'donation_paypal_client_id',
+            'donation_paypal_secret',
+            'donation_paypal_sandbox',
+            'donation_cora_base_url',
+            'donation_cora_api_key',
+            'donation_pagbank_base_url',
+            'donation_pagbank_api_key',
+            'donation_asaas_base_url',
+            'donation_asaas_api_key',
+            'donation_efi_base_url',
+            'donation_efi_api_key',
+        ])->mapWithKeys(fn ($key) => [$key => Setting::get($key, '')])->all();
+        $gateways = ProjectDonationGateway::GATEWAYS;
 
-        return view('admin.project-supports.index', compact('supportTypes', 'supportRequests', 'stats', 'projects'));
+        return view('admin.project-supports.index', compact('supportTypes', 'supportRequests', 'stats', 'projects', 'gatewaySettings', 'gateways'));
+    }
+
+    public function updateGateway(Request $request)
+    {
+        $validated = $request->validate([
+            'donation_gateway_active' => ['nullable', 'string', Rule::in(array_merge([''], ProjectDonationGateway::GATEWAYS))],
+            'donation_default_payer_email' => 'nullable|email|max:255',
+            'donation_mercadopago_access_token' => 'nullable|string|max:1000',
+            'donation_stripe_publishable_key' => 'nullable|string|max:500',
+            'donation_stripe_secret_key' => 'nullable|string|max:500',
+            'donation_paypal_client_id' => 'nullable|string|max:500',
+            'donation_paypal_secret' => 'nullable|string|max:500',
+            'donation_paypal_sandbox' => 'nullable|boolean',
+            'donation_cora_base_url' => 'nullable|string|max:500',
+            'donation_cora_api_key' => 'nullable|string|max:1000',
+            'donation_pagbank_base_url' => 'nullable|string|max:500',
+            'donation_pagbank_api_key' => 'nullable|string|max:1000',
+            'donation_asaas_base_url' => 'nullable|string|max:500',
+            'donation_asaas_api_key' => 'nullable|string|max:1000',
+            'donation_efi_base_url' => 'nullable|string|max:500',
+            'donation_efi_api_key' => 'nullable|string|max:1000',
+        ]);
+
+        $validated['donation_paypal_sandbox'] = $request->boolean('donation_paypal_sandbox') ? '1' : '0';
+
+        foreach ($validated as $key => $value) {
+            Setting::set($key, $value ?? '');
+        }
+
+        return back()->with('success', 'Gateway de doacoes atualizado com sucesso.');
     }
 
     public function storeType(Request $request)

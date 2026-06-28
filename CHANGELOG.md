@@ -35,6 +35,7 @@
 - Preloaders da galeria passam a reutilizar o mesmo visual configurado para o site, incluindo logo, aneis animados e barra de progresso
 - Projetos recebem fluxo de apoio configurável com tipos de contribuição, formulário público AJAX e registros administrativos vinculados ao projeto e ao apoiador
 - Painel de projetos passa a exibir contadores, atalhos, filtros e badges de novos apoios para deixar os registros recebidos visíveis no fluxo administrativo
+- Doacoes monetarias dos projetos passam a usar gateway ativo configuravel, com PIX/cartao, retorno automatico, webhook dinamico e rastreio de pagamento no apoio
 
 ## [1.2.0] - 2026-06-09
 

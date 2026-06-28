@@ -21,6 +21,13 @@ class ProjectSupportRequest extends Model
         'government_agency',
         'amount',
         'currency',
+        'payment_gateway',
+        'payment_method',
+        'payment_status',
+        'payment_external_id',
+        'payment_reference',
+        'payment_url',
+        'payment_payload',
         'item_description',
         'quantity',
         'unit',
@@ -32,13 +39,16 @@ class ProjectSupportRequest extends Model
         'ip_address',
         'user_agent',
         'contacted_at',
+        'paid_at',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'quantity' => 'decimal:2',
         'metadata' => 'array',
+        'payment_payload' => 'array',
         'contacted_at' => 'datetime',
+        'paid_at' => 'datetime',
     ];
 
     public function project()

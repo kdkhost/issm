@@ -192,6 +192,19 @@
                                 <label class="support-label">Valor</label>
                                 <input name="amount" class="support-input" inputmode="decimal" placeholder="R$ 0,00">
                             </div>
+                            <div data-support-payment>
+                                <label class="support-label">Forma de pagamento</label>
+                                @if($activeDonationGateway && count($donationPaymentMethods))
+                                    <select name="payment_method" class="support-input">
+                                        @foreach($donationPaymentMethods as $method)
+                                            <option value="{{ $method }}">{{ $donationMethodLabels[$method] ?? strtoupper($method) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="support-help">Gateway ativo: {{ strtoupper($activeDonationGateway) }}.</p>
+                                @else
+                                    <input class="support-input" value="Gateway de doacoes desativado no painel" disabled>
+                                @endif
+                            </div>
                             <div data-support-quantity>
                                 <label class="support-label">Quantidade</label>
                                 <input name="quantity" class="support-input" inputmode="decimal">
@@ -297,6 +310,7 @@
         var isGovernment = category === 'governamental';
 
         toggleGroup('[data-support-amount]', requiresAmount || category === 'monetario', requiresAmount);
+        toggleGroup('[data-support-payment]', category === 'monetario', category === 'monetario');
         toggleGroup('[data-support-quantity]', requiresQuantity || category === 'insumos', requiresQuantity);
         toggleGroup('[data-support-address]', requiresAddress, requiresAddress);
         toggleGroup('[data-support-document]', requiresDocument, requiresDocument);
@@ -344,6 +358,37 @@
             form.reset();
             updateFields();
             setOpen(false);
+            var payment = data.payment && data.payment.public ? data.payment.public : null;
+            if (payment && payment.type === 'pix') {
+                var pixHtml = '';
+                if (payment.qr_code_base64) {
+                    pixHtml += '<img src="data:image/png;base64,' + payment.qr_code_base64 + '" style="width:180px;height:180px;margin:0 auto 12px;">';
+                }
+                if (payment.qr_code) {
+                    pixHtml += '<textarea readonly style="width:100%;height:96px;border:1px solid #d1d5db;border-radius:10px;padding:10px;font-size:12px;">' + payment.qr_code + '</textarea>';
+                }
+                if (payment.ticket_url) {
+                    pixHtml += '<a href="' + payment.ticket_url + '" target="_blank" style="display:inline-block;margin-top:10px;color:#15803d;font-weight:700;">Abrir pagamento</a>';
+                }
+                if (window.Swal) {
+                    Swal.fire({ icon: 'success', title: 'PIX gerado', html: pixHtml || data.message, confirmButtonColor: '#15803d' });
+                } else {
+                    alert(payment.qr_code || data.message);
+                }
+                return;
+            }
+            if (payment && payment.type === 'redirect' && payment.url) {
+                window.location.href = payment.url;
+                return;
+            }
+            if (payment && payment.message) {
+                if (window.Swal) {
+                    Swal.fire({ icon: 'info', title: 'Apoio registrado', text: payment.message, confirmButtonColor: '#15803d' });
+                } else {
+                    alert(payment.message);
+                }
+                return;
+            }
             if (window.Swal) {
                 Swal.fire({ icon: 'success', title: 'Apoio registrado', text: data.message || 'Recebemos seu apoio.', confirmButtonColor: '#15803d' });
             } else {
