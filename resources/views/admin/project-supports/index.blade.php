@@ -134,11 +134,10 @@
             </span>
         </div>
         <div class="support-card-body">
-            <!-- Configurações Gerais -->
-            <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}" class="mb-6">
+            <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}" class="grid grid-cols-1 xl:grid-cols-3 gap-5">
                 @csrf
                 @method("PUT")
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="xl:col-span-1 space-y-4">
                     <div>
                         <label class="support-label">Gateway ativo</label>
                         <select name="donation_gateway_active" class="support-field">
@@ -152,127 +151,117 @@
                         <label class="support-label">E-mail padrao do pagador</label>
                         <input type="email" name="donation_default_payer_email" class="support-field" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}" placeholder="doacao@issm.org.br">
                     </div>
+                    <div class="support-helpbox">
+                        <p><strong>Webhook:</strong> <code>{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
+                        <p><strong>Retorno:</strong> <code>{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
+                        <p>Troque <code>{gateway}</code> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
+                    </div>
                 </div>
-                <button class="support-btn support-btn-primary w-full text-base py-3 mt-4">Salvar configuracoes gerais</button>
-            </form>
 
-            <div class="support-helpbox mb-6">
-                <p><strong>Webhook:</strong> <code>{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
-                <p><strong>Retorno:</strong> <code>{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
-                <p>Troque <code>{gateway}</code> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
-            </div>
-
-            <!-- Mercado Pago -->
-            <form method="POST" action="{{ route("admin.project-supports.gateway.update", ['gateway' => 'mercadopago']) }}" class="type-card mb-4">
-                @csrf
-                @method("PUT")
-                <div class="flex items-center justify-between mb-3">
-                    <label class="support-label mb-0">Mercado Pago</label>
-                    <select name="donation_mercadopago_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('mercadopago', this.value)">
-                        <option value="production" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "production")>Produção</option>
-                        <option value="sandbox" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <div data-gateway="mercadopago" data-mode="production">
-                        <label class="support-label text-xs">Access Token (Produção)</label>
-                        <input name="donation_mercadopago_access_token" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
-                    </div>
-                    <div data-gateway="mercadopago" data-mode="sandbox" style="display: none;">
-                        <label class="support-label text-xs">Access Token (Sandbox)</label>
-                        <input name="donation_mercadopago_access_token_sandbox" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token_sandbox"] ?? "" }}" placeholder="APP_USR-...">
-                    </div>
-                </div>
-                <button class="support-btn support-btn-primary w-full text-sm py-2 mt-3">Salvar Mercado Pago</button>
-            </form>
-
-            <!-- Stripe -->
-            <form method="POST" action="{{ route("admin.project-supports.gateway.update", ['gateway' => 'stripe']) }}" class="type-card mb-4">
-                @csrf
-                @method("PUT")
-                <div class="flex items-center justify-between mb-3">
-                    <label class="support-label mb-0">Stripe</label>
-                    <select name="donation_stripe_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('stripe', this.value)">
-                        <option value="production" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "production")>Produção</option>
-                        <option value="sandbox" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <div data-gateway="stripe" data-mode="production">
-                        <label class="support-label text-xs">Publishable Key (Produção)</label>
-                        <input name="donation_stripe_publishable_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
-                        <label class="support-label text-xs mt-2">Secret Key (Produção)</label>
-                        <input name="donation_stripe_secret_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
-                    </div>
-                    <div data-gateway="stripe" data-mode="sandbox" style="display: none;">
-                        <label class="support-label text-xs">Publishable Key (Sandbox)</label>
-                        <input name="donation_stripe_publishable_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key_sandbox"] ?? "" }}" placeholder="pk_test_...">
-                        <label class="support-label text-xs mt-2">Secret Key (Sandbox)</label>
-                        <input name="donation_stripe_secret_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key_sandbox"] ?? "" }}" placeholder="sk_test_...">
-                    </div>
-                </div>
-                <button class="support-btn support-btn-primary w-full text-sm py-2 mt-3">Salvar Stripe</button>
-            </form>
-
-            <!-- PayPal -->
-            <form method="POST" action="{{ route("admin.project-supports.gateway.update", ['gateway' => 'paypal']) }}" class="type-card mb-4">
-                @csrf
-                @method("PUT")
-                <div class="flex items-center justify-between mb-3">
-                    <label class="support-label mb-0">PayPal</label>
-                    <select name="donation_paypal_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('paypal', this.value)">
-                        <option value="production" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "production")>Produção</option>
-                        <option value="sandbox" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <div data-gateway="paypal" data-mode="production">
-                        <label class="support-label text-xs">Client ID (Produção)</label>
-                        <input name="donation_paypal_client_id" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
-                        <label class="support-label text-xs mt-2">Secret (Produção)</label>
-                        <input name="donation_paypal_secret" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
-                    </div>
-                    <div data-gateway="paypal" data-mode="sandbox" style="display: none;">
-                        <label class="support-label text-xs">Client ID (Sandbox)</label>
-                        <input name="donation_paypal_client_id_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id_sandbox"] ?? "" }}">
-                        <label class="support-label text-xs mt-2">Secret (Sandbox)</label>
-                        <input name="donation_paypal_secret_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret_sandbox"] ?? "" }}">
-                    </div>
-                </div>
-                <button class="support-btn support-btn-primary w-full text-sm py-2 mt-3">Salvar PayPal</button>
-            </form>
-
-            <!-- Cora, PagBank, Asaas, Efi -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                @foreach(["cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efi Pro"] as $key => $label)
-                    <form method="POST" action="{{ route("admin.project-supports.gateway.update", ['gateway' => $key]) }}" class="type-card">
-                        @csrf
-                        @method("PUT")
+                <div class="xl:col-span-2 space-y-5">
+                    <!-- Mercado Pago -->
+                    <div class="type-card">
                         <div class="flex items-center justify-between mb-3">
-                            <label class="support-label mb-0">{{ $label }}</label>
-                            <select name="donation_{{ $key }}_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('{{ $key }}', this.value)">
-                                <option value="production" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "production")>Produção</option>
-                                <option value="sandbox" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "sandbox")>Sandbox</option>
+                            <label class="support-label mb-0">Mercado Pago</label>
+                            <select name="donation_mercadopago_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('mercadopago', this.value)">
+                                <option value="production" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "production")>Produção</option>
+                                <option value="sandbox" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "sandbox")>Sandbox</option>
                             </select>
                         </div>
                         <div class="space-y-2">
-                            <div data-gateway="{{ $key }}" data-mode="production">
-                                <label class="support-label text-xs">URL Base (Produção)</label>
-                                <input name="donation_{{ $key }}_base_url" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
-                                <label class="support-label text-xs mt-2">API Key (Produção)</label>
-                                <input name="donation_{{ $key }}_api_key" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
+                            <div data-gateway="mercadopago" data-mode="production">
+                                <label class="support-label text-xs">Access Token (Produção)</label>
+                                <input name="donation_mercadopago_access_token" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
                             </div>
-                            <div data-gateway="{{ $key }}" data-mode="sandbox" style="display: none;">
-                                <label class="support-label text-xs">URL Base (Sandbox)</label>
-                                <input name="donation_{{ $key }}_base_url_sandbox" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url_sandbox"] ?? "" }}">
-                                <label class="support-label text-xs mt-2">API Key (Sandbox)</label>
-                                <input name="donation_{{ $key }}_api_key_sandbox" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key_sandbox"] ?? "" }}">
+                            <div data-gateway="mercadopago" data-mode="sandbox" style="display: none;">
+                                <label class="support-label text-xs">Access Token (Sandbox)</label>
+                                <input name="donation_mercadopago_access_token_sandbox" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token_sandbox"] ?? "" }}" placeholder="APP_USR-...">
                             </div>
                         </div>
-                        <button class="support-btn support-btn-primary w-full text-sm py-2 mt-3">Salvar {{ $label }}</button>
-                    </form>
-                @endforeach
-            </div>
+                    </div>
+
+                    <!-- Stripe -->
+                    <div class="type-card">
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="support-label mb-0">Stripe</label>
+                            <select name="donation_stripe_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('stripe', this.value)">
+                                <option value="production" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "production")>Produção</option>
+                                <option value="sandbox" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "sandbox")>Sandbox</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <div data-gateway="stripe" data-mode="production">
+                                <label class="support-label text-xs">Publishable Key (Produção)</label>
+                                <input name="donation_stripe_publishable_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
+                                <label class="support-label text-xs mt-2">Secret Key (Produção)</label>
+                                <input name="donation_stripe_secret_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
+                            </div>
+                            <div data-gateway="stripe" data-mode="sandbox" style="display: none;">
+                                <label class="support-label text-xs">Publishable Key (Sandbox)</label>
+                                <input name="donation_stripe_publishable_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key_sandbox"] ?? "" }}" placeholder="pk_test_...">
+                                <label class="support-label text-xs mt-2">Secret Key (Sandbox)</label>
+                                <input name="donation_stripe_secret_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key_sandbox"] ?? "" }}" placeholder="sk_test_...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PayPal -->
+                    <div class="type-card">
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="support-label mb-0">PayPal</label>
+                            <select name="donation_paypal_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('paypal', this.value)">
+                                <option value="production" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "production")>Produção</option>
+                                <option value="sandbox" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "sandbox")>Sandbox</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <div data-gateway="paypal" data-mode="production">
+                                <label class="support-label text-xs">Client ID (Produção)</label>
+                                <input name="donation_paypal_client_id" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
+                                <label class="support-label text-xs mt-2">Secret (Produção)</label>
+                                <input name="donation_paypal_secret" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
+                            </div>
+                            <div data-gateway="paypal" data-mode="sandbox" style="display: none;">
+                                <label class="support-label text-xs">Client ID (Sandbox)</label>
+                                <input name="donation_paypal_client_id_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id_sandbox"] ?? "" }}">
+                                <label class="support-label text-xs mt-2">Secret (Sandbox)</label>
+                                <input name="donation_paypal_secret_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret_sandbox"] ?? "" }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cora, PagBank, Asaas, Efi -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        @foreach(["cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efi Pro"] as $key => $label)
+                            <div class="type-card">
+                                <div class="flex items-center justify-between mb-3">
+                                    <label class="support-label mb-0">{{ $label }}</label>
+                                    <select name="donation_{{ $key }}_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('{{ $key }}', this.value)">
+                                        <option value="production" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "production")>Produção</option>
+                                        <option value="sandbox" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "sandbox")>Sandbox</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-2">
+                                    <div data-gateway="{{ $key }}" data-mode="production">
+                                        <label class="support-label text-xs">URL Base (Produção)</label>
+                                        <input name="donation_{{ $key }}_base_url" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
+                                        <label class="support-label text-xs mt-2">API Key (Produção)</label>
+                                        <input name="donation_{{ $key }}_api_key" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
+                                    </div>
+                                    <div data-gateway="{{ $key }}" data-mode="sandbox" style="display: none;">
+                                        <label class="support-label text-xs">URL Base (Sandbox)</label>
+                                        <input name="donation_{{ $key }}_base_url_sandbox" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url_sandbox"] ?? "" }}">
+                                        <label class="support-label text-xs mt-2">API Key (Sandbox)</label>
+                                        <input name="donation_{{ $key }}_api_key_sandbox" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key_sandbox"] ?? "" }}">
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <button class="support-btn support-btn-primary w-full text-base py-3 mt-4">Salvar configuracoes do gateway</button>
+                </div>
+            </form>
         </div>
 
             <div class="mt-5">

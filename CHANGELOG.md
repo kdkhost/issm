@@ -2,13 +2,15 @@
 
 ## [1.3.5] - 2026-06-28
 
-### Melhorado - Configuração individual de gateways
+### Adicionado - Configuração de ambiente (Sandbox/Produção) para gateways
 
-- Cada gateway agora tem seu próprio formulário com botão de salvar individual
-- Evita alteração acidental de dados de um gateway ao salvar outro
-- Configurações gerais (gateway ativo e e-mail) separadas em formulário próprio
-- Controller atualizado para processar atualizações individuais por gateway
-- Rota atualizada para suportar parâmetro opcional de gateway
+- Adicionado seletor de ambiente (Produção/Sandbox) para cada gateway de pagamento
+- Campos separados para credenciais de sandbox e produção em todos os 7 gateways
+- JavaScript dinâmico para mostrar/ocultar campos conforme ambiente selecionado
+- Indicador visual do ambiente ativo em tempo real
+- Serviço de pagamentos atualizado para usar credenciais do ambiente correto automaticamente
+- Gateways: Mercado Pago, Stripe, PayPal, Cora, PagBank, Asaas, Efi
+- Layout original mantido, apenas cards aprimorados com seletores de ambiente
 
 ## [1.3.4] - 2026-06-28
 

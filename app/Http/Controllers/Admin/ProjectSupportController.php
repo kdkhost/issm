@@ -81,56 +81,51 @@ class ProjectSupportController extends Controller
         return view('admin.project-supports.index', compact('supportTypes', 'supportRequests', 'stats', 'projects', 'gatewaySettings', 'gateways'));
     }
 
-    public function updateGateway(Request $request, ?string $gateway = null)
+    public function updateGateway(Request $request)
     {
-        // Se um gateway específico foi informado, salvar apenas as configurações desse gateway
-        if ($gateway && in_array($gateway, ProjectDonationGateway::GATEWAYS, true)) {
-            $rules = [
-                "donation_{$gateway}_mode" => 'nullable|string|in:production,sandbox',
-            ];
-
-            // Adicionar regras específicas por gateway
-            if ($gateway === 'mercadopago') {
-                $rules['donation_mercadopago_access_token'] = 'nullable|string|max:1000';
-                $rules['donation_mercadopago_access_token_sandbox'] = 'nullable|string|max:1000';
-            } elseif ($gateway === 'stripe') {
-                $rules['donation_stripe_publishable_key'] = 'nullable|string|max:500';
-                $rules['donation_stripe_secret_key'] = 'nullable|string|max:500';
-                $rules['donation_stripe_publishable_key_sandbox'] = 'nullable|string|max:500';
-                $rules['donation_stripe_secret_key_sandbox'] = 'nullable|string|max:500';
-            } elseif ($gateway === 'paypal') {
-                $rules['donation_paypal_client_id'] = 'nullable|string|max:500';
-                $rules['donation_paypal_secret'] = 'nullable|string|max:500';
-                $rules['donation_paypal_client_id_sandbox'] = 'nullable|string|max:500';
-                $rules['donation_paypal_secret_sandbox'] = 'nullable|string|max:500';
-            } else {
-                // Cora, PagBank, Asaas, Efi
-                $rules["donation_{$gateway}_base_url"] = 'nullable|string|max:500';
-                $rules["donation_{$gateway}_api_key"] = 'nullable|string|max:1000';
-                $rules["donation_{$gateway}_base_url_sandbox"] = 'nullable|string|max:500';
-                $rules["donation_{$gateway}_api_key_sandbox"] = 'nullable|string|max:1000';
-            }
-
-            $validated = $request->validate($rules);
-
-            foreach ($validated as $key => $value) {
-                Setting::set($key, $value ?? '');
-            }
-
-            return back()->with('success', ucfirst($gateway) . ' atualizado com sucesso.');
-        }
-
-        // Salvar configurações gerais (gateway ativo e e-mail padrão)
         $validated = $request->validate([
             'donation_gateway_active' => ['nullable', 'string', Rule::in(array_merge([''], ProjectDonationGateway::GATEWAYS))],
             'donation_default_payer_email' => 'nullable|email|max:255',
+            'donation_mercadopago_mode' => 'nullable|string|in:production,sandbox',
+            'donation_mercadopago_access_token' => 'nullable|string|max:1000',
+            'donation_mercadopago_access_token_sandbox' => 'nullable|string|max:1000',
+            'donation_stripe_mode' => 'nullable|string|in:production,sandbox',
+            'donation_stripe_publishable_key' => 'nullable|string|max:500',
+            'donation_stripe_secret_key' => 'nullable|string|max:500',
+            'donation_stripe_publishable_key_sandbox' => 'nullable|string|max:500',
+            'donation_stripe_secret_key_sandbox' => 'nullable|string|max:500',
+            'donation_paypal_mode' => 'nullable|string|in:production,sandbox',
+            'donation_paypal_client_id' => 'nullable|string|max:500',
+            'donation_paypal_secret' => 'nullable|string|max:500',
+            'donation_paypal_client_id_sandbox' => 'nullable|string|max:500',
+            'donation_paypal_secret_sandbox' => 'nullable|string|max:500',
+            'donation_cora_mode' => 'nullable|string|in:production,sandbox',
+            'donation_cora_base_url' => 'nullable|string|max:500',
+            'donation_cora_api_key' => 'nullable|string|max:1000',
+            'donation_cora_base_url_sandbox' => 'nullable|string|max:500',
+            'donation_cora_api_key_sandbox' => 'nullable|string|max:1000',
+            'donation_pagbank_mode' => 'nullable|string|in:production,sandbox',
+            'donation_pagbank_base_url' => 'nullable|string|max:500',
+            'donation_pagbank_api_key' => 'nullable|string|max:1000',
+            'donation_pagbank_base_url_sandbox' => 'nullable|string|max:500',
+            'donation_pagbank_api_key_sandbox' => 'nullable|string|max:1000',
+            'donation_asaas_mode' => 'nullable|string|in:production,sandbox',
+            'donation_asaas_base_url' => 'nullable|string|max:500',
+            'donation_asaas_api_key' => 'nullable|string|max:1000',
+            'donation_asaas_base_url_sandbox' => 'nullable|string|max:500',
+            'donation_asaas_api_key_sandbox' => 'nullable|string|max:1000',
+            'donation_efi_mode' => 'nullable|string|in:production,sandbox',
+            'donation_efi_base_url' => 'nullable|string|max:500',
+            'donation_efi_api_key' => 'nullable|string|max:1000',
+            'donation_efi_base_url_sandbox' => 'nullable|string|max:500',
+            'donation_efi_api_key_sandbox' => 'nullable|string|max:1000',
         ]);
 
         foreach ($validated as $key => $value) {
             Setting::set($key, $value ?? '');
         }
 
-        return back()->with('success', 'Configuracoes gerais atualizadas com sucesso.');
+        return back()->with('success', 'Gateway de doacoes atualizado com sucesso.');
     }
 
     public function storeType(Request $request)

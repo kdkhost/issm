@@ -71,7 +71,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('noticias', NewsController::class)->parameters(['noticias' => 'news']);
     Route::resource('projetos', ProjectController::class)->parameters(['projetos' => 'project']);
     Route::get('apoios-projetos', [ProjectSupportController::class, 'index'])->name('project-supports.index');
-    Route::put('apoios-projetos/gateway/{gateway?}', [ProjectSupportController::class, 'updateGateway'])->name('project-supports.gateway.update');
+    Route::put('apoios-projetos/gateway', [ProjectSupportController::class, 'updateGateway'])->name('project-supports.gateway.update');
     Route::post('apoios-projetos/tipos', [ProjectSupportController::class, 'storeType'])->name('project-supports.types.store');
     Route::put('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'updateType'])->name('project-supports.types.update');
     Route::delete('apoios-projetos/tipos/{type}', [ProjectSupportController::class, 'destroyType'])->name('project-supports.types.destroy');
