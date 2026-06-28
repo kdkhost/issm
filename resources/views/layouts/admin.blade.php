@@ -369,6 +369,16 @@
         /* Footer e wrapper: previne scroll horizontal em mobile */
         footer { overflow: hidden; max-width: 100%; box-sizing: border-box; }
         .flex.h-screen.overflow-hidden { max-width: 100vw; }
+
+        /* ═══ LAYOUT FALLBACK — garante flex即使 Tailwind não carregue ═══ */
+        .flex.h-screen.overflow-hidden { display: flex; height: 100vh; overflow: hidden; }
+        .flex-1 { flex: 1 1 0%; }
+        .flex-col { flex-direction: column; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        .overflow-x-hidden { overflow-x: hidden; }
+        #admin-main-content { flex: 1 1 0%; overflow-y: auto; overflow-x: hidden !important; }
         /* Remove scrollbar horizontal do main admin e de toda a página */
         #admin-main-content { overflow-x: hidden !important; }
         #admin-main-content::-webkit-scrollbar:horizontal { display: none !important; height: 0 !important; }

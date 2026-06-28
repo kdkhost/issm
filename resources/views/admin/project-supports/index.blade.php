@@ -2,92 +2,12 @@
 @section("title", "Apoios aos Projetos")
 @section("page-title", "Apoios aos Projetos")
 
-@push("styles")
-<style>
-    .support-shell { display:grid;gap:20px; }
-    .support-card { background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);overflow:hidden; }
-    .support-card-head { display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:20px;border-bottom:1px solid #f1f5f9;background:#fafbfc; }
-    .support-card-title { margin:0;color:#1e293b;font-size:15px;font-weight:700;line-height:1.3; }
-    .support-card-subtitle { margin:4px 0 0;color:#64748b;font-size:13px;line-height:1.4; }
-    .support-card-body { padding:20px; }
-    .support-kpi { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;box-shadow:0 1px 2px rgba(0,0,0,0.05);min-height:88px; }
-    .support-kpi span { display:block;color:#64748b;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em; }
-    .support-kpi strong { display:block;margin-top:4px;color:#0f172a;font-size:24px;font-weight:700;line-height:1; }
-    .support-kpi-icon { width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#f0fdf4;color:#15803d;font-weight:600; }
-    .support-field { width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px;font-size:13px;color:#1f2937;background:#fff;transition:border-color .15s,box-shadow .15s; }
-    .support-field:focus { outline:0;border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.1); }
-    .support-label { display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.02em;color:#475569;margin-bottom:6px; }
-    .support-check { display:flex;align-items:center;gap:8px;min-height:32px;font-size:13px;font-weight:500;color:#374151; }
-    .support-check input { width:16px;height:16px;accent-color:#16a34a; }
-    .support-btn { display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;transition:background .15s,color .15s,border-color .15s; }
-    .support-btn-primary { background:#16a34a;color:#fff; }
-    .support-btn-primary:hover { background:#15803d;color:#fff;text-decoration:none; }
-    .support-btn-dark { background:#1f2937;color:#fff; }
-    .support-btn-dark:hover { background:#111827;color:#fff;text-decoration:none; }
-    .support-badge { display:inline-flex;align-items:center;border-radius:9999px;padding:4px 10px;font-size:11px;font-weight:600;line-height:1; }
-    .support-badge-green { background:#dcfce7;color:#166534; }
-    .support-badge-gray { background:#f1f5f9;color:#475569; }
-    .support-badge-blue { background:#dbeafe;color:#1d4ed8; }
-    .support-badge-red { background:#fee2e2;color:#dc2626; }
-    .support-row { border-top:1px solid #f1f5f9;scroll-margin-top:110px; }
-    .support-row:hover { background:#fafbfc; }
-    .support-helpbox { border:1px solid #bbf7d0;background:#f0fdf4;border-radius:10px;padding:14px;color:#166534;font-size:13px;line-height:1.5; }
-    .support-helpbox code { background:rgba(22,101,52,.08);border-radius:4px;padding:2px 6px;font-weight:600;font-size:12px; }
-    .gateway-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px; }
-    .gateway-note { border:1px solid #e2e8f0;border-radius:10px;padding:14px;background:#fff; }
-    .gateway-note strong { display:block;color:#1e293b;font-size:13px;font-weight:600;margin-bottom:6px; }
-    .gateway-note ul { margin:0;padding-left:18px;color:#64748b;font-size:13px;line-height:1.5; }
-    .type-list { display:grid;gap:14px; }
-    .type-card { border:1px solid #e2e8f0;border-radius:10px;padding:16px;background:#fff; }
-    .request-grid { display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:20px;align-items:start; }
-    .request-meta { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px;margin-top:14px;font-size:13px; }
-    .request-meta dt { color:#64748b;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em; }
-    .request-meta dd { margin:2px 0 0;color:#1f2937;font-weight:600;word-break:break-word; }
-    .section-tabs { display:flex;gap:8px;flex-wrap:wrap; }
-    .section-tabs a { border:1px solid #e2e8f0;background:#fff;color:#475569;border-radius:9999px;padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none; }
-    .section-tabs a:hover { border-color:#16a34a;color:#16a34a;background:#f0fdf4; }
-    @media(max-width:1100px){.gateway-grid,.request-grid{grid-template-columns:1fr}.request-meta{grid-template-columns:1fr}.support-card-head{flex-direction:column}.section-tabs{width:100%}}
-    [data-theme="dark"] .support-card,[data-theme="dark"] .support-kpi,[data-theme="dark"] .gateway-note,[data-theme="dark"] .type-card { background:#1e293b;border-color:#334155;box-shadow:none; }
-    [data-theme="dark"] .support-card-head { background:#0f172a;border-color:#334155; }
-    [data-theme="dark"] .support-card-title,[data-theme="dark"] .support-kpi strong,[data-theme="dark"] .gateway-note strong { color:#f1f5f9; }
-    [data-theme="dark"] .support-card-subtitle,[data-theme="dark"] .support-kpi span,[data-theme="dark"] .gateway-note ul,[data-theme="dark"] .support-label { color:#94a3b8; }
-    [data-theme="dark"] .support-field { background:#0f172a;border-color:#475569;color:#f1f5f9; }
-    [data-theme="dark"] .support-check,[data-theme="dark"] .request-meta dd { color:#cbd5e1; }
-    [data-theme="dark"] .support-row { border-color:#334155; }
-    [data-theme="dark"] .support-row:hover { background:#1e293b; }
-    [data-theme="dark"] .support-helpbox { background:rgba(22,101,52,.15);border-color:rgba(74,222,128,.3);color:#86efac; }
-    [data-theme="dark"] .section-tabs a { background:#1e293b;border-color:#334155;color:#cbd5e1; }
-    [data-theme="dark"] .section-tabs a:hover { border-color:#16a34a;color:#86efac;background:rgba(22,163,74,.1); }
-</style>
-@endpush
-
 @section("content")
 @php
     $fmt = fn ($value) => number_format((float) $value, 2, ",", ".");
-    $statusLabels = [
-        "new" => "Novo",
-        "read" => "Lido",
-        "contacted" => "Contatado",
-        "completed" => "Concluido",
-        "cancelled" => "Cancelado",
-    ];
-    $categoryLabels = [
-        "monetario" => "Doacao monetaria",
-        "insumos" => "Insumos",
-        "servicos" => "Servicos",
-        "voluntariado" => "Voluntariado",
-        "governamental" => "Governamental",
-        "outro" => "Outro",
-    ];
-    $gatewayLabels = [
-        "mercadopago" => "Mercado Pago",
-        "cora" => "Cora",
-        "pagbank" => "PagBank",
-        "asaas" => "Asaas",
-        "efi" => "Efi Pro",
-        "stripe" => "Stripe",
-        "paypal" => "PayPal",
-    ];
+    $statusLabels = ["new" => "Novo", "read" => "Lido", "contacted" => "Contatado", "completed" => "Concluido", "cancelled" => "Cancelado"];
+    $categoryLabels = ["monetario" => "Doacao monetaria", "insumos" => "Insumos", "servicos" => "Servicos", "voluntariado" => "Voluntariado", "governamental" => "Governamental", "outro" => "Outro"];
+    $gatewayLabels = ["mercadopago" => "Mercado Pago", "cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efi Pro", "stripe" => "Stripe", "paypal" => "PayPal"];
     $gatewayInstructions = [
         "mercadopago" => ["Crie uma aplicacao em Suas integracoes.", "Cole o Access Token de producao.", "Configure Webhooks para pagamentos usando a URL dinamica abaixo."],
         "cora" => ["Ative API Pix/cobrancas no portal Cora.", "Informe URL base e token/API Key.", "Cadastre o webhook do gateway apontando para a URL dinamica."],
@@ -98,413 +18,433 @@
         "paypal" => ["Crie app REST no PayPal Developer.", "Informe Client ID e Secret.", "Use sandbox apenas para testes antes da producao."],
     ];
     $activeGateway = $gatewaySettings["donation_gateway_active"] ?? "";
+    $gatewayKeys = ['mercadopago', 'stripe', 'paypal', 'cora', 'pagbank', 'asaas', 'efi'];
+    $gatewayUrls = [
+        'cora' => ['production' => 'https://api.cora.com.br', 'sandbox' => 'https://api.sandbox.cora.com.br'],
+        'pagbank' => ['production' => 'https://api.pagbank.com.br', 'sandbox' => 'https://api.sandbox.pagbank.com.br'],
+        'asaas' => ['production' => 'https://api.asaas.com', 'sandbox' => 'https://homologacao.asaas.com.br'],
+        'efi' => ['production' => 'https://api.efi.com.br', 'sandbox' => 'https://api-hom.efi.com.br'],
+    ];
+    $firstActive = $activeGateway ?: 'mercadopago';
 @endphp
 
-<div class="support-shell">
-    <div class="support-card">
-        <div class="support-card-head">
-            <div>
-                <h2 class="support-card-title">Central de apoios e doacoes</h2>
-                <p class="support-card-subtitle">Gerencie formas de apoio, gateway de doacoes monetarias, registros recebidos e instrucoes para cada portal de pagamento.</p>
+{{-- KPI Cards — grid horizontal como Dashboard --}}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+    {{-- Total --}}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-blue-500">
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Total</span>
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span class="text-blue-600 font-bold text-sm">T</span>
+                </div>
             </div>
-            <div class="section-tabs">
-                <a href="#gateway">Gateway</a>
-                <a href="#tipos">Tipos de apoio</a>
-                <a href="#registros">Registros</a>
-            </div>
+            <strong class="block text-2xl font-bold text-gray-900">{{ $stats["total"] }}</strong>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div class="support-kpi"><div><span>Total</span><strong>{{ $stats["total"] }}</strong></div><div class="support-kpi-icon">T</div></div>
-        <div class="support-kpi"><div><span>Novos</span><strong class="text-red-600">{{ $stats["new"] }}</strong></div><div class="support-kpi-icon">N</div></div>
-        <div class="support-kpi"><div><span>Contatados</span><strong class="text-blue-600">{{ $stats["contacted"] }}</strong></div><div class="support-kpi-icon">C</div></div>
-        <div class="support-kpi"><div><span>Concluidos</span><strong class="text-green-700">{{ $stats["completed"] }}</strong></div><div class="support-kpi-icon">OK</div></div>
-        <div class="support-kpi"><div><span>Valor sinalizado</span><strong class="text-green-700">R$ {{ $fmt($stats["amount"]) }}</strong></div><div class="support-kpi-icon">R$</div></div>
+    {{-- Novos --}}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-green-500">
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Novos</span>
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <span class="text-green-600 font-bold text-sm">N</span>
+                </div>
+            </div>
+            <strong class="block text-2xl font-bold text-green-600">{{ $stats["new"] }}</strong>
+        </div>
     </div>
 
-    <div id="gateway" class="support-card">
-        <div class="support-card-head">
-            <div>
-                <h2 class="support-card-title">Gateway de doacoes</h2>
-                <p class="support-card-subtitle">Somente um gateway fica ativo por vez. As URLs abaixo devem ser cadastradas no portal escolhido.</p>
+    {{-- Contatados --}}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-yellow-500">
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Contatados</span>
+                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <span class="text-yellow-600 font-bold text-sm">C</span>
+                </div>
             </div>
-            <span class="support-badge {{ $activeGateway ? 'support-badge-green' : 'support-badge-gray' }}">
-                {{ $activeGateway ? 'Ativo: ' . ($gatewayLabels[$activeGateway] ?? strtoupper($activeGateway)) : 'Gateway desativado' }}
-            </span>
+            <strong class="block text-2xl font-bold text-yellow-600">{{ $stats["contacted"] }}</strong>
         </div>
-        <div class="support-card-body">
-            <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}" class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+    </div>
+
+    {{-- Concluidos --}}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-emerald-500">
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Concluidos</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <span class="text-emerald-600 font-bold text-sm">OK</span>
+                </div>
+            </div>
+            <strong class="block text-2xl font-bold text-emerald-600">{{ $stats["completed"] }}</strong>
+        </div>
+    </div>
+
+    {{-- Valor --}}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-red-500">
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Valor Sinalizado</span>
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                    <span class="text-red-600 font-bold text-sm">R$</span>
+                </div>
+            </div>
+            <strong class="block text-2xl font-bold text-red-600">R$ {{ $fmt($stats["amount"]) }}</strong>
+        </div>
+    </div>
+</div>
+
+{{-- Header descritivo --}}
+<div class="bg-white rounded-xl shadow-sm p-5 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+            <h3 class="font-bold text-gray-800 text-base">Central de apoios e doacoes</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Gerencie formas de apoio, gateway de doacoes monetarias, registros recebidos e instrucoes para cada portal de pagamento.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <a href="#gateway" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                Gateway
+            </a>
+            <a href="#tipos" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                Tipos de apoio
+            </a>
+            <a href="#registros" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Registros
+            </a>
+        </div>
+    </div>
+</div>
+
+{{-- Gateway --}}
+<div id="gateway" class="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+    <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+        <h3 class="font-bold text-gray-800 text-sm">Gateway de doacoes</h3>
+        @if($activeGateway)
+            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold bg-green-100 text-green-700">Ativo: {{ $gatewayLabels[$activeGateway] ?? strtoupper($activeGateway) }}</span>
+        @else
+            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold bg-gray-100 text-gray-600">Gateway desativado</span>
+        @endif
+    </div>
+    <div class="p-5">
+        <p class="text-sm text-gray-500 mb-4">Somente um gateway fica ativo por vez. As URLs abaixo devem ser cadastradas no portal escolhido.</p>
+
+        <form method="POST" action="{{ route("admin.project-supports.gateway.update") }}">
+            @csrf
+            @method("PUT")
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="form-label">Gateway ativo</label>
+                    <select name="donation_gateway_active">
+                        <option value="">Desativado</option>
+                        @foreach($gateways as $gw)
+                            <option value="{{ $gw }}" @selected($activeGateway === $gw)>{{ $gatewayLabels[$gw] ?? strtoupper($gw) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">E-mail padrao do pagador</label>
+                    <input type="email" name="donation_default_payer_email" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}" placeholder="doacao@issm.org.br">
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-[12px] text-green-800">
+                    <p><strong>Webhook:</strong> <code class="bg-green-100 rounded px-1">{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
+                    <p class="mt-1"><strong>Retorno:</strong> <code class="bg-green-100 rounded px-1">{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1 border-b border-gray-200 mb-4" id="gtabs">
+                @foreach($gatewayKeys as $g)
+                    <button type="button" class="gtab px-3 py-2 text-sm font-semibold rounded-t-lg border border-b-0 -mb-px transition-colors
+                        {{ $g === $firstActive ? 'bg-white text-green-700 border-gray-200' : 'bg-gray-50 text-gray-500 border-transparent hover:text-gray-700' }}"
+                        data-tab="{{ $g }}">{{ $gatewayLabels[$g] }}</button>
+                @endforeach
+            </div>
+
+            @foreach($gatewayKeys as $g)
+                <div class="gtab-content {{ $g === $firstActive ? '' : 'hidden' }}" data-tab="{{ $g }}">
+                    @php $mode = $gatewaySettings["donation_{$g}_mode"] ?? 'production'; @endphp
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
+                            <span class="font-bold text-gray-800 text-sm">{{ $gatewayLabels[$g] }}</span>
+                            <select name="donation_{{ $g }}_mode" class="rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm" onchange="toggleGatewayFields('{{ $g }}', this.value)">
+                                <option value="production" @selected($mode === 'production')>Producao</option>
+                                <option value="sandbox" @selected($mode === 'sandbox')>Sandbox</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            @if($g === 'mercadopago')
+                                <div data-gateway="mercadopago" data-mode="production" {{ $mode !== 'production' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Access Token (Producao)</label>
+                                    <input name="donation_mercadopago_access_token" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
+                                </div>
+                                <div data-gateway="mercadopago" data-mode="sandbox" {{ $mode !== 'sandbox' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Access Token (Sandbox)</label>
+                                    <input name="donation_mercadopago_access_token_sandbox" value="{{ $gatewaySettings["donation_mercadopago_access_token_sandbox"] ?? "" }}" placeholder="APP_USR-...">
+                                </div>
+                            @elseif($g === 'stripe')
+                                <div data-gateway="stripe" data-mode="production" {{ $mode !== 'production' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Publishable Key (Producao)</label>
+                                    <input name="donation_stripe_publishable_key" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
+                                    <label class="form-label mt-2">Secret Key (Producao)</label>
+                                    <input name="donation_stripe_secret_key" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
+                                </div>
+                                <div data-gateway="stripe" data-mode="sandbox" {{ $mode !== 'sandbox' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Publishable Key (Sandbox)</label>
+                                    <input name="donation_stripe_publishable_key_sandbox" value="{{ $gatewaySettings["donation_stripe_publishable_key_sandbox"] ?? "" }}" placeholder="pk_test_...">
+                                    <label class="form-label mt-2">Secret Key (Sandbox)</label>
+                                    <input name="donation_stripe_secret_key_sandbox" value="{{ $gatewaySettings["donation_stripe_secret_key_sandbox"] ?? "" }}" placeholder="sk_test_...">
+                                </div>
+                            @elseif($g === 'paypal')
+                                <div data-gateway="paypal" data-mode="production" {{ $mode !== 'production' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Client ID (Producao)</label>
+                                    <input name="donation_paypal_client_id" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
+                                    <label class="form-label mt-2">Secret (Producao)</label>
+                                    <input name="donation_paypal_secret" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
+                                </div>
+                                <div data-gateway="paypal" data-mode="sandbox" {{ $mode !== 'sandbox' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">Client ID (Sandbox)</label>
+                                    <input name="donation_paypal_client_id_sandbox" value="{{ $gatewaySettings["donation_paypal_client_id_sandbox"] ?? "" }}">
+                                    <label class="form-label mt-2">Secret (Sandbox)</label>
+                                    <input name="donation_paypal_secret_sandbox" value="{{ $gatewaySettings["donation_paypal_secret_sandbox"] ?? "" }}">
+                                </div>
+                            @else
+                                @php $u = $gatewayUrls[$g] ?? []; @endphp
+                                <div data-gateway="{{ $g }}" data-mode="production" {{ $mode !== 'production' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">URL Base (Producao)</label>
+                                    <input name="donation_{{ $g }}_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url"] ?? $u['production'] ?? '' }}">
+                                    <label class="form-label mt-2">API Key (Producao)</label>
+                                    <input name="donation_{{ $g }}_api_key" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$g}_api_key"] ?? "" }}">
+                                </div>
+                                <div data-gateway="{{ $g }}" data-mode="sandbox" {{ $mode !== 'sandbox' ? 'style=display:none' : '' }}>
+                                    <label class="form-label">URL Base (Sandbox)</label>
+                                    <input name="donation_{{ $g }}_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url_sandbox"] ?? $u['sandbox'] ?? '' }}">
+                                    <label class="form-label mt-2">API Key (Sandbox)</label>
+                                    <input name="donation_{{ $g }}_api_key_sandbox" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$g}_api_key_sandbox"] ?? "" }}">
+                                </div>
+                            @endif
+                            <div class="pt-2 mt-2 border-t border-gray-100">
+                                <ul class="m-0 pl-4 text-[12px] text-gray-500 leading-relaxed">
+                                    @foreach($gatewayInstructions[$g] as $inst)<li>{{ $inst }}</li>@endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+            <button class="w-full bg-green-700 text-white font-semibold rounded-xl py-2.5 hover:bg-green-800 transition-colors mt-4">Salvar configuracoes do gateway</button>
+        </form>
+    </div>
+</div>
+
+{{-- Tipos de apoio --}}
+<div id="tipos" class="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+    <div class="px-5 py-3.5 border-b border-gray-100">
+        <h3 class="font-bold text-gray-800 text-sm">Tipos de apoio</h3>
+    </div>
+    <div class="p-5">
+        <form method="POST" action="{{ route("admin.project-supports.types.store") }}" class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+            @csrf
+            <div>
+                <label class="form-label">Nome</label>
+                <input name="name" required placeholder="Ex: Doacao de mudas">
+            </div>
+            <div>
+                <label class="form-label">Categoria</label>
+                <select name="category" required>
+                    @foreach($categoryLabels as $k => $l)<option value="{{ $k }}">{{ $l }}</option>@endforeach
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Descricao</label>
+                <input name="description" placeholder="Descricao resumida...">
+            </div>
+            <div>
+                <label class="form-label">Ordem</label>
+                <input type="number" name="sort_order" value="0">
+            </div>
+            <div class="flex items-end">
+                <button class="w-full bg-green-700 text-white font-semibold rounded-lg py-2 text-sm hover:bg-green-800 transition-colors">Adicionar</button>
+            </div>
+        </form>
+
+        @forelse($supportTypes as $type)
+            <form method="POST" action="{{ route("admin.project-supports.types.update", $type) }}" class="border border-gray-200 rounded-lg p-3 mb-2">
                 @csrf
                 @method("PUT")
-                <div class="xl:col-span-1 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
+                    <div class="md:col-span-2">
+                        <label class="form-label">Nome</label>
+                        <input name="name" value="{{ $type->name }}" required>
+                    </div>
                     <div>
-                        <label class="support-label">Gateway ativo</label>
-                        <select name="donation_gateway_active" class="support-field">
-                            <option value="">Desativado</option>
-                            @foreach($gateways as $gateway)
-                                <option value="{{ $gateway }}" @selected($activeGateway === $gateway)>{{ $gatewayLabels[$gateway] ?? strtoupper($gateway) }}</option>
-                            @endforeach
+                        <label class="form-label">Categoria</label>
+                        <select name="category" required>
+                            @foreach($categoryLabels as $k => $l)<option value="{{ $k }}" @selected($type->category === $k)>{{ $l }}</option>@endforeach
                         </select>
                     </div>
                     <div>
-                        <label class="support-label">E-mail padrao do pagador</label>
-                        <input type="email" name="donation_default_payer_email" class="support-field" value="{{ $gatewaySettings["donation_default_payer_email"] ?? "" }}" placeholder="doacao@issm.org.br">
+                        <label class="form-label">Ordem</label>
+                        <input type="number" name="sort_order" value="{{ $type->sort_order }}">
                     </div>
-                    <div class="support-helpbox">
-                        <p><strong>Webhook:</strong> <code>{{ url("/pagamentos/{gateway}/webhook") }}</code></p>
-                        <p><strong>Retorno:</strong> <code>{{ url("/pagamentos/{gateway}/retorno") }}</code></p>
-                        <p>Troque <code>{gateway}</code> por mercadopago, cora, pagbank, asaas, efi, stripe ou paypal.</p>
+                    <div class="flex items-center gap-2">
+                        <label class="flex items-center gap-1.5 text-[13px] font-medium text-gray-700">
+                            <input type="checkbox" name="active" value="1" @checked($type->active) class="w-4 h-4 accent-green-700"> Ativo
+                        </label>
+                    </div>
+                    <div class="flex items-center gap-2 justify-end">
+                        <span class="text-[11px] text-gray-500">{{ $type->requests_count }} regs</span>
+                        <button class="bg-gray-800 text-white font-semibold rounded-lg px-3 py-1.5 text-[12px] hover:bg-gray-900 transition-colors">Salvar</button>
+                        @if($type->requests_count === 0)
+                            <button form="del-{{ $type->id }}" type="submit" data-confirm="Excluir este tipo?" class="text-red-600 font-semibold text-[12px] px-2 hover:bg-red-50 rounded">Excluir</button>
+                        @endif
                     </div>
                 </div>
-
-                <div class="xl:col-span-2 space-y-5">
-                    <!-- Mercado Pago -->
-                    <div class="type-card">
-                        <div class="flex items-center justify-between mb-3">
-                            <label class="support-label mb-0">Mercado Pago</label>
-                            <select name="donation_mercadopago_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('mercadopago', this.value)">
-                                <option value="production" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "production")>Produção</option>
-                                <option value="sandbox" @selected(($gatewaySettings["donation_mercadopago_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                            </select>
-                        </div>
-                        <div class="space-y-2">
-                            <div data-gateway="mercadopago" data-mode="production">
-                                <label class="support-label text-xs">Access Token (Produção)</label>
-                                <input name="donation_mercadopago_access_token" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token"] ?? "" }}" placeholder="APP_USR-...">
-                            </div>
-                            <div data-gateway="mercadopago" data-mode="sandbox" style="display: none;">
-                                <label class="support-label text-xs">Access Token (Sandbox)</label>
-                                <input name="donation_mercadopago_access_token_sandbox" class="support-field" value="{{ $gatewaySettings["donation_mercadopago_access_token_sandbox"] ?? "" }}" placeholder="APP_USR-...">
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2 pt-2 border-t border-gray-100">
+                    <div>
+                        <label class="form-label">Descricao</label>
+                        <input name="description" value="{{ $type->description }}">
                     </div>
-
-                    <!-- Stripe -->
-                    <div class="type-card">
-                        <div class="flex items-center justify-between mb-3">
-                            <label class="support-label mb-0">Stripe</label>
-                            <select name="donation_stripe_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('stripe', this.value)">
-                                <option value="production" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "production")>Produção</option>
-                                <option value="sandbox" @selected(($gatewaySettings["donation_stripe_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                            </select>
-                        </div>
-                        <div class="space-y-2">
-                            <div data-gateway="stripe" data-mode="production">
-                                <label class="support-label text-xs">Publishable Key (Produção)</label>
-                                <input name="donation_stripe_publishable_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key"] ?? "" }}" placeholder="pk_live_...">
-                                <label class="support-label text-xs mt-2">Secret Key (Produção)</label>
-                                <input name="donation_stripe_secret_key" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key"] ?? "" }}" placeholder="sk_live_...">
-                            </div>
-                            <div data-gateway="stripe" data-mode="sandbox" style="display: none;">
-                                <label class="support-label text-xs">Publishable Key (Sandbox)</label>
-                                <input name="donation_stripe_publishable_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_publishable_key_sandbox"] ?? "" }}" placeholder="pk_test_...">
-                                <label class="support-label text-xs mt-2">Secret Key (Sandbox)</label>
-                                <input name="donation_stripe_secret_key_sandbox" class="support-field" value="{{ $gatewaySettings["donation_stripe_secret_key_sandbox"] ?? "" }}" placeholder="sk_test_...">
-                            </div>
-                        </div>
+                    <div>
+                        <label class="form-label">Instrucoes</label>
+                        <input name="instructions" value="{{ $type->instructions }}">
                     </div>
-
-                    <!-- PayPal -->
-                    <div class="type-card">
-                        <div class="flex items-center justify-between mb-3">
-                            <label class="support-label mb-0">PayPal</label>
-                            <select name="donation_paypal_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('paypal', this.value)">
-                                <option value="production" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "production")>Produção</option>
-                                <option value="sandbox" @selected(($gatewaySettings["donation_paypal_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                            </select>
-                        </div>
-                        <div class="space-y-2">
-                            <div data-gateway="paypal" data-mode="production">
-                                <label class="support-label text-xs">Client ID (Produção)</label>
-                                <input name="donation_paypal_client_id" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id"] ?? "" }}">
-                                <label class="support-label text-xs mt-2">Secret (Produção)</label>
-                                <input name="donation_paypal_secret" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret"] ?? "" }}">
-                            </div>
-                            <div data-gateway="paypal" data-mode="sandbox" style="display: none;">
-                                <label class="support-label text-xs">Client ID (Sandbox)</label>
-                                <input name="donation_paypal_client_id_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_client_id_sandbox"] ?? "" }}">
-                                <label class="support-label text-xs mt-2">Secret (Sandbox)</label>
-                                <input name="donation_paypal_secret_sandbox" class="support-field" value="{{ $gatewaySettings["donation_paypal_secret_sandbox"] ?? "" }}">
-                            </div>
-                        </div>
+                    <div>
+                        <label class="form-label">Valores sugeridos</label>
+                        <input name="suggested_amounts" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
                     </div>
-
-                    <!-- Cora, PagBank, Asaas, Efi -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        @foreach(["cora" => "Cora", "pagbank" => "PagBank", "asaas" => "Asaas", "efi" => "Efi Pro"] as $key => $label)
-                            <div class="type-card">
-                                <div class="flex items-center justify-between mb-3">
-                                    <label class="support-label mb-0">{{ $label }}</label>
-                                    <select name="donation_{{ $key }}_mode" class="support-field" style="width: auto; padding: 6px 10px;" onchange="toggleGatewayFields('{{ $key }}', this.value)">
-                                        <option value="production" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "production")>Produção</option>
-                                        <option value="sandbox" @selected(($gatewaySettings["donation_{$key}_mode"] ?? "production") === "sandbox")>Sandbox</option>
-                                    </select>
-                                </div>
-                                <div class="space-y-2">
-                                    <div data-gateway="{{ $key }}" data-mode="production">
-                                        <label class="support-label text-xs">URL Base (Produção)</label>
-                                        <input name="donation_{{ $key }}_base_url" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url"] ?? "" }}">
-                                        <label class="support-label text-xs mt-2">API Key (Produção)</label>
-                                        <input name="donation_{{ $key }}_api_key" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key"] ?? "" }}">
-                                    </div>
-                                    <div data-gateway="{{ $key }}" data-mode="sandbox" style="display: none;">
-                                        <label class="support-label text-xs">URL Base (Sandbox)</label>
-                                        <input name="donation_{{ $key }}_base_url_sandbox" class="support-field" placeholder="URL base da API" value="{{ $gatewaySettings["donation_{$key}_base_url_sandbox"] ?? "" }}">
-                                        <label class="support-label text-xs mt-2">API Key (Sandbox)</label>
-                                        <input name="donation_{{ $key }}_api_key_sandbox" class="support-field" placeholder="API Key/Token" value="{{ $gatewaySettings["donation_{$key}_api_key_sandbox"] ?? "" }}">
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <button class="support-btn support-btn-primary w-full text-base py-3 mt-4">Salvar configuracoes do gateway</button>
                 </div>
             </form>
-        </div>
-
-            <div class="mt-5">
-                <h3 class="text-sm font-black text-gray-900 dark:text-white mb-3">Instrucoes por portal de pagamento</h3>
-                <div class="gateway-grid">
-                    @foreach($gatewayInstructions as $key => $instructions)
-                        <div class="gateway-note">
-                            <strong>{{ $gatewayLabels[$key] ?? strtoupper($key) }}</strong>
-                            <ul>
-                                @foreach($instructions as $instruction)
-                                    <li>{{ $instruction }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="tipos" class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div class="support-card">
-            <div class="support-card-head">
-                <div>
-                    <h2 class="support-card-title">Novo tipo de apoio</h2>
-                    <p class="support-card-subtitle">Defina o que aparece no botao Apoiar Projeto.</p>
-                </div>
-            </div>
-            <div class="support-card-body">
-                <form method="POST" action="{{ route("admin.project-supports.types.store") }}" class="space-y-3">
-                    @csrf
-                    <div>
-                        <label class="support-label">Nome</label>
-                        <input name="name" class="support-field" required placeholder="Ex: Doacao de mudas">
-                    </div>
-                    <div>
-                        <label class="support-label">Categoria</label>
-                        <select name="category" class="support-field" required>
-                            @foreach($categoryLabels as $key => $label)
-                                <option value="{{ $key }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label class="support-label">Descricao</label>
-                        <textarea name="description" class="support-field" rows="2"></textarea>
-                    </div>
-                    <div>
-                        <label class="support-label">Instrucoes para o apoiador</label>
-                        <textarea name="instructions" class="support-field" rows="3"></textarea>
-                    </div>
-                    <div>
-                        <label class="support-label">Valores sugeridos</label>
-                        <input name="suggested_amounts" class="support-field" placeholder="50, 100, 250">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="support-check"><input type="checkbox" name="requires_amount" value="1"> Valor</label>
-                        <label class="support-check"><input type="checkbox" name="requires_quantity" value="1"> Quantidade</label>
-                        <label class="support-check"><input type="checkbox" name="requires_address" value="1"> Endereco</label>
-                        <label class="support-check"><input type="checkbox" name="requires_document" value="1"> Documento</label>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="support-label">Ordem</label>
-                            <input type="number" name="sort_order" class="support-field" value="0">
-                        </div>
-                        <label class="support-check mt-6"><input type="checkbox" name="active" value="1" checked> Ativo</label>
-                    </div>
-                    <button class="support-btn support-btn-primary w-full">Adicionar tipo</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="xl:col-span-2 support-card">
-            <div class="support-card-head">
-                <div>
-                    <h2 class="support-card-title">Tipos configurados</h2>
-                    <p class="support-card-subtitle">Edite exigencias, instrucoes e ordem de exibicao no site.</p>
-                </div>
-            </div>
-            <div class="support-card-body type-list">
-                @forelse($supportTypes as $type)
-                    <form method="POST" action="{{ route("admin.project-supports.types.update", $type) }}" class="type-card">
-                        @csrf
-                        @method("PUT")
-                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-3">
-                            <div class="lg:col-span-2">
-                                <label class="support-label">Nome</label>
-                                <input name="name" class="support-field" value="{{ $type->name }}" required>
-                            </div>
-                            <div>
-                                <label class="support-label">Categoria</label>
-                                <select name="category" class="support-field" required>
-                                    @foreach($categoryLabels as $key => $label)
-                                        <option value="{{ $key }}" @selected($type->category === $key)>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label class="support-label">Ordem</label>
-                                <input type="number" name="sort_order" class="support-field" value="{{ $type->sort_order }}">
-                            </div>
-                            <div class="flex items-end">
-                                <label class="support-check"><input type="checkbox" name="active" value="1" @checked($type->active)> Ativo</label>
-                            </div>
-                            <div class="lg:col-span-2">
-                                <label class="support-label">Descricao</label>
-                                <textarea name="description" class="support-field" rows="2">{{ $type->description }}</textarea>
-                            </div>
-                            <div class="lg:col-span-2">
-                                <label class="support-label">Instrucoes</label>
-                                <textarea name="instructions" class="support-field" rows="2">{{ $type->instructions }}</textarea>
-                            </div>
-                            <div>
-                                <label class="support-label">Valores</label>
-                                <input name="suggested_amounts" class="support-field" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                            <div class="flex flex-wrap gap-3">
-                                <label class="support-check"><input type="checkbox" name="requires_amount" value="1" @checked($type->requires_amount)> Exigir valor</label>
-                                <label class="support-check"><input type="checkbox" name="requires_quantity" value="1" @checked($type->requires_quantity)> Exigir quantidade</label>
-                                <label class="support-check"><input type="checkbox" name="requires_address" value="1" @checked($type->requires_address)> Exigir endereco</label>
-                                <label class="support-check"><input type="checkbox" name="requires_document" value="1" @checked($type->requires_document)> Exigir documento</label>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-xs text-gray-500">{{ $type->requests_count }} registro(s)</span>
-                                <button class="support-btn support-btn-dark">Salvar</button>
-                                @if($type->requests_count === 0)
-                                    <button form="delete-type-{{ $type->id }}" type="submit" data-confirm="Excluir este tipo de apoio?" class="support-btn text-red-600 border border-red-200">Excluir</button>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                    @if($type->requests_count === 0)
-                        <form id="delete-type-{{ $type->id }}" method="POST" action="{{ route("admin.project-supports.types.destroy", $type) }}" class="hidden">@csrf @method("DELETE")</form>
-                    @endif
-                @empty
-                    <div class="p-8 text-center text-gray-400">Nenhum tipo configurado.</div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-
-    <div id="registros" class="support-card">
-        <div class="support-card-head">
-            <div>
-                <h2 class="support-card-title">Apoios recebidos</h2>
-                <p class="support-card-subtitle">Todos os registros ficam vinculados ao projeto apoiado e aparecem no sininho administrativo.</p>
-            </div>
-            <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
-                <select name="project" class="support-field">
-                    <option value="">Todos os projetos</option>
-                    @foreach($projects as $projectOption)
-                        <option value="{{ $projectOption->id }}" @selected((string) request("project") === (string) $projectOption->id)>
-                            {{ $projectOption->title }} ({{ $projectOption->support_requests_count }})
-                        </option>
-                    @endforeach
-                </select>
-                <select name="status" class="support-field">
-                    <option value="">Todos</option>
-                    @foreach($statusLabels as $key => $label)
-                        <option value="{{ $key }}" @selected(request("status") === $key)>{{ $label }}</option>
-                    @endforeach
-                </select>
-                <button class="support-btn support-btn-dark">Filtrar</button>
-            </form>
-        </div>
-
-        @forelse($supportRequests as $support)
-            <div id="apoio-{{ $support->id }}" class="support-row p-5">
-                <div class="request-grid">
-                    <div class="min-w-0">
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="support-badge support-badge-green">{{ optional($support->supportType)->name ?: "Tipo removido" }}</span>
-                            <span class="support-badge {{ $support->status === 'new' ? 'support-badge-red' : ($support->status === 'completed' ? 'support-badge-green' : 'support-badge-gray') }}">{{ $statusLabels[$support->status] ?? $support->status }}</span>
-                            @if($support->payment_status)
-                                <span class="support-badge support-badge-blue">Pagamento: {{ $support->payment_status }}</span>
-                            @endif
-                            <span class="text-xs text-gray-500">{{ optional($support->created_at)->format("d/m/Y H:i") }}</span>
-                        </div>
-                        <h3 class="font-black text-gray-900 dark:text-white text-lg">{{ $support->name }}</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ optional($support->project)->title ?: "Projeto removido" }}</p>
-
-                        <dl class="request-meta">
-                            <div><dt>Contato</dt><dd>{{ $support->phone }} @if($support->email) - {{ $support->email }} @endif</dd></div>
-                            <div><dt>Perfil</dt><dd>{{ str_replace("_", " ", $support->supporter_type) }}</dd></div>
-                            @if($support->organization || $support->government_agency)<div><dt>Organizacao/orgao</dt><dd>{{ $support->organization ?: $support->government_agency }}</dd></div>@endif
-                            @if($support->amount)<div><dt>Valor</dt><dd class="text-green-700">R$ {{ $fmt($support->amount) }}</dd></div>@endif
-                            @if($support->payment_gateway)<div><dt>Gateway</dt><dd>{{ strtoupper($support->payment_gateway) }} / {{ strtoupper((string) $support->payment_method) }}</dd></div>@endif
-                            @if($support->payment_external_id)<div><dt>ID externo</dt><dd>{{ $support->payment_external_id }}</dd></div>@endif
-                            @if($support->payment_reference)<div><dt>Referencia</dt><dd>{{ $support->payment_reference }}</dd></div>@endif
-                            @if($support->quantity)<div><dt>Quantidade</dt><dd>{{ $fmt($support->quantity) }} {{ $support->unit }}</dd></div>@endif
-                            @if($support->item_description)<div class="md:col-span-2"><dt>Apoio oferecido</dt><dd>{{ $support->item_description }}</dd></div>@endif
-                            @if($support->message)<div class="md:col-span-2"><dt>Mensagem</dt><dd>{{ $support->message }}</dd></div>@endif
-                            <div><dt>IP</dt><dd class="text-gray-500">{{ $support->ip_address ?: "-" }}</dd></div>
-                        </dl>
-                    </div>
-                    <form method="POST" action="{{ route("admin.project-supports.requests.update", $support) }}" class="space-y-2">
-                        @csrf
-                        @method("PUT")
-                        <label class="support-label">Status interno</label>
-                        <select name="status" class="support-field">
-                            @foreach($statusLabels as $key => $label)
-                                <option value="{{ $key }}" @selected($support->status === $key)>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                        <label class="support-label">Observacao interna</label>
-                        <textarea name="admin_note" class="support-field" rows="4" placeholder="Observacao interna">{{ data_get($support->metadata, "admin_note") }}</textarea>
-                        <button class="support-btn support-btn-primary w-full">Atualizar registro</button>
-                    </form>
-                </div>
-            </div>
+            @if($type->requests_count === 0)
+                <form id="del-{{ $type->id }}" method="POST" action="{{ route("admin.project-supports.types.destroy", $type) }}" class="hidden">@csrf @method("DELETE")</form>
+            @endif
         @empty
-            <div class="p-12 text-center text-gray-400">Nenhum apoio registrado ainda.</div>
+            <div class="py-6 text-center text-gray-400 text-sm">Nenhum tipo configurado.</div>
         @endforelse
-
-        <div class="p-4 border-t border-gray-100 dark:border-gray-700">{{ $supportRequests->links() }}</div>
     </div>
+</div>
+
+{{-- Registros --}}
+<div id="registros" class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+        <h3 class="font-bold text-gray-800 text-sm">Apoios recebidos</h3>
+        <form method="GET" class="flex gap-2">
+            <select name="project" class="text-sm py-1 px-2">
+                <option value="">Todos os projetos</option>
+                @foreach($projects as $p)<option value="{{ $p->id }}" @selected((string) request("project") === (string) $p->id)>{{ $p->title }}</option>@endforeach
+            </select>
+            <select name="status" class="text-sm py-1 px-2">
+                <option value="">Todos</option>
+                @foreach($statusLabels as $k => $l)<option value="{{ $k }}" @selected(request("status") === $k)>{{ $l }}</option>@endforeach
+            </select>
+            <button class="bg-gray-800 text-white font-semibold rounded-lg px-3 py-1 text-[12px] hover:bg-gray-900 transition-colors">Filtrar</button>
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                    <th class="px-4 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Nome</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Projeto</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Tipo</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Pagamento</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Data</th>
+                    <th class="px-4 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Acoes</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @forelse($supportRequests as $support)
+                    <tr class="hover:bg-gray-50 transition-colors" id="apoio-{{ $support->id }}">
+                        <td class="px-4 py-2.5 text-sm font-medium text-gray-900">{{ $support->name }}</td>
+                        <td class="px-4 py-2.5 text-sm text-gray-600">{{ optional($support->project)->title ?: "-" }}</td>
+                        <td class="px-4 py-2.5"><span class="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-green-100 text-green-700">{{ optional($support->supportType)->name ?: "-" }}</span></td>
+                        <td class="px-4 py-2.5">
+                            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold
+                                {{ $support->status === 'new' ? 'bg-red-100 text-red-700' : ($support->status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600') }}">
+                                {{ $statusLabels[$support->status] ?? $support->status }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2.5 text-sm text-gray-600">{{ $support->payment_status ?: "-" }}</td>
+                        <td class="px-4 py-2.5 text-sm text-gray-500">{{ optional($support->created_at)->format("d/m/Y H:i") }}</td>
+                        <td class="px-4 py-2.5 whitespace-nowrap">
+                            <button type="button" onclick="document.getElementById('detail-{{ $support->id }}').classList.toggle('hidden')" class="text-green-600 hover:text-green-800 text-[12px] font-semibold px-1">Detalhes</button>
+                        </td>
+                    </tr>
+                    <tr id="detail-{{ $support->id }}" class="hidden">
+                        <td colspan="7" class="px-4 py-3 bg-green-50 border-b border-green-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <dl class="space-y-1 text-[12px]">
+                                        <div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">Contato:</dt><dd class="text-gray-800">{{ $support->phone }} {{ $support->email ? '- ' . $support->email : '' }}</dd></div>
+                                        <div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">Perfil:</dt><dd class="text-gray-800">{{ str_replace("_", " ", $support->supporter_type) }}</dd></div>
+                                        @if($support->amount)<div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">Valor:</dt><dd class="font-bold text-green-700">R$ {{ $fmt($support->amount) }}</dd></div>@endif
+                                        @if($support->payment_gateway)<div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">Gateway:</dt><dd class="text-gray-800">{{ strtoupper($support->payment_gateway) }} / {{ strtoupper((string) $support->payment_method) }}</dd></div>@endif
+                                        @if($support->payment_external_id)<div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">ID externo:</dt><dd class="text-gray-800 break-all">{{ $support->payment_external_id }}</dd></div>@endif
+                                        @if($support->payment_reference)<div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">Ref:</dt><dd class="text-gray-800">{{ $support->payment_reference }}</dd></div>@endif
+                                        <div class="flex gap-2"><dt class="font-semibold text-gray-500 w-24">IP:</dt><dd class="text-gray-500">{{ $support->ip_address ?: "-" }}</dd></div>
+                                    </dl>
+                                </div>
+                                <div>
+                                    @if($support->message)<p class="text-[12px] text-gray-600 mb-2"><strong>Mensagem:</strong> {{ $support->message }}</p>@endif
+                                    @if($support->item_description)<p class="text-[12px] text-gray-600 mb-2"><strong>Apoio:</strong> {{ $support->item_description }}</p>@endif
+                                    <form method="POST" action="{{ route("admin.project-supports.requests.update", $support) }}" class="mt-2 pt-2 border-t border-gray-200">
+                                        @csrf
+                                        @method("PUT")
+                                        <div class="flex gap-2 items-end">
+                                            <div class="flex-1">
+                                                <label class="form-label">Status</label>
+                                                <select name="status">
+                                                    @foreach($statusLabels as $k => $l)<option value="{{ $k }}" @selected($support->status === $k)>{{ $l }}</option>@endforeach
+                                                </select>
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="form-label">Obs interna</label>
+                                                <input name="admin_note" value="{{ data_get($support->metadata, 'admin_note') }}" placeholder="Observacao...">
+                                            </div>
+                                            <button class="bg-green-700 text-white font-semibold rounded-lg px-4 py-2 text-[12px] hover:bg-green-800 transition-colors whitespace-nowrap">Atualizar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="7" class="px-6 py-10 text-center text-gray-400 text-sm">Nenhum apoio registrado ainda.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="p-4 border-t border-gray-100">{{ $supportRequests->links() }}</div>
 </div>
 
 <script>
 function toggleGatewayFields(gateway, mode) {
-    const productionFields = document.querySelectorAll(`[data-gateway="${gateway}"][data-mode="production"]`);
-    const sandboxFields = document.querySelectorAll(`[data-gateway="${gateway}"][data-mode="sandbox"]`);
-    
-    productionFields.forEach(field => {
-        field.style.display = mode === 'production' ? 'block' : 'none';
-    });
-    
-    sandboxFields.forEach(field => {
-        field.style.display = mode === 'sandbox' ? 'block' : 'none';
-    });
+    document.querySelectorAll('[data-gateway="'+gateway+'"][data-mode="production"]').forEach(function(el){ el.style.display = mode==='production' ? 'block' : 'none'; });
+    document.querySelectorAll('[data-gateway="'+gateway+'"][data-mode="sandbox"]').forEach(function(el){ el.style.display = mode==='sandbox' ? 'block' : 'none'; });
 }
-
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    const gateways = ['mercadopago', 'stripe', 'paypal', 'cora', 'pagbank', 'asaas', 'efi'];
-    gateways.forEach(gateway => {
-        const select = document.querySelector(`select[name="donation_${gateway}_mode"]`);
-        if (select) {
-            toggleGatewayFields(gateway, select.value);
-        }
+    document.querySelectorAll('.gtab').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var tab = this.dataset.tab;
+            document.querySelectorAll('.gtab').forEach(function(b) {
+                b.classList.remove('bg-white','text-green-700','border-gray-200');
+                b.classList.add('bg-gray-50','text-gray-500','border-transparent');
+            });
+            this.classList.remove('bg-gray-50','text-gray-500','border-transparent');
+            this.classList.add('bg-white','text-green-700','border-gray-200');
+            document.querySelectorAll('.gtab-content').forEach(function(c) { c.classList.toggle('hidden', c.dataset.tab !== tab); });
+        });
+    });
+    ['mercadopago','stripe','paypal','cora','pagbank','asaas','efi'].forEach(function(g) {
+        var sel = document.querySelector('select[name="donation_'+g+'_mode"]');
+        if (sel) toggleGatewayFields(g, sel.value);
     });
 });
 </script>

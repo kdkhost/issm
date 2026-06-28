@@ -310,13 +310,18 @@ class ProjectDonationGateway
 
     private function genericConfiguredGateway(ProjectSupportRequest $support, string $method, string $gateway): array
     {
+        $defaultUrls = [
+            'cora' => ['production' => 'https://api.cora.com.br', 'sandbox' => 'https://api.sandbox.cora.com.br'],
+            'pagbank' => ['production' => 'https://api.pagbank.com.br', 'sandbox' => 'https://api.sandbox.pagbank.com.br'],
+            'asaas' => ['production' => 'https://api.asaas.com', 'sandbox' => 'https://homologacao.asaas.com.br'],
+            'efi' => ['production' => 'https://api.efi.com.br', 'sandbox' => 'https://api-hom.efi.com.br'],
+        ];
+
         $mode = Setting::get("donation_{$gateway}_mode", 'production');
         $baseUrl = trim((string) Setting::get($mode === 'sandbox' ? "donation_{$gateway}_base_url_sandbox" : "donation_{$gateway}_base_url", ''));
         $token = trim((string) Setting::get($mode === 'sandbox' ? "donation_{$gateway}_api_key_sandbox" : "donation_{$gateway}_api_key", ''));
 
-        if (! $baseUrl || ! $token) {
-            throw new RuntimeException('Configure URL/API Key do gateway ' . strtoupper($gateway) . ' no painel.');
-        }
+        $baseUrl = $baseUrl ?: ($defaultUrls[$gateway][$mode] ?? '');
 
         return $this->persistPayment($support, [
             'gateway' => $gateway,

@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
-/* Força inclusão das utilities usadas nos blades no próximo build */
-@source inline("{space-y-2,space-y-3,space-y-4,space-y-6,space-y-8,p-4,p-6,p-7,gap-2,gap-3,gap-4,gap-6,gap-8,gap-x-8,gap-x-10,gap-y-6,gap-y-8,gap-y-10,flex-col,grid-cols-1,grid-cols-2,grid-cols-3,col-span-2,md:grid-cols-2,sm:grid-cols-2,lg:grid-cols-3,md:col-span-2}");
+/* Escaneia TODOS os blades para incluir todas as classes usadas */
+@source "../views/**/*.blade.php";
+
+/* Dark mode via [data-theme="dark"] em vez de prefers-color-scheme */
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
     --color-issm-green: #2d6a4f;
