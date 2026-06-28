@@ -180,6 +180,12 @@ class SettingsController extends Controller
             // Google Drive — Transparência
             ['key' => 'google_drive_enabled', 'value' => '0', 'type' => 'boolean', 'group' => 'google_drive', 'label' => 'Ativar integração com Google Drive'],
             ['key' => 'google_drive_folder_id', 'value' => '', 'type' => 'text', 'group' => 'google_drive', 'label' => 'ID da pasta raiz no Google Drive'],
+
+            // Notificações de contato
+            ['key' => 'contact_notification_email_enabled', 'value' => '1', 'type' => 'boolean', 'group' => 'contact', 'label' => 'Enviar cópia por e-mail ao receber contato'],
+            ['key' => 'contact_notification_to', 'value' => '', 'type' => 'text', 'group' => 'contact', 'label' => 'E-mail do administrador para notificações'],
+            ['key' => 'contact_notification_bcc', 'value' => '', 'type' => 'textarea', 'group' => 'contact', 'label' => 'Cópia oculta (BCC) para membros da empresa'],
+            ['key' => 'contact_notification_sound_enabled', 'value' => '1', 'type' => 'boolean', 'group' => 'contact', 'label' => 'Ativar alerta sonoro no painel'],
         ];
 
         foreach ([

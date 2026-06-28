@@ -14,6 +14,27 @@ class ContactController extends Controller
         return view('admin.contatos.index', compact('contacts'));
     }
 
+    public function notifications()
+    {
+        $contacts = Contact::new()
+            ->latest()
+            ->take(5)
+            ->get(['id', 'name', 'email', 'subject', 'created_at']);
+
+        return response()->json([
+            'count' => Contact::new()->count(),
+            'sound_enabled' => \App\Models\Setting::get('contact_notification_sound_enabled', '1') === '1',
+            'items' => $contacts->map(fn (Contact $contact) => [
+                'id' => $contact->id,
+                'name' => $contact->name,
+                'subject' => $contact->subject,
+                'email' => $contact->email,
+                'time' => optional($contact->created_at)->format('d/m/Y H:i'),
+                'url' => route('admin.contatos.show', $contact),
+            ])->values(),
+        ]);
+    }
+
     public function show(Contact $contato)
     {
         if ($contato->status === 'new') {

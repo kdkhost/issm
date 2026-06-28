@@ -183,6 +183,26 @@
     width: 16px;
     height: 16px;
 }
+.contact-form-alert {
+    display: none;
+    border-radius: 14px;
+    padding: 13px 15px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+.contact-form-alert.--success {
+    display: block;
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+.contact-form-alert.--error {
+    display: block;
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
 .grecaptcha-badge { visibility: hidden !important; }
 </style>
 @endpush
@@ -281,6 +301,7 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
                     
                     <form id="contact-form-page" action="{{ route('contact.store') }}" method="POST" class="space-y-6">
                         @csrf
+                        <div id="contact-form-alert" class="contact-form-alert" aria-live="polite"></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Nome Completo</label>
@@ -386,27 +407,35 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 @endif
 
-{{-- Google reCAPTCHA v3 (only if Turnstile not configured) --}}
 @if(!$turnstileSiteKey && $recaptchaSiteKey)
 <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
+@endif
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const contactForm = document.getElementById('contact-form-page');
-        if (!contactForm) return;
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('contact-form-page');
+    var alertBox = document.getElementById('contact-form-alert');
+    if (!form || !alertBox) return;
 
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const form = this;
-            const submitBtn = form.querySelector('button[type="submit"]');
-            
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span>Enviando...</span>';
-            }
+    var button = form.querySelector('button[type="submit"]');
+    var originalButtonHtml = button ? button.innerHTML : '';
 
+    function setAlert(type, message) {
+        alertBox.className = 'contact-form-alert --' + type;
+        alertBox.textContent = message;
+    }
+
+    function setLoading(loading) {
+        if (!button) return;
+        button.disabled = loading;
+        button.innerHTML = loading ? '<span>Enviando...</span>' : originalButtonHtml;
+    }
+
+    function ensureRecaptchaToken(callback) {
+        @if(!$turnstileSiteKey && $recaptchaSiteKey)
+        if (window.grecaptcha) {
             grecaptcha.ready(function() {
                 grecaptcha.execute('{{ $recaptchaSiteKey }}', {action: 'contact'}).then(function(token) {
-                    let input = form.querySelector('input[name="g-recaptcha-response"]');
+                    var input = form.querySelector('input[name="g-recaptcha-response"]');
                     if (!input) {
                         input = document.createElement('input');
                         input.type = 'hidden';
@@ -414,13 +443,68 @@ $subColor = cms('contact', 'hero', 'subtitle_color', '#bbf7d0');
                         form.appendChild(input);
                     }
                     input.value = token;
-                    form.submit();
+                    callback();
                 });
             });
-        });
+            return;
+        }
+        @endif
+        callback();
+    }
+
+    function submitAjax() {
+        var data = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+            .then(function(response) {
+                return response.json().then(function(payload) {
+                    return { ok: response.ok, payload: payload };
+                }).catch(function() {
+                    return { ok: response.ok, payload: {} };
+                });
+            })
+            .then(function(result) {
+                if (!result.ok || result.payload.success === false) {
+                    var message = result.payload.message || 'Não foi possível enviar sua mensagem. Verifique os dados e tente novamente.';
+                    if (result.payload.errors) {
+                        var firstKey = Object.keys(result.payload.errors)[0];
+                        if (firstKey) message = result.payload.errors[firstKey][0] || message;
+                    }
+                    setAlert('error', message);
+                    return;
+                }
+
+                form.reset();
+                if (window.turnstile) {
+                    turnstile.reset();
+                }
+                setAlert('success', result.payload.message || 'Mensagem enviada com sucesso!');
+            })
+            .catch(function() {
+                setAlert('error', 'Falha de conexão. Tente novamente em instantes.');
+            })
+            .finally(function() {
+                setLoading(false);
+            });
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        alertBox.className = 'contact-form-alert';
+        alertBox.textContent = '';
+        setLoading(true);
+        ensureRecaptchaToken(submitAjax);
     });
+});
 </script>
-@endif
 @endpush
 
 @endif

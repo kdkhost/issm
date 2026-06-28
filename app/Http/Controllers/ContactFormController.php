@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Setting;
+use App\Mail\ContactSubmittedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactFormController extends Controller
 {
@@ -63,7 +66,7 @@ class ContactFormController extends Controller
             }
         }
 
-        Contact::create([
+        $contact = Contact::create([
             'name'    => $validated['name'],
             'email'   => $validated['email'],
             'phone'   => $validated['phone'] ?? null,
@@ -71,9 +74,52 @@ class ContactFormController extends Controller
             'message' => $validated['message'],
         ]);
 
+        $this->notifyAdministrators($contact);
+
         return response()->json([
             'success' => true,
             'message' => 'Mensagem enviada com sucesso! Entraremos em contato em breve.',
         ], 200);
+    }
+
+    private function notifyAdministrators(Contact $contact): void
+    {
+        if (Setting::get('contact_notification_email_enabled', '1') !== '1') {
+            return;
+        }
+
+        $to = trim((string) Setting::get('contact_notification_to', ''))
+            ?: trim((string) Setting::get('contact_email', ''));
+
+        if (! filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            return;
+        }
+
+        $bcc = $this->emailList(Setting::get('contact_notification_bcc', ''));
+
+        try {
+            $message = Mail::to($to);
+
+            if ($bcc) {
+                $message->bcc($bcc);
+            }
+
+            $message->send(new ContactSubmittedMail($contact));
+        } catch (\Throwable $exception) {
+            Log::warning('Falha ao enviar notificação de contato por e-mail.', [
+                'contact_id' => $contact->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
+    }
+
+    private function emailList(?string $value): array
+    {
+        return collect(preg_split('/[\s,;]+/', (string) $value))
+            ->map(fn ($email) => trim($email))
+            ->filter(fn ($email) => filter_var($email, FILTER_VALIDATE_EMAIL))
+            ->unique()
+            ->values()
+            ->all();
     }
 }

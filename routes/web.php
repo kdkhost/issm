@@ -72,6 +72,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('galeria/{gallery}/fotos/{photo}', [GalleryController::class, 'updatePhoto'])->name('galeria.photos.update');
     Route::delete('galeria/{gallery}/fotos/{photo}', [GalleryController::class, 'destroyPhoto'])->name('galeria.photos.destroy');
     Route::post('galeria/{gallery}/fotos/{photo}/toggle', [GalleryController::class, 'togglePhoto'])->name('galeria.photos.toggle');
+    Route::get('contatos/notificacoes', [ContactController::class, 'notifications'])->name('contatos.notifications');
     Route::resource('contatos', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('paginas', PageController::class)->parameters(['paginas' => 'page']);
     Route::get('cms-paginas-publicas', [CmsPublicPageController::class, 'index'])->name('cms-public-pages.index');

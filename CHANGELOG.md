@@ -29,6 +29,7 @@
 - Card de contato recebe anúncio institucional de parcerias para ocupar o espaço abaixo do formulário
 - Dashboard administrativa recebe KPIs com contadores animados, sparklines, gráfico de visitas e composição de conteúdo
 - Card de status operacional da dashboard padronizado para tema dark/light
+- Formulário de contato passa a enviar via AJAX, registrar mensagens no admin, notificar no sino com alerta visual/sonoro e enviar cópias por e-mail configuráveis
 
 ## [1.2.0] - 2026-06-09
 

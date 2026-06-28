@@ -23,6 +23,33 @@
         [data-theme="dark"] .note-editor.note-frame { border-color: #4b5563 !important; }
         [data-theme="dark"] .note-toolbar { background: #1f2937 !important; border-color: #374151 !important; }
         [data-theme="dark"] .note-editable { background: #374151 !important; color: #f9fafb !important; }
+        .admin-bell-wrap { position: relative; }
+        .admin-bell-btn { position: relative; width: 40px; height: 40px; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; color: #374151; display: inline-flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s, color .15s; }
+        .admin-bell-btn:hover { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .admin-bell-btn svg { width: 20px; height: 20px; }
+        .admin-bell-badge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; border-radius: 999px; background: #dc2626; color: #fff; font-size: 10px; line-height: 20px; text-align: center; font-weight: 900; padding: 0 5px; box-shadow: 0 4px 10px rgba(220,38,38,.3); display: none; }
+        .admin-bell-btn.has-new { color: #dc2626; border-color: #fecaca; background: #fef2f2; animation: adminBellPulse 1.2s ease infinite; }
+        .admin-bell-panel { display:none; position: fixed; z-index: 9999; width: 340px; max-width: calc(100vw - 24px); background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; box-shadow: 0 20px 48px rgba(15,23,42,.18); overflow: hidden; }
+        .admin-bell-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; background:#f9fafb; border-bottom:1px solid #e5e7eb; }
+        .admin-bell-title { color:#111827; font-size:14px; font-weight:900; margin:0; }
+        .admin-bell-link { color:#15803d; font-size:12px; font-weight:900; text-decoration:none; }
+        .admin-bell-list { max-height: 330px; overflow-y:auto; }
+        .admin-bell-item { display:block; padding:13px 16px; border-bottom:1px solid #f3f4f6; text-decoration:none; transition:background .15s; }
+        .admin-bell-item:hover { background:#f9fafb; text-decoration:none; }
+        .admin-bell-name { color:#111827; font-size:13px; font-weight:900; margin:0 0 3px; }
+        .admin-bell-subject { color:#4b5563; font-size:12px; font-weight:700; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .admin-bell-time { color:#9ca3af; font-size:11px; font-weight:700; margin-top:5px; }
+        .admin-bell-empty { padding:22px 16px; text-align:center; color:#9ca3af; font-size:13px; font-weight:700; }
+        @keyframes adminBellPulse { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-8deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(5deg); } }
+        [data-theme="dark"] .admin-bell-btn { background:#1f2937; border-color:#374151; color:#d1d5db; }
+        [data-theme="dark"] .admin-bell-btn:hover { background:#111827; border-color:#16a34a; color:#4ade80; }
+        [data-theme="dark"] .admin-bell-btn.has-new { background:rgba(220,38,38,.12); border-color:rgba(248,113,113,.45); color:#f87171; }
+        [data-theme="dark"] .admin-bell-panel { background:#1f2937; border-color:#374151; box-shadow:0 20px 48px rgba(0,0,0,.45); }
+        [data-theme="dark"] .admin-bell-head { background:#111827; border-color:#374151; }
+        [data-theme="dark"] .admin-bell-title,[data-theme="dark"] .admin-bell-name { color:#f9fafb; }
+        [data-theme="dark"] .admin-bell-subject { color:#d1d5db; }
+        [data-theme="dark"] .admin-bell-item { border-color:#374151; }
+        [data-theme="dark"] .admin-bell-item:hover { background:#111827; }
         [data-theme="dark"] .note-statusbar { background: #1f2937 !important; border-color: #374151 !important; }
         [data-theme="dark"] .note-btn { background: #374151 !important; color: #f9fafb !important; border-color: #4b5563 !important; }
     </style>
@@ -475,6 +502,13 @@
                         Manutenção Ativa
                     </span>
                     @endif
+                    @php $newContactCount = \App\Models\Contact::new()->count(); @endphp
+                    <div class="admin-bell-wrap" id="admin-contact-bell-wrap">
+                        <button type="button" id="admin-contact-bell-btn" class="admin-bell-btn {{ $newContactCount > 0 ? 'has-new' : '' }}" aria-label="Notificações de contato" data-tooltip="Mensagens de contato" data-tip-pos="left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0h6z"/></svg>
+                            <span id="admin-contact-bell-badge" class="admin-bell-badge" style="{{ $newContactCount > 0 ? 'display:block;' : '' }}">{{ $newContactCount > 99 ? '99+' : $newContactCount }}</span>
+                        </button>
+                    </div>
                     <a href="{{ route('home') }}" target="_blank" class="text-sm text-green-700 hover:text-green-900 flex items-center gap-1" data-tooltip="Abrir site em nova aba" data-tip-pos="left">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         Ver Site
@@ -522,6 +556,16 @@
                 </div>
             </div>
         </header>
+
+        <div id="admin-contact-bell-panel" class="admin-bell-panel" aria-live="polite">
+            <div class="admin-bell-head">
+                <p class="admin-bell-title">Mensagens de contato</p>
+                <a href="{{ route('admin.contatos.index') }}" class="admin-bell-link">Ver todas</a>
+            </div>
+            <div id="admin-contact-bell-list" class="admin-bell-list">
+                <div class="admin-bell-empty">Carregando mensagens...</div>
+            </div>
+        </div>
 
         {{-- Breadcrumb entre topbar e conteúdo --}}
         @php
@@ -693,6 +737,131 @@ function showToast(message, type) {
     var error = document.querySelector('meta[name="flash-error"]');
     if (success && success.content) showToast(success.content, 'success');
     if (error && error.content) showToast(error.content, 'error');
+})();
+
+// ═══════════════════════════════════════════
+// CONTACT NOTIFICATIONS
+// ═══════════════════════════════════════════
+(function() {
+    var btn = document.getElementById('admin-contact-bell-btn');
+    var badge = document.getElementById('admin-contact-bell-badge');
+    var panel = document.getElementById('admin-contact-bell-panel');
+    var list = document.getElementById('admin-contact-bell-list');
+    if (!btn || !badge || !panel || !list) return;
+
+    var endpoint = @json(route('admin.contatos.notifications'));
+    var initialCount = parseInt((badge.textContent || '0').replace(/\D/g, ''), 10) || 0;
+    var lastCount = parseInt(localStorage.getItem('adminContactNotificationCount') || initialCount, 10);
+    localStorage.setItem('adminContactNotificationCount', String(initialCount));
+
+    function playContactSound() {
+        try {
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            var ctx = new AudioContext();
+            var gain = ctx.createGain();
+            gain.gain.value = 0.08;
+            gain.connect(ctx.destination);
+
+            [660, 880].forEach(function(freq, index) {
+                var osc = ctx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                var start = ctx.currentTime + (index * 0.12);
+                osc.start(start);
+                osc.stop(start + 0.1);
+            });
+        } catch (e) {}
+    }
+
+    function positionPanel() {
+        var rect = btn.getBoundingClientRect();
+        var width = Math.min(340, window.innerWidth - 24);
+        panel.style.width = width + 'px';
+        panel.style.top = (rect.bottom + 10) + 'px';
+        panel.style.left = Math.max(12, Math.min(rect.right - width, window.innerWidth - width - 12)) + 'px';
+    }
+
+    function renderList(items) {
+        if (!items || !items.length) {
+            list.innerHTML = '<div class="admin-bell-empty">Nenhuma mensagem nova.</div>';
+            return;
+        }
+
+        list.innerHTML = items.map(function(item) {
+            return '<a class="admin-bell-item" href="' + item.url + '">' +
+                '<p class="admin-bell-name">' + escapeHtml(item.name) + '</p>' +
+                '<p class="admin-bell-subject">' + escapeHtml(item.subject) + '</p>' +
+                '<div class="admin-bell-time">' + escapeHtml(item.time) + ' · ' + escapeHtml(item.email) + '</div>' +
+            '</a>';
+        }).join('');
+    }
+
+    function updateBadge(count) {
+        if (count > 0) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.display = 'block';
+            btn.classList.add('has-new');
+        } else {
+            badge.textContent = '0';
+            badge.style.display = 'none';
+            btn.classList.remove('has-new');
+        }
+    }
+
+    function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"']/g, function(char) {
+            return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[char];
+        });
+    }
+
+    function fetchNotifications(allowAlert) {
+        fetch(endpoint, {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin'
+        })
+            .then(function(response) { return response.ok ? response.json() : null; })
+            .then(function(data) {
+                if (!data) return;
+                var count = parseInt(data.count || 0, 10);
+                updateBadge(count);
+                renderList(data.items || []);
+
+                if (allowAlert && count > lastCount) {
+                    showToast('Nova mensagem de contato recebida.', 'info');
+                    if (data.sound_enabled) playContactSound();
+                }
+
+                lastCount = count;
+                localStorage.setItem('adminContactNotificationCount', String(count));
+            })
+            .catch(function() {});
+    }
+
+    btn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+            return;
+        }
+        positionPanel();
+        panel.style.display = 'block';
+        fetchNotifications(false);
+    });
+
+    document.addEventListener('click', function(event) {
+        if (panel.style.display === 'block' && !panel.contains(event.target) && event.target !== btn) {
+            panel.style.display = 'none';
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        if (panel.style.display === 'block') positionPanel();
+    });
+
+    fetchNotifications(false);
+    setInterval(function() { fetchNotifications(true); }, 30000);
 })();
 
 // ═══════════════════════════════════════════
