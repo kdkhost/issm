@@ -134,109 +134,111 @@
                         <div class="md:col-span-2 space-y-4">
                             <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
                                 <span class="font-bold text-gray-800 text-sm">{{ $gatewayLabels[$g] }}</span>
-                                <select name="donation_{{ $g }}_mode" class="ml-auto" style="width:auto" onchange="toggleGatewayFields('{{ $g }}', this.value)">
-                                    <option value="production" @selected($mode === 'production')>Producao</option>
-                                    <option value="sandbox"    @selected($mode === 'sandbox')>Sandbox</option>
-                                </select>
+                                <div class="ml-auto w-36">
+                                    <select name="donation_{{ $g }}_mode" onchange="toggleGatewayFields('{{ $g }}', this.value)">
+                                        <option value="production" @selected($mode === 'production')>Producao</option>
+                                        <option value="sandbox"    @selected($mode === 'sandbox')>Sandbox</option>
+                                    </select>
+                                </div>
                             </div>
 
                             @if($g === 'mercadopago')
                                 <div data-gateway="mercadopago" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">Access Token (Producao)</label>
-                                    <input name="donation_mercadopago_access_token" value="{{ $gatewaySettings['donation_mercadopago_access_token'] ?? '' }}" placeholder="APP_USR-...">
+                                    <input type="text" name="donation_mercadopago_access_token" value="{{ $gatewaySettings['donation_mercadopago_access_token'] ?? '' }}" placeholder="APP_USR-...">
                                     <label class="form-label mt-3">Public Key (Producao) <span class="normal-case font-normal text-gray-400">— para pagamento com cartao</span></label>
-                                    <input name="donation_mercadopago_public_key" value="{{ $gatewaySettings['donation_mercadopago_public_key'] ?? '' }}" placeholder="APP_USR-...">
+                                    <input type="text" name="donation_mercadopago_public_key" value="{{ $gatewaySettings['donation_mercadopago_public_key'] ?? '' }}" placeholder="APP_USR-...">
                                 </div>
                                 <div data-gateway="mercadopago" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">Access Token (Sandbox)</label>
-                                    <input name="donation_mercadopago_access_token_sandbox" value="{{ $gatewaySettings['donation_mercadopago_access_token_sandbox'] ?? '' }}" placeholder="TEST-...">
+                                    <input type="text" name="donation_mercadopago_access_token_sandbox" value="{{ $gatewaySettings['donation_mercadopago_access_token_sandbox'] ?? '' }}" placeholder="TEST-...">
                                     <label class="form-label mt-3">Public Key (Sandbox)</label>
-                                    <input name="donation_mercadopago_public_key_sandbox" value="{{ $gatewaySettings['donation_mercadopago_public_key_sandbox'] ?? '' }}" placeholder="TEST-...">
+                                    <input type="text" name="donation_mercadopago_public_key_sandbox" value="{{ $gatewaySettings['donation_mercadopago_public_key_sandbox'] ?? '' }}" placeholder="TEST-...">
                                 </div>
 
                             @elseif($g === 'stripe')
                                 <div data-gateway="stripe" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">Publishable Key (Producao)</label>
-                                    <input name="donation_stripe_publishable_key" value="{{ $gatewaySettings['donation_stripe_publishable_key'] ?? '' }}" placeholder="pk_live_...">
+                                    <input type="text" name="donation_stripe_publishable_key" value="{{ $gatewaySettings['donation_stripe_publishable_key'] ?? '' }}" placeholder="pk_live_...">
                                     <label class="form-label mt-3">Secret Key (Producao)</label>
-                                    <input name="donation_stripe_secret_key" value="{{ $gatewaySettings['donation_stripe_secret_key'] ?? '' }}" placeholder="sk_live_...">
+                                    <input type="text" name="donation_stripe_secret_key" value="{{ $gatewaySettings['donation_stripe_secret_key'] ?? '' }}" placeholder="sk_live_...">
                                 </div>
                                 <div data-gateway="stripe" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">Publishable Key (Sandbox)</label>
-                                    <input name="donation_stripe_publishable_key_sandbox" value="{{ $gatewaySettings['donation_stripe_publishable_key_sandbox'] ?? '' }}" placeholder="pk_test_...">
+                                    <input type="text" name="donation_stripe_publishable_key_sandbox" value="{{ $gatewaySettings['donation_stripe_publishable_key_sandbox'] ?? '' }}" placeholder="pk_test_...">
                                     <label class="form-label mt-3">Secret Key (Sandbox)</label>
-                                    <input name="donation_stripe_secret_key_sandbox" value="{{ $gatewaySettings['donation_stripe_secret_key_sandbox'] ?? '' }}" placeholder="sk_test_...">
+                                    <input type="text" name="donation_stripe_secret_key_sandbox" value="{{ $gatewaySettings['donation_stripe_secret_key_sandbox'] ?? '' }}" placeholder="sk_test_...">
                                 </div>
 
                             @elseif($g === 'paypal')
                                 <div data-gateway="paypal" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">Client ID (Producao)</label>
-                                    <input name="donation_paypal_client_id" value="{{ $gatewaySettings['donation_paypal_client_id'] ?? '' }}">
+                                    <input type="text" name="donation_paypal_client_id" value="{{ $gatewaySettings['donation_paypal_client_id'] ?? '' }}">
                                     <label class="form-label mt-3">Secret (Producao)</label>
-                                    <input name="donation_paypal_secret" value="{{ $gatewaySettings['donation_paypal_secret'] ?? '' }}">
+                                    <input type="text" name="donation_paypal_secret" value="{{ $gatewaySettings['donation_paypal_secret'] ?? '' }}">
                                 </div>
                                 <div data-gateway="paypal" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">Client ID (Sandbox)</label>
-                                    <input name="donation_paypal_client_id_sandbox" value="{{ $gatewaySettings['donation_paypal_client_id_sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_paypal_client_id_sandbox" value="{{ $gatewaySettings['donation_paypal_client_id_sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">Secret (Sandbox)</label>
-                                    <input name="donation_paypal_secret_sandbox" value="{{ $gatewaySettings['donation_paypal_secret_sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_paypal_secret_sandbox" value="{{ $gatewaySettings['donation_paypal_secret_sandbox'] ?? '' }}">
                                 </div>
 
                             @elseif($g === 'pagbank')
                                 @php $u = $gatewayUrls[$g] ?? []; @endphp
                                 <div data-gateway="pagbank" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">URL Base (Producao)</label>
-                                    <input name="donation_pagbank_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url'] ?? $u['production'] ?? '' }}">
+                                    <input type="text" name="donation_pagbank_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url'] ?? $u['production'] ?? '' }}">
                                     <label class="form-label mt-3">API Key / Token Bearer (Producao)</label>
-                                    <input name="donation_pagbank_api_key" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key'] ?? '' }}">
+                                    <input type="text" name="donation_pagbank_api_key" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key'] ?? '' }}">
                                 </div>
                                 <div data-gateway="pagbank" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">URL Base (Sandbox)</label>
-                                    <input name="donation_pagbank_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_pagbank_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_pagbank_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">API Key / Token Bearer (Sandbox)</label>
-                                    <input name="donation_pagbank_api_key_sandbox" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key_sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_pagbank_api_key_sandbox" placeholder="Token Bearer" value="{{ $gatewaySettings['donation_pagbank_api_key_sandbox'] ?? '' }}">
                                 </div>
                                 <div class="mt-3">
                                     <label class="form-label">Public Key <span class="normal-case font-normal text-gray-400">— para criptografia de cartao</span></label>
-                                    <input name="donation_pagbank_public_key" value="{{ $gatewaySettings['donation_pagbank_public_key'] ?? '' }}" placeholder="Public Key PagBank">
+                                    <input type="text" name="donation_pagbank_public_key" value="{{ $gatewaySettings['donation_pagbank_public_key'] ?? '' }}" placeholder="Public Key PagBank">
                                 </div>
 
                             @elseif($g === 'efi')
                                 @php $u = $gatewayUrls[$g] ?? []; @endphp
                                 <div data-gateway="efi" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">URL Base (Producao)</label>
-                                    <input name="donation_efi_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url'] ?? $u['production'] ?? '' }}">
+                                    <input type="text" name="donation_efi_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url'] ?? $u['production'] ?? '' }}">
                                     <label class="form-label mt-3">Client ID (Producao)</label>
-                                    <input name="donation_efi_client_id" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id'] ?? '' }}">
+                                    <input type="text" name="donation_efi_client_id" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id'] ?? '' }}">
                                     <label class="form-label mt-3">Client Secret / API Key (Producao)</label>
-                                    <input name="donation_efi_api_key" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key'] ?? '' }}">
+                                    <input type="text" name="donation_efi_api_key" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key'] ?? '' }}">
                                 </div>
                                 <div data-gateway="efi" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">URL Base (Sandbox)</label>
-                                    <input name="donation_efi_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_efi_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings['donation_efi_base_url_sandbox'] ?? $u['sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">Client ID (Sandbox)</label>
-                                    <input name="donation_efi_client_id_sandbox" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id_sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_efi_client_id_sandbox" placeholder="Client_Id_..." value="{{ $gatewaySettings['donation_efi_client_id_sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">Client Secret / API Key (Sandbox)</label>
-                                    <input name="donation_efi_api_key_sandbox" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key_sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_efi_api_key_sandbox" placeholder="Client_Secret_..." value="{{ $gatewaySettings['donation_efi_api_key_sandbox'] ?? '' }}">
                                 </div>
                                 <div class="mt-3">
                                     <label class="form-label">Chave PIX cadastrada na conta Efi</label>
-                                    <input name="donation_efi_pix_key" value="{{ $gatewaySettings['donation_efi_pix_key'] ?? '' }}" placeholder="CPF, CNPJ, e-mail ou chave aleatoria">
+                                    <input type="text" name="donation_efi_pix_key" value="{{ $gatewaySettings['donation_efi_pix_key'] ?? '' }}" placeholder="CPF, CNPJ, e-mail ou chave aleatoria">
                                 </div>
 
                             @else
                                 @php $u = $gatewayUrls[$g] ?? []; @endphp
                                 <div data-gateway="{{ $g }}" data-mode="production" @if($mode !== 'production') style="display:none" @endif>
                                     <label class="form-label">URL Base (Producao)</label>
-                                    <input name="donation_{{ $g }}_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url"] ?? $u['production'] ?? '' }}">
+                                    <input type="text" name="donation_{{ $g }}_base_url" placeholder="{{ $u['production'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url"] ?? $u['production'] ?? '' }}">
                                     <label class="form-label mt-3">API Key / Token (Producao)</label>
-                                    <input name="donation_{{ $g }}_api_key" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key"] ?? '' }}">
+                                    <input type="text" name="donation_{{ $g }}_api_key" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key"] ?? '' }}">
                                 </div>
                                 <div data-gateway="{{ $g }}" data-mode="sandbox" @if($mode !== 'sandbox') style="display:none" @endif>
                                     <label class="form-label">URL Base (Sandbox)</label>
-                                    <input name="donation_{{ $g }}_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url_sandbox"] ?? $u['sandbox'] ?? '' }}">
+                                    <input type="text" name="donation_{{ $g }}_base_url_sandbox" placeholder="{{ $u['sandbox'] ?? '' }}" value="{{ $gatewaySettings["donation_{$g}_base_url_sandbox"] ?? $u['sandbox'] ?? '' }}">
                                     <label class="form-label mt-3">API Key / Token (Sandbox)</label>
-                                    <input name="donation_{{ $g }}_api_key_sandbox" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key_sandbox"] ?? '' }}">
+                                    <input type="text" name="donation_{{ $g }}_api_key_sandbox" placeholder="API Key ou Token" value="{{ $gatewaySettings["donation_{$g}_api_key_sandbox"] ?? '' }}">
                                 </div>
                             @endif
                         </div>
@@ -278,7 +280,7 @@
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div class="form-group mb-0 md:col-span-2">
                     <label class="form-label">Nome</label>
-                    <input name="name" required placeholder="Ex: Doacao de mudas">
+                    <input type="text" name="name" required placeholder="Ex: Doacao de mudas">
                 </div>
                 <div class="form-group mb-0">
                     <label class="form-label">Categoria</label>
@@ -306,7 +308,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
                     <div class="form-group mb-0 md:col-span-2">
                         <label class="form-label">Nome</label>
-                        <input name="name" value="{{ $type->name }}" required>
+                        <input type="text" name="name" value="{{ $type->name }}" required>
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label">Categoria</label>
@@ -337,15 +339,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3 pt-3 border-t border-gray-100">
                     <div class="form-group mb-0">
                         <label class="form-label">Descricao</label>
-                        <input name="description" value="{{ $type->description }}">
+                        <input type="text" name="description" value="{{ $type->description }}">
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label">Instrucoes para o apoiador</label>
-                        <input name="instructions" value="{{ $type->instructions }}">
+                        <input type="text" name="instructions" value="{{ $type->instructions }}">
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label">Valores sugeridos <span class="normal-case font-normal text-gray-400">(separados por virgula)</span></label>
-                        <input name="suggested_amounts" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
+                        <input type="text" name="suggested_amounts" value="{{ collect($type->suggested_amounts ?? [])->implode(', ') }}" placeholder="50, 100, 250">
                     </div>
                 </div>
             </form>
@@ -365,13 +367,13 @@
     <div class="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b border-gray-100">
         <h3 class="text-base font-bold text-gray-800">Apoios recebidos</h3>
         <form method="GET" class="flex flex-wrap items-center gap-2">
-            <select name="project" style="width:auto">
+            <select name="project">
                 <option value="">Todos os projetos</option>
                 @foreach($projects as $p)
                     <option value="{{ $p->id }}" @selected((string) request('project') === (string) $p->id)>{{ $p->title }}</option>
                 @endforeach
             </select>
-            <select name="status" style="width:auto">
+            <select name="status">
                 <option value="">Todos os status</option>
                 @foreach($statusLabels as $k => $l)
                     <option value="{{ $k }}" @selected(request('status') === $k)>{{ $l }}</option>
@@ -469,7 +471,7 @@
                                             </div>
                                             <div class="form-group mb-0">
                                                 <label class="form-label">Obs. interna</label>
-                                                <input name="admin_note" value="{{ data_get($support->metadata, 'admin_note') }}" placeholder="Nota interna...">
+                                                <input type="text" name="admin_note" value="{{ data_get($support->metadata, 'admin_note') }}" placeholder="Nota interna...">
                                             </div>
                                         </div>
                                         <div class="flex justify-end">
