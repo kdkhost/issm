@@ -48,7 +48,6 @@
                  style="max-height:520px;object-fit:contain;margin:0 auto;display:block;">
         </div>
         @endif
-        @endif
         
         <div class="p-8 lg:p-16">
             <div class="max-w-3xl mx-auto">
