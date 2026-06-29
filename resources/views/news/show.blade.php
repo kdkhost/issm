@@ -42,10 +42,12 @@
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article class="bg-white rounded-[32px] overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100">
         @if($item->image)
-        <div class="relative h-[400px] lg:h-[550px]">
-            <img src="{{ asset('media/'.$item->image) }}" alt="{{ $item->title }}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        <div class="w-full overflow-hidden" style="background:#f8fafc;">
+            <img src="{{ asset('media/'.$item->image) }}" alt="{{ $item->title }}"
+                 class="w-full h-auto block"
+                 style="max-height:520px;object-fit:contain;margin:0 auto;display:block;">
         </div>
+        @endif
         @endif
         
         <div class="p-8 lg:p-16">

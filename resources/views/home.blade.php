@@ -520,7 +520,15 @@ $bg3 = cms('home', 'hero', 'gradient_end', '#059669');
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($featuredProjects as $project)
             <article class="bg-white rounded-2xl shadow-md overflow-hidden card-hover border border-gray-100">
-                @if($project->image)<img src="{{ asset("media/".$project->image) }}" alt="{{ $project->title }}" class="w-full h-48 object-cover">@else<div class="w-full h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center"><svg class="w-16 h-16 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>@endif
+            @if($project->image)
+                <div class="w-full overflow-hidden" style="background:#f8fafc;">
+                    <img src="{{ asset('media/'.$project->image) }}" alt="{{ $project->title }}"
+                         class="w-full h-auto block"
+                         style="max-height:220px;object-fit:contain;margin:0 auto;display:block;">
+                </div>
+            @else
+                <div class="w-full h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center"><svg class="w-16 h-16 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            @endif
                 <div class="p-6">
                     @if($project->category)<span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">{{ $project->category }}</span>@endif
                     <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">{{ $project->title }}</h3>
@@ -593,7 +601,13 @@ $bg3 = cms('home', 'hero', 'gradient_end', '#059669');
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($latestNews as $news)
             <article class="bg-white rounded-2xl shadow-md overflow-hidden card-hover border border-gray-100">
-                @if($news->image)<img src="{{ asset("media/".$news->image) }}" alt="{{ $news->title }}" class="w-full h-48 object-cover">@else<div class="w-full h-48 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center"><svg class="w-16 h-16 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div>@endif
+                @if($news->image)
+                <div class="w-full overflow-hidden" style="background:#f8fafc;">
+                    <img src="{{ asset('media/'.$news->image) }}" alt="{{ $news->title }}"
+                         class="w-full h-auto block"
+                         style="max-height:220px;object-fit:contain;margin:0 auto;display:block;">
+                </div>
+                @else<div class="w-full h-48 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center"><svg class="w-16 h-16 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div>@endif
                 <div class="p-6">
                     @if($news->category)<span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{{ $news->category }}</span>@endif
                     <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">{{ $news->title }}</h3>

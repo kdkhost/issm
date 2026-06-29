@@ -69,7 +69,13 @@ $subColor = cms('news', 'hero', 'subtitle_color', '#bbf7d0');
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         @forelse($news as $item)
         <article class="bg-white rounded-2xl shadow-md overflow-hidden card-hover border border-gray-100">
-            @if($item->image)<img src="{{ asset("media/".$item->image) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">@else<div class="w-full h-48 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center"><svg class="w-12 h-12 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div>@endif
+            @if($item->image)
+                <div class="w-full overflow-hidden" style="background:#f8fafc;">
+                    <img src="{{ asset('media/'.$item->image) }}" alt="{{ $item->title }}"
+                         class="w-full h-auto block"
+                         style="max-height:220px;object-fit:contain;margin:0 auto;display:block;">
+                </div>
+            @else<div class="w-full h-48 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center"><svg class="w-12 h-12 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div>@endif
             <div class="p-6">
                 @if($item->category)<span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{{ $item->category }}</span>@endif
                 <h2 class="text-xl font-bold text-gray-900 mt-3 mb-2">{{ $item->title }}</h2>
