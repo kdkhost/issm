@@ -64,8 +64,10 @@
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article class="bg-white rounded-[32px] overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100">
         @if($project->image)
-        <div class="relative w-full overflow-hidden" style="aspect-ratio:16/9;max-height:500px;">
-            <img src="{{ asset('media/'.$project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-contain" style="background:#f9fafb;">
+        <div class="w-full overflow-hidden" style="background:#f8fafc;">
+            <img src="{{ asset('media/'.$project->image) }}" alt="{{ $project->title }}"
+                 class="w-full h-auto block"
+                 style="max-height:520px;object-fit:contain;display:block;margin:0 auto;">
         </div>
         @endif
         
